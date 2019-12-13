@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+        <el-tabs type="border-card" v-model="activeName"  @tab-click="handleTabsClick">
+            <el-tab-pane label="查询工单" name="WorkOrder" >
+
+            </el-tab-pane>
+
+            <el-tab-pane label="裁剪计划" name="tailoringPlans"  >
+                <el-form :inline="true" :model="planFindForm" class="demo-form-inline">
+                    <el-form-item label="出货时间">
+                        <el-date-picker
+                                v-model="startEndDate"
+                                type="daterange"
+                                align="right"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                :default-time="['00:00:00', '23:59:59']"
+                                unlink-panels
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                :picker-options="pickerOptions">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="工单号">
+                        <el-input v-model="planFindForm.workOrderNo" placeholder="工单号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="产品编号">
+                        <el-input v-model="planFindForm.productCode" placeholder="请输入产品编号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="状态">
+                        <el-checkbox-group v-model="planFindFormStatus">
+                            <el-checkbox label="2" >已完成</el-checkbox>
+                            <el-checkbox label="1">未完成</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="planTableQuery">查询</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="updatetNotFinishedPlan" type="primary">更新未完成计划</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="openPlan" type="primary">手动打开</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="closePlan" type="primary">手动关闭</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="saveUpdatePlan" type="primary">保存</el-button>
+                    </el-form-item>
+                </el-form>
+
+                <el-table ref="planTable"
+                          :data="planData.content"
+                          :row-class-name="planDataTableRowClassName"
+                          style="width: 100%">
+                    <el-table-column
+                            type="selection">
+                    </el-table-column>
+                    <el-table-column
+                            label="版号" width="150px">
+                        <template slot-scope="scope">
+                            <el-select v-if="scope.row.status=='1'" v-model="scope.row.typeNumber" placeholder="请选择">
+                                <el-option
+                                        v-for="item in typeNumberMap[scope.row.fabricCode]"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                            <label v-else>{{scope.row.typeNumber}}</label>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="组别" width="100px">
+                        <template slot-scope="scope">
+                            <el-select v-if="scope.row.status=='1'" v-model="scope.row.group" placeholder="请选择">
+                                <el-option
+                                        v-for="item in groups"
+                                        :key="item.group"
+                                        :label="item.group"
+                                        :value="item.group">
+                                </el-option>
+                            </el-select>
+                            <label v-else>{{scope.row.group}}</label>
+                        </template>
+
+                    </el-table-column>
+                    <el-table-column
+                            prop="member"
+                            label="组员">
+                    </el-table-column>
+                    <el-table-column
+                            label="主/辅/补">
+                        <template slot-scope="scope">
+                            <el-select v-if="scope.row.status=='1'"  v-model="scope.row.mainSupplement" placeholder="请选择主辅补">
+                                <el-option label="主" value="主"></el-option>
+                                <el-option label="辅" value="辅"></el-option>
+                                <el-option label="补" value="补"></el-option>
+                            </el-select>
+                            <label v-else>{{scope.row.mainSupplement}}</label>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="workOrderNo"
+                            label="工单号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productLineNo"
+                            label="产品行号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productCode"
+                            label="产品编码"
+                            width="200">
+                    </el-table-column>
+                    <el-table-column
+                            label="计划数量"
+                            width="120">
+                        <template slot-scope="scope">
+                            <el-input v-if="scope.row.status=='1'"  v-model="scope.row.quantity" placeholder="计划数量"
+                                      autocomplete="off"
+                                      :rules="[
+                              { required: true, message: '扎单数量不能为空'},
+                              { type: 'number', message: '扎单数量为数字值'}
+                            ]"></el-input>
+                            <label v-else>{{scope.row.quantity}}</label>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="fabricColour"
+                            label="颜色">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fabricCode"
+                            label="布料编码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fabricWidth"
+                            label="幅宽">
+                    </el-table-column>
+                    <el-table-column
+                            prop="boxQuantity"
+                            label="装箱数量">
+                    </el-table-column>
+                    <el-table-column
+                            label="扎单数量">
+                        <template slot-scope="scope">
+                            <el-input  v-if="scope.row.status=='1'" v-model.number="scope.row.bindingQuantity" autocomplete="off"
+                                      :rules="[
+                              { required: true, message: '扎单数量不能为空'},
+                              { type: 'number', message: '扎单数量为数字值'}
+                            ]"
+                            ></el-input>
+                            <label v-else>{{scope.row.bindingQuantity}}</label>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="换片数量">
+                        <template slot-scope="scope">
+                            <el-input v-if="scope.row.status=='1'"  v-model="scope.row.changePiecesQuantity" placeholder="请输入换片数量"
+                                      autocomplete="off"
+                                      :rules="[
+                              { required: true, message: '换片数量不能为空'},
+                              { type: 'number', message: '换片数量为数字值'}
+                            ]"></el-input>
+                            <label v-else>{{scope.row.changePiecesQuantity}}</label>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
+                            :formatter="formatterStatus"
+                            label="计划状态">
+                    </el-table-column>
+                    <el-table-column
+                            prop="dueDate"
+                            sortable
+                            :formatter="formatterDate"
+                            label="出货日期"
+                            width="120">
+                    </el-table-column>
+
+                    <el-table-column
+                            sortable
+                            prop="createTime"
+                            label="创建时间">
+                    </el-table-column>
+
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="120">
+                        <template slot-scope="scope">
+<!--                            <el-button-->
+<!--                                    @click.native.prevent="showEditDialog(scope.row)"-->
+<!--                                    type="text"-->
+<!--                                    size="small">保存-->
+<!--                            </el-button>-->
+                            <el-button v-if="scope.row.status=='1'"
+                                    @click.native.prevent="updatePlanStatus(scope.row, -1,scope.$index)"
+                                    type="text"
+                                    size="small">删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div class="block">
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page.sync="currentPage"
+                            :page-size="planFindForm.size"
+                            layout="total, prev, pager, next"
+                            :total="planData.totalElements">
+                    </el-pagination>
+                </div>
+            </el-tab-pane>
+
+        </el-tabs>
+
+</div>
+</body>
+<script src="downloads/moment.min.js"></script>
+<!-- import Vue before Element -->
+<script src="vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeName:"tailoringPlans",
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                startEndDate:  [],
+                formLabelWidth: '120px',
+                multipleSelection: [],
+                planStatus: {"-1": "已删除", "1": "未完成", "2": "已完成",},
+                groups:[],
+                typeNumberMap:{},
+                planFindFormStatus:[],
+                planFindForm: {
+                    workOrderNo: '',
+                    productCode: '',
+                    status:[],
+                    page: 0,
+                    size:10,
+                    sort:"createTime,desc"
+                },
+                currentPage:1,
+                planData: {content:[],totalElements:0},
+
+            }
+        },
+        mounted() {
+            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+                moment(new Date).format("YYYY-MM-DD 23:59:59")];
+            this.loadGroups();
+            this.loadTypeNumberMap();
+            this.planTableQuery();
+        },
+        watch:{
+            'form.group':function () {
+                let gs = this.groups.filter((item) => {
+                    return item.group == this.form.group
+                });
+                if(gs&&gs[0]){
+                    let g= gs[0];
+                    this.form.member=g.member1+","+g.member2+","+g.member3;
+                }
+            },
+
+            planFindFormStatus:function () {
+                if(this.planFindFormStatus.length>0){
+                    this.planFindForm.status=this.planFindFormStatus.join(",");
+                }else{
+                    this.planFindForm.status=[];
+                }
+            },
+            // 'planData.content': {
+            //     handler: function(newVal) {
+            //         // console.log(newVal);
+            //        newVal.map((row) =>{
+            //            let gs = this.groups.filter((item) => {
+            //                return item.group == row.group
+            //            });
+            //             if(gs&&gs[0]){
+            //                 let g= gs[0];
+            //                 row.member=g.member1+","+g.member2+","+g.member3;
+            //             }
+            //         });
+            //         setTimeout(() => {
+            //             this.saveUpdatePlan(this.planData.content);
+            //         }, 1000);
+            //     },
+            //     deep: true,
+            // }
+        },
+        methods: {
+            formatterDate: function (row, column) {
+                if(row.dueDate){
+                    var strs = row.dueDate.split("T")
+                    return strs.length > 0 ? strs[0] : "";
+                }else{
+                    return row.dueDate;
+                }
+            },
+            formatterStatus: function (row, column) {
+                return this.planStatus[row.status + ""];
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.planFindForm.page = val-1;
+                this.planTableQuery();
+                console.log(`当前页: ${val}`);
+            },
+
+            planDataTableRowClassName: function ({row, rowIndex}) {
+                if (row.status === "2") {
+                    return 'success-row';
+                }
+                return '';
+            },
+
+            handleTabsClick:function(event){
+                window.location.href = "/"+event.name
+            },
+            //加载组员分组
+            loadGroups: function () {
+                axios.get('/baseTailoringDistributions', {}).then((response) => {
+                    // console.log(response);
+                    this.groups = response.data.data;
+            }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //加载版型
+            loadTypeNumberMap: function () {
+                axios.get('/api/baseFabricUsage/mapTypeNumberByfabricCode', {}).then((response) => {
+                    // console.log(response);
+                    this.typeNumberMap = response.data.data;
+            }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //查询计划
+            planTableQuery: function () {
+                this.planFindForm.startTime= this.startEndDate[0];
+                this.planFindForm.endTime= this.startEndDate[1];
+                axios.get('/tailoringPlans/list', {
+                    params:this.planFindForm
+                }).then((response) => {
+                    this.planData = response.data.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            updatetNotFinishedPlan: function () {
+                axios.get('/tailoringPlans/updatetNotFinishedPlan', {}).then((response) => {
+                    // console.log(response);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            openPlan: function () {
+                this.multipleSelection = this.$refs.planTable.selection;
+                for (let i = 0; i < this.multipleSelection.length; i++) {
+                    this.multipleSelection[i].status = 1;
+                    this.updatePlanStatus(this.multipleSelection[i], 1)
+                }
+            },
+            closePlan: function () {
+                this.multipleSelection = this.$refs.planTable.selection;
+                for (let i = 0; i < this.multipleSelection.length; i++) {
+                    this.multipleSelection[i].status = 2;
+                    this.updatePlanStatus(this.multipleSelection[i], 2)
+                }
+            },
+            saveUpdatePlan: function () {
+                axios.post('/tailoringPlans/insertOrUpdate', this.$refs.planTable.selection).then((response) => {
+                    this.$message({
+                        message: '保存成功！',
+                        type: 'success'
+                    });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            updatePlanStatus: function (row, status, index) {
+                axios.post('/tailoringPlans/updatePlanStatus',{
+                    id: row.id, status: status
+                }).then((response) => {
+                    if(status == -1){
+                        this.planData.content.splice(index, 1);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+        }
+    })
+</script>
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+</style>
+</html>

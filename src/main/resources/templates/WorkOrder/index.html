@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabsClick">
+            <el-tab-pane label="查询工单" name="WorkOrder">
+                <div class="block">
+
+                    <el-date-picker
+                            v-model="startEndDate"
+                            type="daterange"
+                            align="right"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :default-time="['00:00:00', '23:59:59']"
+
+                            unlink-panels
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                    </el-date-picker>
+                    <el-button @click="queryWorkOrders" type="primary">查询</el-button>
+                    <el-button @click="addOrders()" type="primary">添加</el-button>
+                </div>
+                <el-container>
+                <el-table ref="workOrderTable"
+                          :data="orderData.content"
+                          :row-class-name="tableRowClassName">
+                    <el-table-column type="selection">
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="workOrderNo"
+                            sortable
+                            label="加工单号" >
+                    </el-table-column>
+                    <el-table-column
+                            prop="productLineNo"
+                            label="产品行号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productCode"
+                            label="产品编码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="workOrderQuantity"
+                            sortable
+                            label="工单数量" width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="boxQuantity"
+                            sortable
+                            label="装箱数量" width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="bindingQuantity"
+                            label="扎单数量" width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="description"
+                            label="描述" >
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="dueDate"
+                            sortable
+                            :formatter="formatterDate"
+                            label="出货日期" >
+                    </el-table-column>
+
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="100"
+                    >
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click.native.prevent="addOrder(scope.row)"
+                                    type="text"
+                                    size="small">
+                                添加
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                </el-container>
+                <div class="block">
+                    <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="orderHandleCurrentChange"
+                            :current-page.sync="currentPage"
+                            :page-size="orderFindForm.size"
+                            layout="total, prev, pager, next"
+                            :total="orderData.totalElements">
+                    </el-pagination>
+                </div>
+            </el-tab-pane>
+
+            <el-tab-pane :label="tailoringPlanLabel" name="tailoringPlans"  >
+            </el-tab-pane>
+
+        </el-tabs>
+
+</div>
+</body>
+<script src="downloads/moment.min.js"></script>
+<!-- import Vue before Element -->
+<script src="vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeName:"WorkOrder",
+                orderData: {content:[],totalElements:0},
+
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                startEndDate:  [],
+
+                formLabelWidth: '120px',
+                multipleSelection: [],
+                planStatus: {"-1": "已删除", "1": "未完成", "2": "已完成",},
+
+                tailoringPlanLabel:"裁剪计划",
+                newPlanCount:0,
+                orderFindForm: {
+                    startTime: '',
+                    endTime: '',
+                    page: 0,
+                    size:10,
+                    sort:"dueDate,desc"
+                },
+                currentPage:1,
+
+            }
+        },
+        mounted() {
+            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+                moment(new Date).format("YYYY-MM-DD 23:59:59")];
+            this.queryWorkOrders();
+        },
+        watch:{
+            'form.group':function () {
+                let gs = this.groups.filter((item) => {
+                    return item.group == this.form.group
+                });
+                if(gs&&gs[0]){
+                    let g= gs[0];
+                    this.form.member=g.member1+","+g.member2+","+g.member3;
+                }
+            },
+            newPlanCount:function () {
+                if(this.newPlanCount>0){
+                    this.tailoringPlanLabel="裁剪计划 ("+this.newPlanCount+")";
+                }
+            },
+
+        },
+        methods: {
+            formatterDate: function (row, column) {
+                if(row.dueDate){
+                    var strs = row.dueDate.split("T")
+                    return strs.length > 0 ? strs[0] : "";
+                }else{
+                    return row.dueDate;
+                }
+            },
+            formatterStatus: function (row, column) {
+                return this.planStatus[row.status + ""];
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            orderHandleCurrentChange(val) {
+                this.orderFindForm.page = val-1;
+                this.queryWorkOrders();
+                console.log(`当前页: ${val}`);
+            },
+            tableRowClassName: function ({row, rowIndex}) {
+                if (rowIndex%2 === 1) {
+                    return 'warning-row';
+                }
+                return '';
+            },
+            queryWorkOrders: function () {
+
+                this.orderFindForm.startTime=this.startEndDate[0];
+                this.orderFindForm.endTime=this.startEndDate[1];
+                axios.get('/workOrders/list', {
+                    params: this.orderFindForm
+                }).then((response) => {
+                    this.orderData = response.data.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            addOrders: function () {
+                // this.$refs.workOrderTable.selection;
+                axios.post('/tailoringPlans/insertByWorkOrder', this.$refs.workOrderTable.selection).then((response) => {
+                    this.$message({
+                        message: '裁剪计划添加成功！',
+                        type: 'success'
+                    });
+                    this.newPlanCount+=this.$refs.workOrderTable.selection.length;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            addOrder: function (order) {
+                axios.post('/tailoringPlans/insertByWorkOrder', [order]).then((response) => {
+                    // console.log(response);
+                    this.newPlanCount++;
+                    this.$message({
+                        message: '裁剪计划添加成功！',
+                        type: 'success'
+                    });
+                }).catch(function (error)    {
+                    console.log(error);
+                });
+            },
+            handleTabsClick:function(event){
+                window.location.href = "/"+event.name
+            },
+        }
+    })
+</script>
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+</style>
+</html>

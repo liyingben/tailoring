@@ -1,0 +1,2 @@
+加工单号就用 ： forder , 产品行号 用 [Line No] , 装箱数量用： fBox 
+工单号 ： Varchar（30） , 产品行号：INT， 装箱数量： INT

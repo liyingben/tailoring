@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabsClick">
+
+            <el-tab-pane label="裁剪" name="TailoringDetail"  >
+                <div class="block">
+                    <el-date-picker
+                            v-model="startEndDate"
+                            type="daterange"
+                            align="right"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :default-time="['00:00:00', '23:59:59']"
+
+                            unlink-panels
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                    </el-date-picker>
+                    <el-button @click="queryTailoringDetail" type="primary">查询</el-button>
+                </div>
+
+                <el-table ref="tailoringDetailTable"
+                          :data="tailoringDetailData"
+                          stripe
+                          style="width: 100%">
+
+                    <el-table-column
+                            prop="tailoringId"
+                            label="裁剪ID">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tailoringPlanId"
+                            label="裁剪计划ID">
+                    </el-table-column>
+                    <el-table-column
+                            prop="workOrderNo"
+                            label="工单号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="typeGroup"
+                            label="版型分组">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productLineNo"
+                            sortable
+                            label="产品行号"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productCode"
+                            label="产品编码"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="productQuantity"
+                            label="成品数量">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fabricCode"
+                            label="布料编码"
+                            width="200">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sum_length"
+                            sortable
+                            label="总长度（米）"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="theoryLength"
+                            label="理论长度（米）">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sumLength"
+                            label="拉布长度（米）">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spreadingCount"
+                            label="拉布次数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="floor"
+                            label="层数（层高）">
+                    </el-table-column>
+                    <el-table-column
+                            prop="quantity"
+                            label="件数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="bindingQuantity"
+                            label="扎单数量">
+                    </el-table-column>
+                    <el-table-column
+                            prop="changePiecesQuantity"
+                            label="换片数量">
+                    </el-table-column>
+                    <el-table-column
+                            sortable
+                            prop="createTime"
+                            label="创建时间">
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="120">
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click.native.prevent="openTailoringExamine(scope.row)"
+                                    type="text"
+                                    size="small">详情
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+
+            <el-tab-pane label="布料使用记录"  name="TailoringFabricRecord" >
+
+            </el-tab-pane>
+
+            <el-tab-pane label="裁剪布头"  name="TailoringFabricLeft"  >
+
+            </el-tab-pane>
+
+            <el-tab-pane label="车间主任审核"  name="TailoringExamine"  >
+
+            </el-tab-pane>
+
+            <el-tab-pane label="布料消耗"  name="TailoringFabricConsume"  >
+
+            </el-tab-pane>
+
+            <el-tab-pane label="冲销记录"  name="TailoringRecoveryRecord"  >
+
+            </el-tab-pane>
+        </el-tabs>
+
+</div>
+</body>
+<script src="http://momentjs.cn/downloads/moment.min.js"></script>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeName:"TailoringDetail",
+                tailoringDetailData: [],
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                startEndDate:  [],
+
+                formLabelWidth: '120px',
+                multipleSelection: [],
+                planStatus: {"-1": "已删除", "1": "正常", "2": "已关闭",},
+                groups:[]
+            }
+        },
+        mounted() {
+            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+                moment(new Date).format("YYYY-MM-DD 23:59:59")];
+            this.queryTailoringDetail();
+        },
+        methods: {
+            formatterDate: function (row, column) {
+                var strs = row.dueDate.split("T")
+                return strs.length > 0 ? strs[0] : "";
+            },
+            handleTabsClick:function(event){
+                window.location.href = "/"+event.name
+            },
+            queryTailoringDetail: function () {
+                axios.get('/tailoring/selectByDate', {
+                    params: {
+                        startTime: this.startEndDate[0],
+                        endTime: this.startEndDate[1]
+                    }
+                }).then((response) => {
+                    this.tailoringDetailData = response.data.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            openTailoringExamine: function (row) {
+                window.location.href = "/TailoringExamine/examine?id="+row.id
+            },
+        }
+    })
+</script>
+</html>

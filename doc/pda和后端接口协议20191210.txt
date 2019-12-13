@@ -1,0 +1,68 @@
+
+扫描保存接口协议
+
+{
+//裁剪布料
+  "fabrics": [
+    {	  
+	  theoryLength:100,//int  fTheoryWidth="";//理论长度      theoryLength
+      theoryFabricWidth:100,// int fTheoryFabricWidth;//理论幅宽   theoryFabricWidth
+      actualFabricWidth:12,// int  fActualFabricWidth:12,//int 实际幅宽  
+      lotNumber:12,//int fLotNumber:12,//布批号             
+      reelNumber: 12, //int fReelNumber;//卷号              reelNumber
+      fabricCode:"",//String fFabricCode:;//布料编码          fabricCode
+    }
+  ],
+  //层数（层高）
+  "floor": 0, 
+  //件数  
+  "quantity": 0,
+  //拉布次数
+  "spreadingCount": 0,
+  //裁剪ID
+  "tailoringId": 1,
+  //裁剪计划
+  "tailoringPlans": [
+    {
+      "bindingQuantity": 0,
+      "boxQuantity": 0,
+      "changePiecesQuantity": 0,
+      "createTime": "yyyy-MM-dd HH:mm",
+      "dueDate": "yyyy-MM-dd HH:mm",
+      "fabricCode": "string",
+      "fabricColour": "string",
+      "fabricWidth": 0,
+      "group": "string",
+      "id": 0,
+      "length": 1,
+      "mainSupplement": "string",
+      "member": "string",
+      "productCode": "string",
+      "productLineNo": 0,
+      "quantity": 1,
+      "status": "string",
+      "typeGroup": "1",
+      "typeNumber": "string",
+      "updateTime": "yyyy-MM-dd HH:mm",
+      "workOrderNo": "string",
+	  quantity:100, //int fPcsQty="";//件数
+      floor:12,     //int fFloorQty="";//层高  floor
+      typeGroup:"", //String fTypeGroup="";//版形 这三个是裁剪计划PDA手输的  typeGroup
+    }
+  ]
+}
+
+
+删除，保存到布头表接口协议
+
+[
+    {	  
+	  theoryLength:100,//int  fTheoryWidth="";//理论长度      theoryLength
+      theoryFabricWidth:100,// int fTheoryFabricWidth;//理论幅宽   theoryFabricWidth
+      actualFabricWidth:12,//int fActualFabricWidth:12,//int 实际幅宽  
+      lotNumber:12,//int fLotNumber:12,//布批号             
+      reelNumber: 12, //int fReelNumber;//卷号              reelNumber
+      fabricCode:"",//String fFabricCode:;//布料编码          fabricCode
+    }
+  ]
+

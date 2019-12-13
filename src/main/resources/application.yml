@@ -1,0 +1,29 @@
+server:
+  port: 8182
+
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://39.98.239.104:1433;DatabaseName=XIANAV2
+    username: sa
+    password: Pass@Word1
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: false
+    open-in-view: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: false
+
+logging:
+  level:
+    com.tailoring: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
