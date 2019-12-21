@@ -6,12 +6,14 @@ import com.tailoring.yewu.common.StatusEnum;
 import com.tailoring.yewu.entity.dto.WorkOrderDto;
 import com.tailoring.yewu.entity.po.*;
 import com.tailoring.yewu.repository.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,10 @@ public class TailoringPlanService {
 
     @Autowired
     private WorkOrderStatusDao workOrderStatusDao;
+
+    @Autowired
+    private TailoringOrderDao tailoringOrderDao;
+
     @Autowired
     private WorkOrderDao workOrderDao;
 
@@ -38,10 +44,33 @@ public class TailoringPlanService {
         pos.forEach(w -> {
             //只可以修改未完成订单
             if(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString().equals(w.getStatus())) {
-                tailoringPlanDao.save(w);
+                double quantityTotal =0;
+                try {
+                    quantityTotal = tailoringPlanDao.findQuantitySumByorder(w.getWorkOrderNo(), w.getProductCode());
+                }catch (Exception e){
+                    //没有计划
+                }
+                WorkOrderPo workOrderPo = workOrderDao.findByWorkOrderNoEqualsAndProductCode(w.getWorkOrderNo(), w.getProductCode());
+                if (workOrderPo.getWorkOrderQuantity() >= quantityTotal) {
+
+//                    BaseFabricUsagePo baseFabricUsage = baseFabricUsageDao.findByProductCodeEquals(w.getProductCode());
+//                    if (baseFabricUsage != null) {
+//                        double changeRate =  Double.parseDouble(baseFabricUsage.getChangeRate());
+//                        w.setChangePiecesQuantity((int) (changeRate * w.getQuantity()));
+//        //                po.setMaxQuantity(baseFabricUsage.getMaxFloorHeight());
+//                    }
+
+                    tailoringPlanDao.save(w);
+                }
+
+            }
+        });
+
+        pos.forEach(w -> {
+            //只可以修改未完成订单
+            if(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString().equals(w.getStatus())) {
                 try {
                     updatePlanStatus(w.getWorkOrderNo(), w.getProductCode());
-
                     updateOrderStatus(w.getWorkOrderNo(), w.getProductCode());
                 }catch (Exception e){
                     e.printStackTrace();
@@ -56,13 +85,16 @@ public class TailoringPlanService {
      * @param pos
      * @return
      */
-    public List<TailoringPlanPo> insertByWorkOrder(List<WorkOrderDto> pos) {
+    public List<TailoringPlanPo> createPlan(List<WorkOrderDto> pos) {
 
         List<TailoringPlanPo> list = new ArrayList<>();
         for (WorkOrderDto w : pos) {
-
-            List<TailoringPlanPo> tailoringPlanDaos = tailoringPlanDao.findByWorkOrderNoEqualsAndProductCodeEquals(w.getWorkOrderNo(),w.getProductCode());
-            double quantityTotal = tailoringPlanDaos.size() > 0 ? tailoringPlanDaos.stream().mapToDouble(TailoringPlanPo::getQuantity).sum() : 0;
+            double quantityTotal =0;
+            try {
+                quantityTotal = tailoringPlanDao.findQuantitySumByorder(w.getWorkOrderNo(), w.getProductCode());
+            }catch (Exception e){
+                //没有计划
+            }
 
             if (w.getWorkOrderQuantity() <= quantityTotal) {
                 continue;
@@ -77,26 +109,32 @@ public class TailoringPlanService {
             po.setProductCode(w.getProductCode());
             po.setProductLineNo(Integer.valueOf(w.getProductLineNo()));
             po.setChangePiecesQuantity((int)(po.getQuantity()*0.01));
+            po.setMaxQuantity(po.getQuantity());
+
+            po.setWorkChangePiecesQuantity(0);
 //            po.setMainSupplement("主");
 
             BaseFabricUsagePo baseFabricUsage = baseFabricUsageDao.findByProductCodeEquals(w.getProductCode());
             if (baseFabricUsage != null) {
-//                po.setTypeNumber(baseFabricUsage.getTypeNumber());
+                po.setTypeNumber(baseFabricUsage.getTypeNumber());
                 po.setFabricCode(baseFabricUsage.getFabricCode());
                 po.setFabricWidth(baseFabricUsage.getFabricWidth());
                 double changeRate =  Double.parseDouble(baseFabricUsage.getChangeRate());
                  po.setChangePiecesQuantity((int) (changeRate * po.getQuantity()));
+//                po.setMaxQuantity(baseFabricUsage.getMaxFloorHeight());
             }
-
+            po.setMaxChangePiecesQuantity(po.getChangePiecesQuantity());
             BaseHpwPo baseHpw = baseHpwDao.findByProductCodeEquals(w.getProductCode());
             if (baseHpw != null) {
                 po.setFabricColour(baseHpw.getColour());
             }
 
-            po.setStatus("1");//正常
+            po.setStatus(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString());//正常
 
             tailoringPlanDao.save(po);
 
+            //创建裁剪订单
+            createTailoringOrder(w,po);
 
             updateOrderStatus(w.getWorkOrderNo(),w.getProductCode());
             updatePlanStatus(w.getWorkOrderNo(),w.getProductCode());
@@ -120,12 +158,13 @@ public class TailoringPlanService {
             po = new WorkOrderStatusPo();
             po.setWorkOrderNo(workOrderNo);
             po.setProductCode(productCode);
+            po.setWorkOrderQuantity(workOrderPo.getWorkOrderQuantity());
         }
         po.setMaxQuantity((int)(workOrderPo.getWorkOrderQuantity()-quantitySum));
         if(po.getMaxQuantity()>0) {
-            po.setStatus(StatusEnum.TAILORING_ORDERSTATUS_START.getCode().toString());
+            po.setStatus(StatusEnum.TAILORING_ORDER_STATUS_START.getCode().toString());
         }else {
-            po.setStatus(StatusEnum.TAILORING_ORDERSTATUS_OVER.getCode().toString());
+            po.setStatus(StatusEnum.TAILORING_ORDER_STATUS_OVER.getCode().toString());
         }
         workOrderStatusDao.save(po);
     }
@@ -139,9 +178,9 @@ public class TailoringPlanService {
         WorkOrderPo workOrderPo = workOrderDao.findByWorkOrderNoEqualsAndProductCode(workOrderNo,productCode);
         List<TailoringPlanPo> planPos = tailoringPlanDao.findByWorkOrderNoEqualsAndProductCodeEquals(workOrderNo, productCode);
         //订单裁剪计划的裁剪数量求和
-        int sumQuantity = planPos.stream().mapToInt(TailoringPlanPo::getQuantity).sum();
+        int sumQuantity = tailoringPlanDao.findQuantitySumByorder(workOrderNo,productCode);
         //订单裁剪计划的换片率求和
-        int sumChangePiecesQuantity = planPos.stream().mapToInt(TailoringPlanPo::getChangePiecesQuantity).sum();
+        int sumChangePiecesQuantity = tailoringPlanDao.findChangePiecesQuantitySumByorder(workOrderNo,productCode);;
 
         planPos.forEach(p -> {
             //最大可裁剪数量
@@ -150,7 +189,6 @@ public class TailoringPlanService {
             p.setMaxChangePiecesQuantity(Double.valueOf(workOrderPo.getWorkOrderQuantity()*0.01+p.getChangePiecesQuantity()-sumChangePiecesQuantity).intValue());
             tailoringPlanDao.save(p);
         });
-
     }
 
     /**
@@ -162,12 +200,31 @@ public class TailoringPlanService {
      */
     public long updatePlanStatus(Long id, String status) {
         TailoringPlanPo po = tailoringPlanDao.getOne(id);
-        po.setStatus(status);
-        tailoringPlanDao.save(po);
+        if(StatusEnum.TAILORING_DETAIL_STATUS_DEFAULT.getCode().toString().equals(po.getStatus())){
+            po.setStatus(status);
+            tailoringPlanDao.save(po);
+        }
         return po.getId();
     }
 
 
+
+    public long createTailoringOrder(WorkOrderPo workOrderPo,TailoringPlanPo planPo) {
+        TailoringOrderPo po = new TailoringOrderPo();
+        try {
+            BeanUtils.copyProperties(po, workOrderPo);
+            BeanUtils.copyProperties(po, planPo);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        po.setId(null);
+        po.setWorkQuantity(0);
+
+        tailoringOrderDao.save(po);
+        return po.getId();
+    }
     public Page<TailoringPlanPo> select(String startTime, String endTime, String workOrderNo, String productCode, String[] status, Pageable pageable) {
         Page<TailoringPlanPo> result = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -191,9 +248,6 @@ public class TailoringPlanService {
         return result;
     }
 
-    public List<TailoringPlanPo> select(TailoringPlanPo query) {
-        return tailoringPlanDao.findAll();
-    }
     public List<String> fabricCodes(String status) {
         List fcs = tailoringPlanDao.findByStatusEquals(status).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
         if(!fcs.contains(ConstantType.FABRIC_CODE_ALL.getDesc())){
@@ -226,7 +280,17 @@ public class TailoringPlanService {
 
         return result;
     }
-
+    /**
+     * 根据布料编码查询裁剪计划
+     *
+     * @param fabricCode
+     * @param status
+     * @return
+     */
+    public List<TailoringPlanPo> findByFabricCodeEqualsAndStatus(String fabricCode, List<String> status) {
+        List<TailoringPlanPo> result = tailoringPlanDao.findByFabricCodeEqualsAndStatusIn(fabricCode, status);
+        return result;
+    }
     /**
      * 根据id 查询裁剪计划
      *

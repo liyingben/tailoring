@@ -1,6 +1,8 @@
 package com.tailoring.yewu.aspectj;
 
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -53,11 +55,23 @@ public class AopLog {
 		HttpServletRequest request = Objects.requireNonNull(attributes).getRequest();
 
 		log.info("【请求 URL】：{}", request.getRequestURL());
-		log.info("【请求 IP】：{}", request.getRemoteAddr());
+		log.info("【请求 IP】：{} 【请求方法】：{}", request.getRemoteAddr(),request.getMethod());
 		log.info("【请求类名】：{}，【请求方法名】：{}", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
 
 		Map<String, String[]> parameterMap = request.getParameterMap();
-		log.info("【请求参数】：{}，", JSONUtil.toJsonStr(parameterMap));
+
+		//对象转化为Json
+//		String json = null;
+//		log.info("【请求参数 get】：{}，", JSONUtil.toJsonStr(parameterMap));
+//		log.info("【请求参数 post】：{}，", JSONUtil.toJsonStr(point.getArgs()));
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			log.info("【请求参数 get】：{}，", mapper.writeValueAsString(parameterMap));
+			log.info("【请求参数 post】：{}，", mapper.writeValueAsString(point.getArgs()));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
 		Long start = System.currentTimeMillis();
 		request.setAttribute(START_TIME, start);
 	}
@@ -72,7 +86,13 @@ public class AopLog {
 	@Around("log()")
 	public Object aroundLog(ProceedingJoinPoint point) throws Throwable {
 		Object result = point.proceed();
-		log.info("【返回值】：{}", JSONUtil.toJsonStr(result));
+//		log.info("【返回值】：{}", JSONUtil.toJsonStr(result));
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			log.info("【返回值】：{}",mapper.writeValueAsString(result));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 

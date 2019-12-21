@@ -32,4 +32,7 @@ public interface TailoringTaskDao extends JpaRepository<TailoringTaskPo, Long> {
     List<TailoringTaskPo> findByCreateTimeBetween(Date startTime, Date endTime);
 
 
+    List<TailoringTaskPo> findByStatusEquals(String status);
+
+
 }

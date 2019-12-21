@@ -32,6 +32,12 @@ public interface TailoringFabricLeftDao extends JpaRepository<TailoringFabricLef
      */
     List<TailoringFabricLeftPo> findByCreateTimeBetween(Date startTime, Date endTime);
 
-    @Query(value="SELECT theory_length FROM tailoring_fabric_left where reel_number=?1 ", nativeQuery=true)
+    @Query(value="SELECT theory_length FROM tailoring_fabric_left where reel_number=?1 and type='1' ", nativeQuery=true)
     Double getTheoryLength(String reelNumber);
+
+
+
+    TailoringFabricLeftPo findByReelNumberEquals(String reelNumber);
+    List<TailoringFabricLeftPo> findByUuid(String uuid);
+    List<TailoringFabricLeftPo> findByUuidEqualsAndTypeEquals(String uuid,String type);
 }

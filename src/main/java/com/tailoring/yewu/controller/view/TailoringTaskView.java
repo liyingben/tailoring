@@ -1,6 +1,5 @@
 package com.tailoring.yewu.controller.view;
 
-import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2019-10-31 16:43:28
  */
 @Controller
-@RequestMapping("/TailoringExamine")
-public class TailoringExamineView {
+@RequestMapping("/TailoringTask")
+public class TailoringTaskView {
 
     @GetMapping
     public String index() {
-        return "TailoringExamine/index";
+        return "TailoringTask/index";
     }
     @GetMapping("/examine")
     public String examine() {
-        return "TailoringExamine/examine";
+        return "TailoringTask/examineTask";
     }
 }

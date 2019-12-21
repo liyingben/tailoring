@@ -2,6 +2,7 @@ package com.tailoring.yewu.repository;
 
 import com.tailoring.yewu.entity.po.TailoringFabricRecordPo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -30,4 +31,16 @@ public interface TailoringFabricRecordDao extends JpaRepository<TailoringFabricR
      * @return
      */
     List<TailoringFabricRecordPo> findByCreateTimeBetween(Date startTime, Date endTime);
+    List<TailoringFabricRecordPo> findByTaskIdEqualsAndSpreadingIdEquals(Long taskId,Long spreadingId);
+    List<TailoringFabricRecordPo> findByTaskIdEquals(Long taskId);
+
+    TailoringFabricRecordPo findBySpreadingIdEqualsAndReelNumberEquals(Long spreadingId,String reelNumber);
+
+
+    @Query(value="SELECT theory_length FROM tailoring_fabric_record where id = (SELECT max(id) FROM tailoring_fabric_record where reel_number=?1 ) ", nativeQuery=true)
+    Double getTheoryLength(String reelNumber);
+
+
+    @Query(value="SELECT max(actual_length) FROM tailoring_fabric_record  where reel_number=?1  ", nativeQuery=true)
+    Double getActualLength(String reelNumber);
 }

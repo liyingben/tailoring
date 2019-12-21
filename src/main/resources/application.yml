@@ -9,10 +9,13 @@ spring:
     password: Pass@Word1
   jpa:
     show-sql: true
+    open-in-view: false
     hibernate:
       ddl-auto: update
       use-new-id-generator-mappings: false
-    open-in-view: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -26,4 +29,7 @@ logging:
   level:
     com.tailoring: debug
     org.hibernate.SQL: debug
-    org.hibernate.type: trace
+#    org.hibernate.type: trace
+
+custom:
+  flag: true

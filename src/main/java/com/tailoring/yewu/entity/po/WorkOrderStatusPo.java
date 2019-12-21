@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tailoring.yewu.entity.base.AbstractAuditModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Data
 @Entity

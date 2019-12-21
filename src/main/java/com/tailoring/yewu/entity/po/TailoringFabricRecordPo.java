@@ -21,13 +21,13 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
      * 任务ID: task_id
      */
     @Column(name = "task_id")
-    private Integer taskId;
+    private Long taskId;
 
     /**
-     * 裁剪明细ID: tailoring_detail_id
+     * 拉布ID: spreading_id
      */
-    @Column(name = "tailoring_detail_id")
-    private Integer tailoringDetailId;
+    @Column(name = "spreading_id")
+    private Long spreadingId;
 
     /**
      * NO: sort_no
@@ -49,30 +49,11 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     @ApiModelProperty(value="组员",example="郑德敏,陈善云,",required = true)
     private String member;
 
-
     /**
      * 布料编码: fabric_code
      */
     @Column(name = "fabric_code")
     private String fabricCode;
-    /**
-     * 版型分组: type_group
-     */
-    @Column(name = "type_group")
-    private String typeGroup;
-    /**
-     * 工单号: work_order_no
-     */
-    @ApiModelProperty(value="工单号",example="4A-9253",required = true)
-    @Column(name = "work_order_no")
-    private String workOrderNo;
-
-    /**
-     * 产品行号: product_line_no
-     */
-    @ApiModelProperty(value="产品行号",example="30000",required = true)
-    @Column(name = "product_line_no")
-    private Integer productLineNo;
 
     /**
      * 产品编码: product_code
@@ -81,24 +62,11 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     @Column(name = "product_code")
     private String productCode;
 
-
     /**
-     * 扎单数量: binding_quantity
+     * 单次拉布长度: quantity
      */
-    @ApiModelProperty(value="扎单数量",example="12",required = true)
-    @Column(name = "binding_quantity")
-    private Integer bindingQuantity;
-
-    /**
-     * 成品数量: product_quantity
-     */
-    @Column(name = "product_quantity")
-    private Integer productQuantity;
-    /**
-     * 排版件数: pieces_number
-     */
-    @Column(name = "pieces_number")
-    private Integer piecesNumber;
+    @Column(name = "quantity")
+    private Integer quantity;
 
     /**
      * 总长度（米）: sum_length
@@ -125,10 +93,10 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     private Double theoryLength;
 
     /**
-     * 理论幅宽（米）: theory_fabric_width
+     * 实际长度: actual_length
      */
-    @Column(name = "theory_fabric_width")
-    private Double theoryFabricWidth;
+    @Column(name = "actual_length")
+    private Double actualLength;
 
     /**
      * 拉布长度（米）: spreading_length
@@ -146,6 +114,13 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
      */
     @Column(name = "actual_fabric_width")
     private Double actualFabricWidth;
+
+    /**
+     * 理论幅宽（米）: theory_fabric_width
+     */
+    @Column(name = "theory_fabric_width")
+    private Double theoryFabricWidth;
+
     /**
      * 拉布次数: spreading_count
      */
@@ -159,7 +134,6 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     @Column(name = "change_pieces_quantity")
     private Integer changePiecesQuantity;
 
-
     /**
      * 剩余长度（米）: left_length
      */
@@ -172,6 +146,8 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     @Column(name = "due_date")
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date dueDate;
+
+
 
 }
 

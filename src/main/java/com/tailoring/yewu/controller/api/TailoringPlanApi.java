@@ -2,14 +2,12 @@ package com.tailoring.yewu.controller.api;
 
 
 import com.tailoring.yewu.common.ActionResult;
-import com.tailoring.yewu.common.ConstantType;
+import com.tailoring.yewu.common.ResultType;
 import com.tailoring.yewu.common.StatusEnum;
 import com.tailoring.yewu.entity.dto.TailoringPlanStatusDto;
 import com.tailoring.yewu.entity.dto.WorkOrderDto;
-import com.tailoring.yewu.entity.po.TailoringDetailPo;
 import com.tailoring.yewu.entity.po.TailoringPlanPo;
 import com.tailoring.yewu.entity.vo.TailoringPlanVo;
-import com.tailoring.yewu.service.TailoringDetailService;
 import com.tailoring.yewu.service.TailoringPlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,26 +37,25 @@ public class TailoringPlanApi {
     @Autowired
     private TailoringPlanService tailoringPlanService;
 
-    @Autowired
-    private TailoringDetailService tailoringDetailService;
-
 
     @ResponseBody
     @RequestMapping(value = "/insertByWorkOrder", method = RequestMethod.POST)
     @ApiOperation(value="根据工单创建计划",notes="")
     public ActionResult insertByWorkOrder(@RequestBody List<WorkOrderDto> pos) {
 
-        List<TailoringPlanPo> tailoringPlans = tailoringPlanService.insertByWorkOrder(pos);
-
-        return new ActionResult<>(tailoringPlans);
-
+        List<TailoringPlanPo> tailoringPlans = tailoringPlanService.createPlan(pos);
+        if (tailoringPlans.size() > 0) {
+            return new ActionResult<>(tailoringPlans);
+        } else {
+            return new ActionResult(ResultType.DATA_PLAN_FULL_SHARE);
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
     @ApiOperation(value="添加或更新裁剪计划 PC",notes="修改选中行的信息，如果修改对应的计划数量，则需要判断新的计划数量大于等于对应裁剪计划已裁剪的数量之和，提示生产管理人员已裁剪数量大于计划数量")
-    public ActionResult insertOrUpdate(@RequestBody List<TailoringPlanPo> po) {
-            tailoringPlanService.save(po);
+    public ActionResult insertOrUpdate(@RequestBody List<TailoringPlanPo> pos) {
+            tailoringPlanService.save(pos);
             return new ActionResult();
     }
 
@@ -100,24 +97,31 @@ public class TailoringPlanApi {
     @RequestMapping(value = "/listForPda", method = RequestMethod.GET)
     @ApiOperation(value="裁剪计划列表Pda端",notes="注意问题点")
     public ActionResult<List<TailoringPlanVo>> select(@ApiParam(name="fabricCode",value = "布料编码",defaultValue = "FNA15WHB03") @RequestParam(required = false) String fabricCode,
-                                                      @ApiParam(name="status",value = "裁剪计划状态,-1删除，1未完成，2已完成",defaultValue = "1") @RequestParam(defaultValue = "1") String status) {
+                                                      @ApiParam(name="status",value = "裁剪计划状态,-1, 删除状态1, 正常状态，等待裁剪,2, 开始裁剪,3, 裁剪完成,4, 提交,5, 裁剪完成状态,",defaultValue = "1") String status) {
         SimpleDateFormat sf = new SimpleDateFormat("mm-dd");
-
-        List<TailoringPlanPo> tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode,status);
+        List<TailoringPlanPo> tailoringPlan = new ArrayList<>();
+        //如果没有传状态，先查裁剪没提交，再查询没裁剪的
+        if(status==null) {
+            tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode, "2");
+            if(tailoringPlan.size()==0){
+                tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode, "1");
+            }
+        }else{
+            tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode, status);
+        }
         List<TailoringPlanVo> results = new ArrayList<>();
         tailoringPlan.forEach(p -> {
             TailoringPlanVo vo = new TailoringPlanVo();
             try {
                 BeanUtils.copyProperties(vo, p);
+                vo.setQuantity(p.getMaxQuantity());
+                vo.setChangePiecesQuantity(p.getMaxChangePiecesQuantity());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-
-
             vo.setDueDateStr(sf.format(p.getDueDate()));
-
 
             results.add(vo);
         });
@@ -129,6 +133,11 @@ public class TailoringPlanApi {
     @ApiOperation(value="布料编号列表 PDA",notes="查询裁剪计划中未完成订单和未提交订单所有布料编码列表")
     public ActionResult<List<String>> fabricCodes() {
 
-        return new ActionResult<>(tailoringPlanService.fabricCodes(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString()));
+        List list = tailoringPlanService.fabricCodes(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString());
+        if(list.size()==0){
+            list = tailoringPlanService.fabricCodes(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString());
+        }
+
+        return new ActionResult<>(list);
     }
 }

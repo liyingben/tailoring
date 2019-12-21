@@ -2,6 +2,7 @@ package com.tailoring.yewu.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tailoring.yewu.entity.base.AbstractAuditModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -19,10 +20,17 @@ public class TailoringDetailPo extends AbstractAuditModel {
 
 
     /**
-     * 裁剪ID: tailoring_id
+     * 任务ID: task_id
      */
     @Column(name = "task_id")
     private Long taskId;
+
+    /**
+     * 拉布ID: spreading_id
+     */
+    @Column(name = "spreading_id")
+    private Long spreadingId;
+
     /**
      * 裁剪计划ID: tailoring_plan_id
      */
@@ -53,6 +61,9 @@ public class TailoringDetailPo extends AbstractAuditModel {
     @Column(name = "product_code")
     private String productCode;
 
+    @ApiModelProperty(value="主/辅/补",example="主",required = true)
+    @Column(name = "main_supplement")
+    private String mainSupplement;
     /**
      * 成品数量: product_quantity
      */
@@ -65,23 +76,6 @@ public class TailoringDetailPo extends AbstractAuditModel {
     @Column(name = "fabric_code")
     private String fabricCode;
 
-    /**
-     * 总长度（米）: sum_length
-     */
-    @Column(name = "sum_length")
-    private Double sumLength;
-
-    /**
-     * 理论长度（米）: theory_length
-     */
-    @Column(name = "theory_length")
-    private Double theoryLength;
-
-    /**
-     * 拉布长度（米）: spreading_length
-     */
-    @Column(name = "spreading_length")
-    private Integer spreadingLength;
 
     /**
      * 拉布次数: spreading_count
@@ -98,6 +92,7 @@ public class TailoringDetailPo extends AbstractAuditModel {
      * 本次裁剪 ， 件数: quantity
      */
     private Integer quantity;
+
     /**
      * 本次换片: change_pieces_quantity
      */
@@ -105,24 +100,22 @@ public class TailoringDetailPo extends AbstractAuditModel {
     private Integer changePiecesQuantity;
 
     /**
-     * 排版件数: pieces_number
+     * 排版件数: type_quantity
      */
-    @Column(name = "pieces_number")
-    private Integer piecesNumber;
+    @Column(name = "type_quantity")
+    private Integer typeQuantity;
 
     /**
-     * 拉布件数: spreading_length
+     * 拉布件数: spreading_quantity
      */
     @Column(name = "spreading_quantity")
     private Integer spreadingQuantity;
-
 
     /**
      * 扎单数量: binding_quantity
      */
     @Column(name = "binding_quantity")
     private Integer bindingQuantity;
-
 
     /**
      * 剩余数量: left_quantity

@@ -84,7 +84,7 @@ public class BaseFabricUsagePo extends AbstractAuditModel {
      * 最大拉布层高: max_floor_height
      */
     @Column(name = "max_floor_height")
-    private String maxFloorHeight;
+    private Integer maxFloorHeight;
 
     /**
      * 换片率: change_rate

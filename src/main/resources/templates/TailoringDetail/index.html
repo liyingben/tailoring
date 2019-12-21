@@ -33,27 +33,10 @@
                           stripe
                           style="width: 100%">
 
-                    <el-table-column
-                            prop="tailoringId"
-                            label="裁剪ID">
-                    </el-table-column>
-                    <el-table-column
-                            prop="tailoringPlanId"
-                            label="裁剪计划ID">
-                    </el-table-column>
+
                     <el-table-column
                             prop="workOrderNo"
                             label="工单号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="typeGroup"
-                            label="版型分组">
-                    </el-table-column>
-                    <el-table-column
-                            prop="productLineNo"
-                            sortable
-                            label="产品行号"
-                            width="120">
                     </el-table-column>
                     <el-table-column
                             prop="productCode"
@@ -61,23 +44,47 @@
                             width="150">
                     </el-table-column>
                     <el-table-column
-                            prop="productQuantity"
-                            label="成品数量">
+                            prop="productLineNo"
+                            sortable
+                            label="产品行号"
+                            width="120">
                     </el-table-column>
+
+
                     <el-table-column
                             prop="fabricCode"
                             label="布料编码"
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="sum_length"
-                            sortable
-                            label="总长度（米）"
-                            width="120">
+                            prop="typeGroup"
+                            label="版型分组">
                     </el-table-column>
                     <el-table-column
-                            prop="theoryLength"
-                            label="理论长度（米）">
+                            prop="productQuantity"
+                            label="成品数量">
+                    </el-table-column>
+                    <el-table-column
+                            prop="taskId"
+                            label="任务ID">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tailoringPlanId"
+                            label="裁剪计划ID">
+                    </el-table-column>
+
+
+                    <el-table-column
+                            prop="mainSupplement"
+                            label="主辅补">
+                    </el-table-column>
+                    <el-table-column
+                            prop="quantity"
+                            label="件数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="changePiecesQuantity"
+                            label="换片数量">
                     </el-table-column>
                     <el-table-column
                             prop="sumLength"
@@ -92,17 +99,10 @@
                             label="层数（层高）">
                     </el-table-column>
                     <el-table-column
-                            prop="quantity"
-                            label="件数">
-                    </el-table-column>
-                    <el-table-column
                             prop="bindingQuantity"
                             label="扎单数量">
                     </el-table-column>
-                    <el-table-column
-                            prop="changePiecesQuantity"
-                            label="换片数量">
-                    </el-table-column>
+
                     <el-table-column
                             sortable
                             prop="createTime"
@@ -114,7 +114,7 @@
                             width="120">
                         <template slot-scope="scope">
                             <el-button
-                                    @click.native.prevent="openTailoringExamine(scope.row)"
+                                    @click.native.prevent="openTailoringTask(scope.row)"
                                     type="text"
                                     size="small">详情
                             </el-button>
@@ -131,7 +131,7 @@
 
             </el-tab-pane>
 
-            <el-tab-pane label="车间主任审核"  name="TailoringExamine"  >
+            <el-tab-pane label="任务"  name="TailoringTask"  >
 
             </el-tab-pane>
 
@@ -219,8 +219,8 @@
                     console.log(error);
                 });
             },
-            openTailoringExamine: function (row) {
-                window.location.href = "/TailoringExamine/examine?id="+row.id
+            openTailoringTask: function (row) {
+                window.location.href = "/TailoringTask/examine?id="+row.id
             },
         }
     })

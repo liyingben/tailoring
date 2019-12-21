@@ -70,14 +70,14 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.0" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:2.2.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.27" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.27" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.27" />
-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.2.0.RELEASE" />
-          <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:2.0.1" />
-          <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.0.17.Final" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.2.0.RELEASE" />
+          <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:2.0.1" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.27" />
+          <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.0.17.Final" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.18" />
           <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" />

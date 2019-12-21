@@ -2,7 +2,7 @@ package com.tailoring.yewu.repository;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.tailoring.yewu.SpringBootDemoOrmJpaApplicationTests;
+import com.tailoring.yewu.SpringBootYewuApplicationTests;
 import com.tailoring.yewu.entity.po.TailoringTaskPo;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @modified: yangkai.shen
  */
 @Slf4j
-public class TailoringDaoTest extends SpringBootDemoOrmJpaApplicationTests {
+public class TailoringDaoTest extends SpringBootYewuApplicationTests {
     @Autowired
     private TailoringTaskDao tailoringDao;
 

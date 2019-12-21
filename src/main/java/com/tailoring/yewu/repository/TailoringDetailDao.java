@@ -2,6 +2,7 @@ package com.tailoring.yewu.repository;
 
 import com.tailoring.yewu.entity.po.TailoringDetailPo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -37,5 +38,9 @@ public interface TailoringDetailDao extends JpaRepository<TailoringDetailPo, Lon
 
     List<TailoringDetailPo> findByStatusEquals(String status);
     List<TailoringDetailPo> findByTaskIdEquals(Long taskId);
+
+    List<TailoringDetailPo> findByTaskIdEqualsAndSpreadingIdEquals(Long taskId,Long spreadingId);
+    @Query(value="SELECT min(left_quantity) FROM tailoring_detail where task_id=?1 and product_code=?2", nativeQuery=true)
+    Integer findByTaskIdEqualsAndProductCodeEqualsMinLeft(Long taskId,String ProductCode);
 
 }

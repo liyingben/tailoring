@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tailoring_examine")
+@Table(name = "tailoring_task")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class TailoringTaskPo extends AbstractAuditModel {
 
@@ -84,9 +84,9 @@ public class TailoringTaskPo extends AbstractAuditModel {
     private java.util.Date erpdatum;
 
     /**
-     * 计划状态: status
+     * 任务状态: status
      */
-    @Column(name = "status",columnDefinition = "0")
+    @Column(name = "status")
     private String status;
 
 }

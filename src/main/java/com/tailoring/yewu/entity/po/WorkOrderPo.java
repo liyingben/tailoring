@@ -3,12 +3,18 @@ package com.tailoring.yewu.entity.po;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "v_erp_prod_order")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
@@ -66,9 +72,4 @@ public class WorkOrderPo {
     @Column(name = "fpcs")
     private Double bindingQuantity;
 
-    /**
-     * 工单状态: status
-     */
-    @ApiModelProperty(value="工单状态",example="1",required = true)
-    private String status;
 }

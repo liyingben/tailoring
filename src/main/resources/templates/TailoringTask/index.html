@@ -19,6 +19,10 @@
         </el-tab-pane>
 
         <el-tab-pane label="裁剪布头"  name="TailoringFabricLeft"  >
+
+        </el-tab-pane>
+
+        <el-tab-pane label="任务"  name="TailoringTask"  >
             <div class="block">
                 <el-date-picker
                         v-model="startEndDate"
@@ -33,114 +37,65 @@
                         end-placeholder="结束日期"
                         :picker-options="pickerOptions">
                 </el-date-picker>
-                <el-button @click="queryTailoringFabricLef" type="primary">查询</el-button>
+                <el-button @click="queryTask" type="primary">查询</el-button>
             </div>
 
-            <el-table ref="tailoringFabricLeftTable"
-                      :data="tailoringFabricLeftData"
+            <el-table ref="taskTable"
+                      :data="tailoringTaskData"
                       stripe
-
                       style="width: 100%">
-
-                <el-table-column
-                        prop="type"
-                        label="类型">
-                </el-table-column>
-                <el-table-column
-                        prop="fabricCode"
-                        label="布料编码">
-                </el-table-column>
-                <el-table-column
-                        prop="reelNumber"
-                        label="布料卷号">
-                </el-table-column>
-                <el-table-column
-                        prop="lotNumber"
-                        label="布批号">
-                </el-table-column>
-
-                <el-table-column
-                        prop="theoryLength"
-                        label="理论长度"
-                        width="150">
-                </el-table-column>
-
 
                 <el-table-column
                         prop="group"
                         label="组别">
                 </el-table-column>
-
                 <el-table-column
-                        prop="remark"
-                        label="备注">
+                        prop="member"
+                        label="组员">
+                </el-table-column>
+                <el-table-column
+                        prop="fabricCode"
+                        label="布料编码">
                 </el-table-column>
 
                 <el-table-column
-                        prop="date"
-                        sortable
-                        label="日期"
-                        width="120">
-                </el-table-column>
-                <el-table-column
-                        sortable
-                        prop="createTime"
-                        label="创建时间">
-                </el-table-column>
-            </el-table>
-        </el-tab-pane>
-
-        <el-tab-pane label="车间主任审核"  name="TailoringExamine"  >
-            <div class="block">
-                <el-date-picker
-                        v-model="startEndDate"
-                        type="daterange"
-                        align="right"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :default-time="['00:00:00', '23:59:59']"
-
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        :picker-options="pickerOptions">
-                </el-date-picker>
-                <el-button @click="queryExamine" type="primary">查询</el-button>
-            </div>
-
-            <el-table ref="examineTable"
-                      :data="tailoringExamineData"
-                      stripe
-                      style="width: 100%">
-
-                <el-table-column
-                        prop="tailoringNo"
-                        label="裁剪编号">
+                        prop="typeGroup"
+                        label="版型分组"
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         prop="checkName"
                         label="审核人">
                 </el-table-column>
                 <el-table-column
-                        prop="checkDate"
-                        label="审核时间">
-                </el-table-column>
-
-                <el-table-column
-                        prop="erpflag"
-                        label="回传ERP标记"
-                        width="150">
-                </el-table-column>
-                <el-table-column
-                        prop="erpid"
-                        label="回传ERP">
-                </el-table-column>
-                <el-table-column
-                        prop="erpdatum"
-                        label="回传ERP时间"
+                        prop="check_date"
+                        label="审核时间"
                         width="200">
                 </el-table-column>
 
+                <el-table-column
+                        prop="status"
+                        :formatter="formatterStatus"
+                        label="状态">
+                </el-table-column>
+
+                <el-table-column
+                        sortable
+                        prop="createTime"
+                        label="创建时间">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="120">
+                    <template slot-scope="scope">
+                        <el-button
+                                @click.native.prevent="openTailoringTask(scope.row)"
+                                type="text"
+                                size="small">详情
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-tab-pane>
 
@@ -165,8 +120,8 @@
         el: '#app',
         data: function () {
             return {
-                activeName:"TailoringExamine",
-                tailoringExamineData: [],
+                activeName:"TailoringTask",
+                tailoringTaskData: [],
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -195,38 +150,42 @@
                     }]
                 },
                 startEndDate:  [],
-
                 formLabelWidth: '120px',
                 multipleSelection: [],
-                planStatus: {"-1": "已删除", "1": "正常", "2": "已关闭",},
+                taskStatus: {"-1": "已删除", "1": "正常状态", "2": "开始任务", "3": "提交任务", "4": "通过完成","5": "没通过完成",},
                 groups:[]
             }
         },
         mounted() {
             this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
                 moment(new Date).format("YYYY-MM-DD 23:59:59")];
-            this.queryExamine();
+            this.queryTask();
         },
         methods: {
             formatterDate: function (row, column) {
                 var strs = row.dueDate.split("T")
                 return strs.length > 0 ? strs[0] : "";
             },
+            formatterStatus: function (row, column) {
+                return this.taskStatus[row.status + ""];
+            },
             handleTabsClick:function(event){
                 window.location.href = "/"+event.name
             },
-
-            queryExamine: function () {
-                axios.get('/tailoring/selectByDate', {
+            queryTask: function () {
+                axios.get('/api/tailoringTask/selectByDate', {
                     params: {
                         startTime: this.startEndDate[0],
                         endTime: this.startEndDate[1]
                     }
                 }).then((response) => {
-                    this.tailoringExamineData = response.data.data;
-            }).catch(function (error) {
+                    this.tailoringTaskData = response.data.data;
+                }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            openTailoringTask: function (row) {
+                window.location.href = "/TailoringTask/examine?id="+row.id
             },
         }
     })

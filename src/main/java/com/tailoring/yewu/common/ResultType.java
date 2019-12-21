@@ -2,6 +2,7 @@ package com.tailoring.yewu.common;
 
 public enum ResultType {
 
+	DEFAILT(0, "默认"),
 	OK(200, "成功"),
 
 	FAILURE(61210, "请求失败"),
@@ -31,6 +32,8 @@ public enum ResultType {
 
 
 	DELETED(70001, "数据已删除"),
+
+	DATA_PLAN_FULL_SHARE(70008,"计划份额已经满了"),
 
 	BAD_PARAM_REQUEST(901000, "参数错误请求"),
 
@@ -75,7 +78,9 @@ public enum ResultType {
 
 	GROUP_QUANTITY_ERROR(800101, "同版型分组的件数不同"),
 	GROUP_GREATER_THAN_MAX_TAILORING_QUANTITY_ERROR(800102, "本次裁剪数量大于最大可裁剪数量"),
-	GROUP_GREATER_THAN_CHANGE_PIECES_QUANTITY_ERROR(800103, "本次换片数量大于换片数量");
+	GROUP_GREATER_THAN_CHANGE_PIECES_QUANTITY_ERROR(800103, "本次换片数量大于换片数量"),
+	GROUP_GREATER_THAN_FABRIC_CODE_ERROR(800104, "布料编号不同"),
+	GROUP_GREATER_THAN_FLOOR_ERROR(800104, "层高错误");
 
 
 	private Integer code;
