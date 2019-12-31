@@ -1,6 +1,6 @@
 package com.tailoring.yewu.repository;
 
-import com.tailoring.yewu.SpringBootYewuApplicationTests;
+import com.tailoring.yewu.SpringBootStartApplicationTests;
 import com.tailoring.yewu.entity.po.TailoringPlanPo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import java.util.Date;
  * @modified: yangkai.shen
  */
 @Slf4j
-public class TailoringPlanDaoTest extends SpringBootYewuApplicationTests {
+public class TailoringPlanDaoTest extends SpringBootStartApplicationTests {
     @Autowired
     private TailoringPlanDao tailoringPlanDao;
     @Autowired
@@ -32,7 +32,7 @@ public class TailoringPlanDaoTest extends SpringBootYewuApplicationTests {
      * 初始化10条数据
      */
     @Test
-     public void initData() {
+    public void initData() {
 
 
 //        WorkOrderPo workOrderPo = WorkOrderPo.builder().workOrderNo("2A-9496").productCode("YY23-T-00-132-02").workOrderQuantity(405d).description("测试数据").dueDate(new Date()).build();

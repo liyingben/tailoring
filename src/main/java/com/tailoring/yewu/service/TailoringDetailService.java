@@ -24,10 +24,6 @@ public class TailoringDetailService {
         return tailoringDetailDao.save(po).getId();
     }
 
-    public List<TailoringDetailPo> findByWorkOrderNoEqualsAndProductCodeEqualsAndProductLineNoEquals(String workOrderNo, String productCode, Integer productLineNo) {
-        return tailoringDetailDao.findByWorkOrderNoEqualsAndProductCodeEqualsAndProductLineNoEquals(workOrderNo, productCode, productLineNo);
-    }
-
     public List<TailoringDetailPo> selectByDate(String startTime, String endTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {

@@ -3,181 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
 
-        <el-tabs type="border-card"  v-model="activeName"  @tab-click="handleTabsClick">
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
 
-            <el-tab-pane label="裁剪" name="TailoringDetail"  >
+        <el-tab-pane label="裁剪" name="TailoringDetail">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="布料使用记录"  name="TailoringFabricRecord" >
+        <el-tab-pane label="布料使用记录" name="TailoringFabricRecord">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="裁剪布头"  name="TailoringFabricLeft"  >
-                <div class="block">
-                    <el-date-picker
-                            v-model="startEndDate"
-                            type="daterange"
-                            align="right"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            :default-time="['00:00:00', '23:59:59']"
+        <el-tab-pane label="裁剪布头" name="TailoringFabricLeft">
+            <div class="block">
+                <el-date-picker
+                        :default-time="['00:00:00', '23:59:59']"
+                        :picker-options="pickerOptions"
+                        align="right"
+                        end-placeholder="结束日期"
+                        range-separator="至"
 
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :picker-options="pickerOptions">
-                    </el-date-picker>
-                    <el-button @click="queryTailoringFabricLef" type="primary">查询</el-button>
-                </div>
+                        start-placeholder="开始日期"
+                        type="daterange"
+                        unlink-panels
+                        v-model="startEndDate"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+                <el-button @click="queryTailoringFabricLef" type="primary">查询</el-button>
+            </div>
 
-                <el-table ref="tailoringFabricLeftTable"
-                          :data="tailoringFabricLeftData"
-                          stripe
+            <el-table :data="tailoringFabricLeftData"
+                      ref="tailoringFabricLeftTable"
+                      stripe
 
-                          style="width: 100%">
+                      style="width: 100%">
 
-                    <el-table-column
-                            prop="type"
-                            label="类型">
-                    </el-table-column>
-                    <el-table-column
-                            prop="fabricCode"
-                            label="布料编码">
-                    </el-table-column>
-                    <el-table-column
-                            prop="reelNumber"
-                            label="布料卷号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="lotNumber"
-                            label="布批号">
-                    </el-table-column>
+                <el-table-column
+                        label="类型"
+                        prop="type">
+                </el-table-column>
+                <el-table-column
+                        label="布料编码"
+                        prop="fabricCode">
+                </el-table-column>
+                <el-table-column
+                        label="布料卷号"
+                        prop="reelNumber">
+                </el-table-column>
+                <el-table-column
+                        label="布批号"
+                        prop="lotNumber">
+                </el-table-column>
 
-                    <el-table-column
-                            prop="theoryLength"
-                            label="理论长度"
-                            width="150">
-                    </el-table-column>
+                <el-table-column
+                        label="理论长度"
+                        prop="theoryLength"
+                        width="150">
+                </el-table-column>
 
 
-                    <el-table-column
-                            prop="group"
-                            label="组别">
-                    </el-table-column>
+                <el-table-column
+                        label="组别"
+                        prop="group">
+                </el-table-column>
 
-                    <el-table-column
-                            prop="remark"
-                            label="备注">
-                    </el-table-column>
+                <el-table-column
+                        label="备注"
+                        prop="remark">
+                </el-table-column>
 
-                    <el-table-column
-                            prop="date"
-                            sortable
-                            label="日期"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            sortable
-                            prop="createTime"
-                            label="创建时间">
-                    </el-table-column>
-                </el-table>
-            </el-tab-pane>
+                <el-table-column
+                        label="日期"
+                        prop="date"
+                        sortable
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="创建时间"
+                        prop="createTime"
+                        sortable>
+                </el-table-column>
+            </el-table>
+        </el-tab-pane>
 
-            <el-tab-pane label="任务"  name="TailoringTask"  >
+        <el-tab-pane label="任务" name="TailoringTask">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="布料消耗"  name="TailoringFabricConsume"  >
-                <div class="block">
-                    <el-date-picker
-                            v-model="startEndDate"
-                            type="daterange"
-                            align="right"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            :default-time="['00:00:00', '23:59:59']"
+        <el-tab-pane label="布料消耗" name="TailoringFabricConsume">
+            <div class="block">
+                <el-date-picker
+                        :default-time="['00:00:00', '23:59:59']"
+                        :picker-options="pickerOptions"
+                        align="right"
+                        end-placeholder="结束日期"
+                        range-separator="至"
 
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :picker-options="pickerOptions">
-                    </el-date-picker>
-                    <el-button @click="queryTailoringFabricConsume" type="primary">查询</el-button>
-                </div>
+                        start-placeholder="开始日期"
+                        type="daterange"
+                        unlink-panels
+                        v-model="startEndDate"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+                <el-button @click="queryTailoringFabricConsume" type="primary">查询</el-button>
+            </div>
 
-                <el-table ref="tailoringFabricConsumeTable"
-                          :data="tailoringFabricConsumeData"
-                          stripe
-                          style="width: 100%">
+            <el-table :data="tailoringFabricConsumeData"
+                      ref="tailoringFabricConsumeTable"
+                      stripe
+                      style="width: 100%">
 
-                    <el-table-column
-                            prop="workOrderNo"
-                            label="加工单号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="productCode"
-                            label="产品编码">
-                    </el-table-column>
-                    <el-table-column
-                            prop="productLineNo"
-                            label="行号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="consumeQuantity"
-                            label="布料编码">
-                    </el-table-column>
-                    <el-table-column
-                            prop="consumeQuantity"
-                            label="布料消耗用量"
-                            width="150">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpflag"
-                            label="回传ERP 标记">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpid"
-                            label="回传ERP ID"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpdatum"
-                            label="回传ERP 时间"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            sortable
-                            prop="createTime"
-                            label="创建时间">
-                    </el-table-column>
-                </el-table>
-            </el-tab-pane>
+                <el-table-column
+                        label="加工单号"
+                        prop="workOrderNo">
+                </el-table-column>
+                <el-table-column
+                        label="产品编码"
+                        prop="productCode">
+                </el-table-column>
+                <el-table-column
+                        label="行号"
+                        prop="productLineNo">
+                </el-table-column>
+                <el-table-column
+                        label="布料编码"
+                        prop="consumeQuantity">
+                </el-table-column>
+                <el-table-column
+                        label="布料消耗用量"
+                        prop="consumeQuantity"
+                        width="150">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP 标记"
+                        prop="erpflag">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP ID"
+                        prop="erpid"
+                        width="200">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP 时间"
+                        prop="erpdatum"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="创建时间"
+                        prop="createTime"
+                        sortable>
+                </el-table-column>
+            </el-table>
+        </el-tab-pane>
 
-            <el-tab-pane label="冲销记录"  name="TailoringRecoveryRecord"  >
+        <el-tab-pane label="冲销记录" name="TailoringRecoveryRecord">
 
-        </el-tabs>
+    </el-tabs>
 
 </div>
 </body>
-<script src="http://momentjs.cn/downloads/moment.min.js"></script>
+<script src="downloads/moment.min.js"></script>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="vue/dist/vue.js"></script>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: function () {
             return {
-                activeName:"TailoringFabricConsume",
+                activeName: "TailoringFabricConsume",
                 tailoringFabricLeftData: [],
 
                 pickerOptions: {
@@ -207,16 +207,16 @@
                         }
                     }]
                 },
-                startEndDate:  [],
+                startEndDate: [],
 
                 formLabelWidth: '120px',
                 multipleSelection: [],
                 planStatus: {"-1": "已删除", "1": "正常", "2": "已关闭",},
-                groups:[]
+                groups: []
             }
         },
         mounted() {
-            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+            this.startEndDate = [moment(new Date).format("YYYY-MM-DD 00:00:00"),
                 moment(new Date).format("YYYY-MM-DD 23:59:59")];
             this.queryTailoringFabricLef();
         },
@@ -225,8 +225,8 @@
                 var strs = row.dueDate.split("T")
                 return strs.length > 0 ? strs[0] : "";
             },
-            handleTabsClick:function(event){
-                window.location.href = "/"+event.name
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
             },
             queryTailoringFabricLef: function () {
                 axios.get('/api/tailoringFabricLeft', {
@@ -236,7 +236,8 @@
                     }
                 }).then((response) => {
                     this.tailoringFabricLeftData = response.data.data;
-            }).catch(function (error) {
+            }).
+                catch(function (error) {
                     console.log(error);
                 });
             },

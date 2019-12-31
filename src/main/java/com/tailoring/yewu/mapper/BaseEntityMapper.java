@@ -16,7 +16,7 @@ public interface BaseEntityMapper<S, T> {
 
     S t2S(T t);
 
-    default List<T> ss2Ts(List<S> sList){
+    default List<T> ss2Ts(List<S> sList) {
 
         if (sList == null || sList.size() == 0) {
             return Lists.newArrayList();
@@ -30,7 +30,7 @@ public interface BaseEntityMapper<S, T> {
         return tList;
     }
 
-    default List<S> ts2Ss(List<T> tList){
+    default List<S> ts2Ss(List<T> tList) {
 
         if (tList == null || tList.size() == 0) {
             return Lists.newArrayList();

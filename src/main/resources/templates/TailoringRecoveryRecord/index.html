@@ -3,133 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
 
-        <el-tabs type="border-card"  v-model="activeName"  @tab-click="handleTabsClick">
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
 
-            <el-tab-pane label="裁剪" name="TailoringDetail"  >
+        <el-tab-pane label="裁剪" name="TailoringDetail">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="布料使用记录"  name="TailoringFabricRecord" >
+        <el-tab-pane label="布料使用记录" name="TailoringFabricRecord">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="裁剪布头"  name="TailoringFabricLeft"  >
+        <el-tab-pane label="裁剪布头" name="TailoringFabricLeft">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="任务"  name="TailoringTask"  >
+        <el-tab-pane label="任务" name="TailoringTask">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="布料消耗"  name="TailoringFabricConsume"  >
+        <el-tab-pane label="布料消耗" name="TailoringFabricConsume">
 
-            </el-tab-pane>
+        </el-tab-pane>
 
-            <el-tab-pane label="冲销记录"  name="TailoringRecoveryRecord"  >
-                <div class="block">
-                    <el-date-picker
-                            v-model="startEndDate"
-                            type="daterange"
-                            align="right"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            :default-time="['00:00:00', '23:59:59']"
+        <el-tab-pane label="冲销记录" name="TailoringRecoveryRecord">
+            <div class="block">
+                <el-date-picker
+                        :default-time="['00:00:00', '23:59:59']"
+                        :picker-options="pickerOptions"
+                        align="right"
+                        end-placeholder="结束日期"
+                        range-separator="至"
 
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :picker-options="pickerOptions">
-                    </el-date-picker>
-                    <el-button @click="queryTailoringRecoveryRecord" type="primary">查询</el-button>
-                </div>
-                <el-table ref="tailoringRecoveryRecordTable"
-                          :data="tailoringRecoveryRecordData"
-                          stripe
-                          style="width: 100%">
+                        start-placeholder="开始日期"
+                        type="daterange"
+                        unlink-panels
+                        v-model="startEndDate"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+                <el-button @click="queryTailoringRecoveryRecord" type="primary">查询</el-button>
+            </div>
+            <el-table :data="tailoringRecoveryRecordData"
+                      ref="tailoringRecoveryRecordTable"
+                      stripe
+                      style="width: 100%">
 
-                    <el-table-column
-                            prop="typeNumber"
-                            label="No.">
-                    </el-table-column>
-                    <el-table-column
-                            prop="group"
-                            label="加工工单">
-                    </el-table-column>
-                    <el-table-column
-                            prop="member"
-                            label="组员">
-                    </el-table-column>
-                    <el-table-column
-                            prop="mainSupplement"
-                            label="成品行号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="dueDate"
-                            sortable
-                            label="成品号码"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="workOrderNo"
-                            label="布料编码"
-                            width="150">
-                    </el-table-column>
-                    <el-table-column
-                            prop="recoveryQuantity"
-                            label="冲销数量">
-                    </el-table-column>
-                    <el-table-column
-                            prop="recoveryName"
-                            label="冲销人"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="recoveryTime"
-                            sortable
-                            label="冲销时间"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpflag"
-                            label="回传ERP标记">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpid"
-                            label="回传ERP ID">
-                    </el-table-column>
-                    <el-table-column
-                            prop="erpdatum"
-                            label="回传ERP时间">
-                    </el-table-column>
-                    <el-table-column
-                            sortable
-                            prop="createTime"
-                            label="创建时间">
-                    </el-table-column>
-                </el-table>
-            </el-tab-pane>
-            </el-tab-pane>
-        </el-tabs>
+                <el-table-column
+                        label="No."
+                        prop="typeNumber">
+                </el-table-column>
+                <el-table-column
+                        label="加工工单"
+                        prop="group">
+                </el-table-column>
+                <el-table-column
+                        label="组员"
+                        prop="member">
+                </el-table-column>
+                <el-table-column
+                        label="成品行号"
+                        prop="mainSupplement">
+                </el-table-column>
+                <el-table-column
+                        label="成品号码"
+                        prop="dueDate"
+                        sortable
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="布料编码"
+                        prop="workOrderNo"
+                        width="150">
+                </el-table-column>
+                <el-table-column
+                        label="冲销数量"
+                        prop="recoveryQuantity">
+                </el-table-column>
+                <el-table-column
+                        label="冲销人"
+                        prop="recoveryName"
+                        width="200">
+                </el-table-column>
+                <el-table-column
+                        label="冲销时间"
+                        prop="recoveryTime"
+                        sortable
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP标记"
+                        prop="erpflag">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP ID"
+                        prop="erpid">
+                </el-table-column>
+                <el-table-column
+                        label="回传ERP时间"
+                        prop="erpdatum">
+                </el-table-column>
+                <el-table-column
+                        label="创建时间"
+                        prop="createTime"
+                        sortable>
+                </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        </el-tab-pane>
+    </el-tabs>
 
 </div>
 </body>
-<script src="http://momentjs.cn/downloads/moment.min.js"></script>
+<script src="downloads/moment.min.js"></script>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="vue/dist/vue.js"></script>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: function () {
             return {
-                activeName:"TailoringRecoveryRecord",
+                activeName: "TailoringRecoveryRecord",
                 tailoringRecoveryRecordData: [],
                 planData: [],
                 pickerOptions: {
@@ -159,16 +159,16 @@
                         }
                     }]
                 },
-                startEndDate:  [],
+                startEndDate: [],
 
                 formLabelWidth: '120px',
                 multipleSelection: [],
                 planStatus: {"-1": "已删除", "1": "正常", "2": "已关闭",},
-                groups:[]
+                groups: []
             }
         },
         mounted() {
-            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+            this.startEndDate = [moment(new Date).format("YYYY-MM-DD 00:00:00"),
                 moment(new Date).format("YYYY-MM-DD 23:59:59")];
             this.queryTailoringRecoveryRecord();
         },
@@ -177,8 +177,8 @@
                 var strs = row.dueDate.split("T")
                 return strs.length > 0 ? strs[0] : "";
             },
-            handleTabsClick:function(event){
-                window.location.href = "/"+event.name
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
             },
             queryTailoringRecoveryRecord: function () {
                 axios.get('/api/tailoringRecoveryRecord/selectByDate', {
@@ -188,7 +188,8 @@
                     }
                 }).then((response) => {
                     this.tailoringRecoveryRecordData = response.data.data;
-            }).catch(function (error) {
+            }).
+                catch(function (error) {
                     console.log(error);
                 });
             },

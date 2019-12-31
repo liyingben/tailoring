@@ -1,0 +1,56 @@
+server:
+  port: 8182
+
+
+spring:
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://39.98.239.104:1433;DatabaseName=XIANAV3
+    username: sa
+    password: Pass@Word1
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: false
+jwt:
+  config:
+    key: tailoring
+    ttl: 600000
+    remember: 604800000
+logging:
+  level:
+    com.tailoring: debug
+    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
+
+custom:
+  flag: true
+  config:
+    ignores:
+      # 需要过滤的 post 请求
+      post:
+        - "**"
+      #        - "/api/auth/login"
+      #        - "/api/auth/logout"
+      get:
+        - "/**"
+      # 需要过滤的请求，不限方法
+      pattern:
+        - "/test/*"

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+
+
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
+
+        <el-tab-pane label="查询工单" name="WorkOrder">
+
+        </el-tab-pane>
+
+        <el-tab-pane label="裁剪计划" name="tailoringPlans">
+
+        </el-tab-pane>
+
+
+        <el-tab-pane label="审核" name="TailoringExamine">
+
+
+        </el-tab-pane>
+
+
+        <el-tab-pane label="审核详情" name="TailoringExamineDetail">
+
+
+            <el-form :inline="true" :model="examineData" class="demo-form-inline">
+                <el-form-item label="裁剪人员：">
+                    {{examineData.group}} {{examineData.member}}
+                </el-form-item>
+                <el-form-item label="日期：">
+                    {{examineData.createTime}}
+                </el-form-item>
+                <el-form-item label="NO:">
+                    {{examineData.tailoringNo}}
+                </el-form-item>
+                <el-form-item label="版本号:">
+                    1.00
+                </el-form-item>
+                <el-form-item label="状态:">
+                    {{examineStatus[examineData.status]}}
+                </el-form-item>
+                <el-form-item>
+                    <el-button :disabled="isDisabled" @click="examinePass" type="primary">审核通过</el-button>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button :disabled="isDisabled" @click="" type="primary">冲销</el-button>
+                </el-form-item>
+
+            </el-form>
+            <el-form :inline="true" :model="examineData" class="demo-form-inline">
+                <el-form-item label="布料编码：">
+                    {{examineData.fabricCode}}
+                </el-form-item>
+                <el-form-item label="颜色：">
+                    {{examineData.fabricColour}}
+                </el-form-item>
+                <el-form-item label="幅宽：">
+                    {{examineData.fabricWidth}}米
+                </el-form-item>
+                <el-form-item label="克重：">
+                    {{examineData.fabricWeight}}
+                </el-form-item>
+            </el-form>
+
+            <h4>裁剪计划</h4>
+            <el-container>
+                <el-table
+                        :data="examineData.plans"
+                        :summary-method="getSummaries"
+                        show-summary
+                        style="width: 100%">
+                    <el-table-column
+                            type="selection">
+                    </el-table-column>
+                    <el-table-column
+                            label="版号"
+                            prop="typeNumber"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="加工单号"
+                            prop="workOrderNo"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="产品编码"
+                            prop="productCode"
+                            width="180">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="成品数量"
+                            prop="spreadingQuantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="扎数"
+                            prop="quantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="排版（件）"
+                            prop="typeQuantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="拉布层数"
+                            prop="floor">
+                    </el-table-column>
+                    <el-table-column
+                            label="布料用量（平方米）"
+                            prop="consumeQty">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="单件用量*系数（米）"
+                            prop="address">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="布料消耗用量（SQM）"
+                            prop="consumeQty">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="总长度(米)"
+                            prop="spreadingLength"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="标准件数"
+                            prop="name">
+                    </el-table-column>
+                    <el-table-column
+                            label="系数"
+                            prop="amount1">
+                    </el-table-column>
+                    <el-table-column
+                            label="超与省"
+                            prop="amount2">
+                    </el-table-column>
+                    <el-table-column
+                            label="主辅区分"
+                            prop="amount3">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="布批区分"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="换片数量"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="换片用量（SQM）"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="换片单件用量(M)"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="分配后用量（SQM）"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="分配比例"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="短少/溢余"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="装箱量"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="箱数"
+                            prop="amount3">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="冲销数量"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-input :rules="[{ required: true, message: '冲销数量不能为空'},{ type: 'number', message: '冲销数量为数字值'}]" autocomplete="off"
+                                      placeholder="冲销数量"
+                                      v-model="scope.row.recoveryQuantity">
+
+                            </el-input>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            label="冲销换片"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-input :max="scope.row.maxQuantity" :rules="[{ required: true, message: '冲销换片不能为空'},{ type: 'number', message: '冲销换片为数字值'}]"
+                                      autocomplete="off"
+                                      placeholder="冲销换片"
+                                      v-model="scope.row.recoveryChangePiecesQuantity">
+
+                            </el-input>
+
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+            </el-container>
+            <h3>布料使用</h3>
+            <el-container>
+                <el-table
+                        :data="examineData.fabricRecords"
+                        :summary-method="getSummaries"
+                        border
+                        show-summary
+                        style="width: 100%;">
+                    <el-table-column
+                            label="版号"
+                            prop="typeNumber">
+                    </el-table-column>
+                    <el-table-column
+                            label="布料卷号"
+                            prop="reelNumber"
+                            width="250">
+                    </el-table-column>
+                    <el-table-column
+                            label="布批"
+                            prop="lotNumber">
+                    </el-table-column>
+                    <el-table-column
+                            label="理论长度(米)"
+                            prop="theoryLength">
+                    </el-table-column>
+                    <el-table-column
+                            label="拉布长度(米)"
+                            prop="spreadingLength">
+                    </el-table-column>
+                    <el-table-column
+                            label="层数"
+                            prop="floor">
+                    </el-table-column>
+                    <el-table-column
+                            label="实际长度(米)"
+                            prop="actualLength">
+                    </el-table-column>
+                    <el-table-column
+                            label="换片(米)"
+                            prop="changePiecesQuantity">
+                    </el-table-column>
+                    <el-table-column
+                            label="差异(米)"
+                            prop="amount3">
+                    </el-table-column>
+                    <el-table-column
+                            label="布头余数(米)"
+                            prop="leftLength">
+                    </el-table-column>
+                    <el-table-column
+                            label="备注"
+                            prop="amount3">
+                    </el-table-column>
+
+
+                </el-table>
+            </el-container>
+
+        </el-tab-pane>
+
+        <el-tab-pane label="任务" name="TailoringTask">
+        </el-tab-pane>
+
+    </el-tabs>
+
+
+</div>
+</body>
+<script src="downloads/moment.min.js"></script>
+<!-- import Vue before Element -->
+<script src="vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
+<script src="vue-router/dist/vue-router.js"></script>
+<script>
+    var router = new VueRouter({
+        mode: 'history',
+        routes: []
+    });
+    new Vue({
+        router,
+        el: '#app',
+        data: function () {
+            return {
+                activeName: "TailoringExamineDetail",
+                examineStatus: {"-1": "已删除", "1": "提交审核", "2": "审核通过", "3": "审核没通过"},
+                examineData: {
+                    "id": 1,
+                    "createTime": "2019-12-23 14:50",
+                    "updateTime": "2019-12-23 14:50",
+                    "tailoringNo": "19S0001",
+                    "group": null,
+                    "member": null,
+                    "fabricCode": null,
+                    "recoveryQuantity": null,
+                    "checkName": null,
+                    "checkDate": null,
+                    "erpflag": null,
+                    "erpid": null,
+                    "erpdatum": null,
+                    "status": "1",
+                    "fabricWidth": null,
+                    "fabricColour": null,
+                    "plans": [],
+                    "recoveryRecord": null
+                },
+
+            }
+        },
+        mounted() {
+            var id = this.$route.query.id;
+            this.examineDetails(id);
+        },
+        computed: {
+            isDisabled: function () {
+                return ['2', '3'].indexOf(this.examineData.status) > -1
+            }
+        },
+        methods: {
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
+            },
+
+            getSummaries(param) {
+                const {columns, data} = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if(index === 0
+            )
+                {
+                    sums[index] = '总计';
+                    return;
+                }
+                const values = data.map(item => Number(item[column.property])
+            )
+                ;
+                if (['consumeQty', 'productQuantity', 'spreadingLength'].indexOf(column.property) > -1 && !values.every(value => isNaN(value)))
+                {
+                    sums[index] = values.reduce((prev, curr) => {
+                        const value = Number(curr);
+                    if (!isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
+                    }
+                },
+                    0
+                )
+                    ;
+                    sums[index];
+                }
+            else
+                {
+                    sums[index] = 'N/A';
+                }
+            })
+                ;
+
+                return sums;
+            },
+            examineDetails: function (id) {
+                axios.get('/api/tailoringExamine/details', {
+                    params: {
+                        id: this.$route.query.id
+                    }
+                }).then((response) => {
+                    this.examineData = response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+            examinePass: function () {
+                axios.post('/api/tailoringExamine/examinePass', {
+                    id: this.$route.query.id,
+                    checkName: "主任"
+                }).then((response) => {
+                    response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //冲销
+            recoveryRecord() {
+                axios.get('/api/tailoringTask/recoveryRecord', recoveryRecordForm).then((response) => {
+                    this.taskData = response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+        }
+    })
+</script>
+</html>

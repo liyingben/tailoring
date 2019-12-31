@@ -22,14 +22,15 @@ public class BaseFabricUsageService {
 
     /**
      * 返回布料版型的map，key是布料编码
+     *
      * @return
      */
     public Map mapTypeNumberByfabricCode() {
         List<BaseFabricUsagePo> list = baseFabricUsageDao.findAll();
-        Map<String, Set<String>>  fabricCodeMap = new HashMap();
-        for(BaseFabricUsagePo po:list){
-            if(!fabricCodeMap.containsKey(po.getFabricCode()))
-                fabricCodeMap.put(po.getFabricCode(),new TreeSet<String>());
+        Map<String, Set<String>> fabricCodeMap = new HashMap();
+        for (BaseFabricUsagePo po : list) {
+            if (!fabricCodeMap.containsKey(po.getFabricCode()))
+                fabricCodeMap.put(po.getFabricCode(), new TreeSet<String>());
             fabricCodeMap.get(po.getFabricCode()).add(po.getTypeNumber());
         }
 

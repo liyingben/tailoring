@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+
+
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
+
+        <el-tab-pane label="查询工单" name="WorkOrder">
+
+        </el-tab-pane>
+
+        <el-tab-pane label="裁剪计划" name="tailoringPlans">
+        </el-tab-pane>
+
+
+        <el-tab-pane label="审核" name="TailoringExamine">
+        </el-tab-pane>
+
+        <el-tab-pane label="任务" name="TailoringTask">
+        </el-tab-pane>
+        <el-tab-pane label="任务详情" name="TailoringTaskDetail">
+            <h3>布料使用记录</h3>
+
+            <el-form :inline="true" :model="taskData" class="demo-form-inline">
+                <el-form-item label="裁剪人员：">
+                    {{taskData.group}} {{taskData.member}}
+                </el-form-item>
+                <el-form-item label="日期：">
+                    {{taskData.createTime}}
+                </el-form-item>
+
+            </el-form>
+
+
+            <el-form :inline="true" :model="taskData.tailoringPlan" class="demo-form-inline">
+                <el-form-item label="布料编码：">
+                    {{taskData.fabricCode}}
+                </el-form-item>
+                <el-form-item label="颜色：">
+                    {{taskData.fabricColour}}
+                </el-form-item>
+                <el-form-item label="幅宽：">
+                    {{taskData.fabricWidth}}
+                </el-form-item>
+                <el-form-item label="克重：">
+                    {{taskData.fabricWeight}}
+                </el-form-item>
+            </el-form>
+            <h4>计划</h4>
+            <el-container>
+                <el-table
+                        :data="taskData.plans"
+                        style="width: 100%">
+
+                    <el-table-column
+                            label="加工单号"
+                            prop="workOrderNo"
+                            width="180">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="产品编号"
+                            prop="productCode" width="230">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="计划数量"
+                            prop="quantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="换片数量"
+                            prop="changePiecesQuantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="布料编号"
+                            prop="fabricCode">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="版号"
+                            prop="typeNumber"
+                            width="180">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="最大层高"
+                            prop="maxFloor"
+                            width="180">
+                    </el-table-column>
+
+
+                </el-table>
+            </el-container>
+            <h4>裁剪信息</h4>
+            <el-container>
+                <el-table
+                        :data="taskData.plans"
+                        style="width: 100%">
+
+                    <el-table-column
+                            label="加工单号"
+                            prop="workOrderNo">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="产品号码"
+                            prop="productCode">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="本次裁剪（手输）"
+                            prop="quantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="本次换片（手输）"
+                            prop="changePiecesQuantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="布料编号"
+                            prop="fabricCode">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="版型"
+                            prop="typeGroup">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="件数"
+                            prop="typeQuantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="层高"
+                            prop="floor">
+                    </el-table-column>
+                    <el-table-column
+                            label="最大允许裁剪数量"
+                            prop="maxQuantity"
+                            width="180">
+                    </el-table-column>
+                </el-table>
+            </el-container>
+
+            <h4>扫码信息</h4>
+            <el-container>
+                <el-table
+                        :data="taskData.fabricRecords"
+                        :summary-method="getSummaries"
+                        border
+                        show-summary
+                        style="width: 100%;">
+                    <el-table-column
+                            label="输入次数"
+                            prop="spreadingId"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                            label="卷号"
+                            prop="reelNumber" width="250">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="布批批号"
+                            prop="lotNumber">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="幅宽"
+                            prop="theoryFabricWidth">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="理论长度"
+                            prop="theoryLength">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="拉布次数"
+                            prop="spreadingCount">
+                    </el-table-column>
+                    <el-table-column
+                            label="拉布长度(米)"
+                            prop="quantity">
+                    </el-table-column>
+                    <el-table-column
+                            label="层高"
+                            prop="floor">
+                    </el-table-column>
+                    <el-table-column
+                            label="拉布总长度(米)"
+                            prop="spreadingLength">
+                    </el-table-column>
+                    <el-table-column
+                            label="剩余长度（米）"
+                            prop="leftLength">
+                    </el-table-column>
+                </el-table>
+            </el-container>
+
+            <h4>计算结果</h4>
+            <el-container>
+                <el-table
+                        :data="taskData.details"
+                        :summary-method="getSummaries"
+                        border
+                        show-summary
+                        style="width: 100%;">
+                    <el-table-column
+                            label="输入次数"
+                            prop="spreadingId"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            label="工单"
+                            prop="workOrderNo">
+                    </el-table-column>
+                    <el-table-column
+                            label="产品编号"
+                            prop="productCode" width="230">
+                    </el-table-column>
+                    <el-table-column
+                            label="版型"
+                            prop="typeGroup">
+                    </el-table-column>
+                    <el-table-column
+                            label="本次裁剪"
+                            prop="quantity">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="本次换片"
+                            prop="changePiecesQuantity">
+                    </el-table-column>
+                    <el-table-column
+                            label="版型件数"
+                            prop="typeQuantity">
+                    </el-table-column>
+                    <el-table-column
+                            label="拉布件数"
+                            prop="spreadingQuantity">
+                    </el-table-column>
+                    <el-table-column
+                            label="剩余可裁剪数量"
+                            prop="leftQuantity">
+                    </el-table-column>
+
+                </el-table>
+            </el-container>
+
+
+        </el-tab-pane>
+    </el-tabs>
+
+</div>
+</body>
+<script src="downloads/moment.min.js"></script>
+<!-- import Vue before Element -->
+<script src="vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
+<script src="vue-router/dist/vue-router.js"></script>
+<script>
+    var router = new VueRouter({
+        mode: 'history',
+        routes: []
+    });
+    new Vue({
+        router,
+        el: '#app',
+        data: function () {
+            return {
+                activeName: "TailoringTaskDetail",
+                taskData: {
+                    "id": null,
+                    "createTime": null,
+                    "updateTime": null,
+                    "group": null,
+                    "member": null,
+                    "fabricCode": null,
+                    "typeGroup": null,
+                    "tailoringNo": null,
+                    "checkName": null,
+                    "checkDate": null,
+                    "erpflag": null,
+                    "erpid": null,
+                    "erpdatum": null,
+                    "status": null,
+                    "plans": [],
+                    "details": [],
+                    "fabricRecords": []
+                },
+
+                recoveryRecordForm: {
+                    id: this.$route.query.id,
+                    recoveryQuantity: 0,
+                    recoveryChangePiecesQuantity: 0
+                }
+            }
+        },
+        mounted() {
+            var id = this.$route.query.id;
+            this.examineDetails(id);
+        },
+        computed: {
+            isDisabled: function () {
+                return this.taskData.status != '3'
+            }
+        },
+        methods: {
+
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
+            },
+            getSummaries(param) {
+                const {columns, data} = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if(index === 0
+            )
+                {
+                    sums[index] = '总计';
+                    return;
+                }
+                const values = data.map(item => Number(item[column.property])
+            )
+                ;
+                if (['spreadingQuantity', 'spreadingLength'].indexOf(column.property) > -1 && !values.every(value => isNaN(value)))
+                {
+                    sums[index] = values.reduce((prev, curr) => {
+                        const value = Number(curr);
+                    if (!isNaN(value)) {
+                        return prev + curr;
+                    } else {
+                        return prev;
+                    }
+                },
+                    0
+                )
+                    ;
+                    sums[index];
+                }
+            else
+                {
+                    sums[index] = 'N/A';
+                }
+            })
+                ;
+
+                return sums;
+            },
+            //任务详情信息
+            examineDetails: function (id) {
+                axios.get('/api/tailoringTask/taskDetails', {
+                    params: {
+                        id: this.$route.query.id
+                    }
+                }).then((response) => {
+                    this.taskData = response.data.data;
+                if (this.taskData.recoveryRecord) {
+                    this.recoveryRecordForm = this.taskData.recoveryRecord;
+                }
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //审核通过
+            examinePass: function () {
+                axios.post('/api/tailoringTask/examinePass', {
+                    id: this.$route.query.id,
+                    checkName: "主任"
+                }).then((response) => {
+                    response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+        }
+    })
+</script>
+</html>

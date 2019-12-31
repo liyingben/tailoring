@@ -2,7 +2,6 @@ package com.tailoring.yewu.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,31 +25,26 @@ public class WorkOrderPo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     *工单号码
+     * 工单号码
      */
-    @Column(name = "forder")
+    @Column(name = "forder" ,length = 30)
     private String workOrderNo;
     /**
-     *产品行号
+     * 产品行号
      */
-    @Column(name = "flineno")
+    @Column(name = "flineno",length = 11)
     private String productLineNo;
     /**
-     *产品编号
+     * 产品编号
      */
-    @Column(name = "fcode")
+    @Column(name = "fcode",length = 50)
     private String productCode;
     /**
      * 描述
      */
     @Column(name = "DESCRIPTION")
     private String description;
-    /**
-     * 出货日期
-     */
-    @Column(name = "fduedate")
-    @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd",timezone="GMT+8")
-    private Date dueDate;
+
     /**
      * 工单数量
      */
@@ -71,5 +65,18 @@ public class WorkOrderPo {
      */
     @Column(name = "fpcs")
     private Double bindingQuantity;
+    /**
+     * 车间
+     * ERP视图增加“车间”字段：FDEPT(CHAR，10)
+     */
+    @Column(name = "dept",length = 10)
+    private String dept;
+
+    /**
+     * 出货日期
+     */
+    @Column(name = "fduedate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date dueDate;
 
 }

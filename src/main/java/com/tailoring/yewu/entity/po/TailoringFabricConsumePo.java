@@ -16,17 +16,17 @@ import java.util.Date;
 public class TailoringFabricConsumePo extends AbstractAuditModel {
 
 
-    @Column(name = "work_order_no")
+    @Column(name = "work_order_no" ,length = 30)
     private String workOrderNo;
-    @Column(name = "product_code")
+    @Column(name = "product_code",length = 50)
     private String productCode;
-    @Column(name = "product_line_no")
+    @Column(name = "product_line_no",length = 11)
     private Integer productLineNo;
     @Column(name = "consume_quantity")
     private Double consumeQuantity;
-
+    @Column(name = "erpflag",length = 1)
     private String erpflag;
-
+    @Column(name = "erpid",length = 1)
     private String erpid;
 
     private Date erpdatum;

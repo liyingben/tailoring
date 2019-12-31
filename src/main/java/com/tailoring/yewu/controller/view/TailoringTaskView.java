@@ -16,8 +16,5 @@ public class TailoringTaskView {
     public String index() {
         return "TailoringTask/index";
     }
-    @GetMapping("/examine")
-    public String examine() {
-        return "TailoringTask/examineTask";
-    }
+
 }

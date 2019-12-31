@@ -1,8 +1,7 @@
 package com.tailoring.yewu.repository;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.crypto.SecureUtil;
-import com.tailoring.yewu.SpringBootYewuApplicationTests;
+import com.tailoring.yewu.SpringBootStartApplicationTests;
 import com.tailoring.yewu.entity.po.TailoringTaskPo;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
@@ -31,7 +30,7 @@ import java.util.stream.Collectors;
  * @modified: yangkai.shen
  */
 @Slf4j
-public class TailoringDaoTest extends SpringBootYewuApplicationTests {
+public class TailoringDaoTest extends SpringBootStartApplicationTests {
     @Autowired
     private TailoringTaskDao tailoringDao;
 
@@ -41,7 +40,7 @@ public class TailoringDaoTest extends SpringBootYewuApplicationTests {
     @Test
     public void testSave() {
         String salt = IdUtil.fastSimpleUUID();
-        TailoringTaskPo testSave3 = TailoringTaskPo.builder().checkName(SecureUtil.md5("123456" + salt)).build();
+        TailoringTaskPo testSave3 = TailoringTaskPo.builder().build();
         tailoringDao.save(testSave3);
 
         Assert.assertNotNull(testSave3.getId());
@@ -67,7 +66,7 @@ public class TailoringDaoTest extends SpringBootYewuApplicationTests {
     @Test
     public void testUpdate() {
         tailoringDao.findById(1L).ifPresent(user -> {
-            user.setCheckName("JPA修改名字");
+//            user.setCheckName("JPA修改名字");
             tailoringDao.save(user);
         });
 //        Assert.assertEquals("JPA修改名字", tailoringDao.findById(1L).get.getName());
@@ -120,7 +119,7 @@ public class TailoringDaoTest extends SpringBootYewuApplicationTests {
         for (int i = 0; i < 10; i++) {
             String salt = IdUtil.fastSimpleUUID();
             int index = 3 + i;
-            TailoringTaskPo user = TailoringTaskPo.builder().checkName(SecureUtil.md5("123456" + salt)).build();
+            TailoringTaskPo user = TailoringTaskPo.builder().build();
             userList.add(user);
         }
         tailoringDao.saveAll(userList);

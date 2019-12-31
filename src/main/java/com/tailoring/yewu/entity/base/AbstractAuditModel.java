@@ -3,7 +3,9 @@ package com.tailoring.yewu.entity.base;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,11 +20,11 @@ import java.util.Date;
  *
  * @package: com.tailoring.yewu.entity.base
  * @description: 实体通用父类
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/11/7 14:01
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -41,8 +43,8 @@ public abstract class AbstractAuditModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time", nullable = false, updatable = false)
     @CreatedDate
-    @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm",timezone="GMT+8")
-    @ApiModelProperty(hidden=true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     /**
@@ -51,7 +53,17 @@ public abstract class AbstractAuditModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_time", nullable = false)
     @LastModifiedDate
-    @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm",timezone="GMT+8")
-    @ApiModelProperty(hidden=true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @ApiModelProperty(hidden = true)
     private Date updateTime;
+
+
+    @CreatedBy
+    @Column(name = "created_by", updatable = false, length = 64)
+    private String createdBy;
+
+
+    @LastModifiedBy
+    @Column(name = "updated_by", length = 64)
+    private String updatedBy;
 }

@@ -12,20 +12,21 @@ import java.util.Hashtable;
 
 @RestController
 @RequestMapping("/login")
-@Api(value="登陆",tags={"登陆接口"})
+@Api(value = "登陆", tags = {"登陆接口"})
 public class LoginApi {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value="登陆",tags={"登陆接口"},notes="登陆")
-    public ActionResult<String>  getAllPersonNamesWithTraditionalWay(@RequestBody LoginDto dto) {
+    @ApiOperation(value = "登陆", tags = {"登陆接口"}, notes = "登陆")
+    public ActionResult<String> getAllPersonNamesWithTraditionalWay(@RequestBody LoginDto dto) {
 
-        String msg =  getAllPersonNamesWithTraditionalWay(dto.getUsername(), dto.getPassword());
+        String msg = getAllPersonNamesWithTraditionalWay(dto.getUsername(), dto.getPassword());
         return new ActionResult<>(msg);
     }
+
     @RequestMapping(value = "/getMsg", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value="登陆",tags={"登陆接口"},notes="登陆")
+    @ApiOperation(value = "登陆", tags = {"登陆接口"}, notes = "登陆")
     public String getAllPersonNamesWithTraditionalWay(@RequestParam String username, @RequestParam String password) {
         Hashtable env = new Hashtable();
 

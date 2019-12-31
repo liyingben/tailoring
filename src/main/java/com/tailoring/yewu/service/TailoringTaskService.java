@@ -1,74 +1,94 @@
 package com.tailoring.yewu.service;
 
-import com.tailoring.yewu.common.ActionResult;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.tailoring.yewu.common.ResultType;
 import com.tailoring.yewu.common.StatusEnum;
-import com.tailoring.yewu.entity.dto.*;
+import com.tailoring.yewu.common.TailoringUtils;
+import com.tailoring.yewu.entity.dto.TailoringFabricInsertDto;
+import com.tailoring.yewu.entity.dto.TailoringSpreadingDto;
+import com.tailoring.yewu.entity.dto.TailoringTaskPlanDto;
 import com.tailoring.yewu.entity.po.*;
-import com.tailoring.yewu.entity.vo.TailoringExamineVo;
 import com.tailoring.yewu.entity.vo.TailoringSpreadingResultVo;
 import com.tailoring.yewu.entity.vo.TailoringTaskVo;
 import com.tailoring.yewu.repository.*;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
 public class TailoringTaskService {
+    @Autowired
+    BaseFabricDetailDao baseFabricDetailDao;
+    @Autowired
+    BaseFabricUsageDao baseFabricUsageDao;
 
     @Autowired
     TailoringTaskDao tailoringTaskDao;
-    @Autowired
-    BaseFabricUsageDao baseFabricUsageDao;
 
     @Autowired
     TailoringFabricRecordDao tailoringFabricRecordDao;
 
     @Autowired
     TailoringPlanDao tailoringPlanDao;
+
+    @Autowired
+    TailoringOrderDao tailoringOrderDao;
+
     @Autowired
     TailoringDetailDao tailoringDetailDao;
+
     @Autowired
     TailoringFabricConsumeDao tailoringFabricConsumeDao;
+
     @Autowired
     TailoringSpreadingDao tailoringSpreadingDao;
+
     @Autowired
     TailoringTaskPlanDao tailoringTaskPlanDao;
 
 
+    @Autowired
+    TailoringRecoveryRecordDao tailoringRecoveryRecordDao;
+    @Autowired
+    private BaseDictDao baseDictDao;
+
     /**
-     * 创建任务
-     * 最大可裁剪数量 >=本次裁剪数量.
-     * 最大可换片数量 >=本次换片数量。
+     * 检查裁剪输入是否有问题
+     * 最大可裁剪数量 >= 本次裁剪数量.
+     * 最大可换片数量 >= 本次换片数量。
      * 以及要判断相同版型分组的件数必须相同。
-     *
      * @param tailoringPlans
      * @return
      */
-    @Transactional
-    public ActionResult createTask(List<TailoringPlanDto> tailoringPlans) {
+    public ResultType checkTailoringPlans(List<TailoringTaskPlanDto> tailoringPlans){
         Map<String, Integer> qMap = new HashMap<>();
         int maxFloor = 0;
         ResultType resultType = ResultType.OK;
-        String fabricCode = null;
-        String group = null;
-        String member = null;
-        String productCode = null;
-        for (TailoringPlanDto dto : tailoringPlans) {
+        if(tailoringPlans.size()==0){
+            return ResultType.CREATE_TASK_NO_SELECT_PLAN_ERROR;
+        }
+
+        TailoringTaskPlanDto first = tailoringPlans.get(0);
+        String fabricCode = first.getFabricCode();
+        String productCode = first.getProductCode();
+
+
+        for (TailoringTaskPlanDto dto : tailoringPlans) {
 
             TailoringPlanPo po = tailoringPlanDao.getOne(dto.getId());
-            group = po.getGroup();
-            member = po.getMember();
-            fabricCode = po.getFabricCode();
-            productCode = po.getProductCode();
+            //请把已保存的计划提交给车间主任审核
+            if (StatusEnum.TAILORING_PLAN_STATUS_SUBMIT.getCode().toString().equals(po.getStatus())) {
+                resultType = ResultType.GROUP_GREATER_THAN_SUBMIT_ERROR;
+                break;
+            }
             //布料号码必须统一
             if (fabricCode != null) {
                 if (!fabricCode.equals(po.getFabricCode())) {
@@ -106,55 +126,125 @@ public class TailoringTaskService {
                 }
             }
             //比较层高
-            maxFloor = Math.max(dto.getFloor(), maxFloor);
+//            maxFloor = Math.max(dto.getFloor(), maxFloor);
+            maxFloor += dto.getFloor();
 
         }
+        // 大于最大层高
         BaseFabricUsagePo baseFabricUsagePo = baseFabricUsageDao.findByProductCodeEquals(productCode);
         if (maxFloor > baseFabricUsagePo.getMaxFloorHeight()) {
             resultType = ResultType.GROUP_GREATER_THAN_FLOOR_ERROR;
         }
 
-        ActionResult result =new ActionResult<>(resultType);
-        if (resultType.getCode() == 200) {
-            TailoringTaskPo po = new TailoringTaskPo();
-            po.setGroup(group);
-            po.setMember(member);
-            po.setFabricCode(fabricCode);
-            po.setCheckDate(new Date());
-            po.setStatus(StatusEnum.TAILORING_TASK_STATUS_DEFAULT.getCode().toString());
-
-            tailoringTaskDao.save(po);
-            Map map = new HashMap();
-            map.put("id",po.getId());
-            result.setData(map);
-
-            //计划保存数据保存
-            for (TailoringPlanDto dto : tailoringPlans) {
-                TailoringTaskPlanPo tailoringTaskPlanPo = new TailoringTaskPlanPo();
-                try {
-                    BeanUtils.copyProperties(tailoringTaskPlanPo, dto);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                tailoringTaskPlanPo.setId(null);
-                tailoringTaskPlanPo.setTailoringPlanId(dto.getId());
-                tailoringTaskPlanPo.setTaskId(po.getId());
-
-                tailoringTaskPlanDao.save(tailoringTaskPlanPo);
-            }
-            if(tailoringPlans.size()>0) {
-                List planIds = tailoringPlans.stream().map(TailoringPlanDto::getId).distinct().collect(Collectors.toList());
-                tailoringPlanDao.updateStatus(planIds, StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
+        return resultType;
+    }
+    /**
+     * 创建任务
+     * @param tailoringPlans
+     * @return
+     */
+    @Transactional
+    public TailoringTaskPo createTask(List<TailoringTaskPlanDto> tailoringPlans) {
+        String fabricCode = tailoringPlans.get(0).getFabricCode();
+        String group = tailoringPlans.get(0).getGroup();
+        String member = tailoringPlans.get(0).getMember();
+        BaseFabricDetailPo baseFabricDetailPo = baseFabricDetailDao.findFirstByFabricCodeEquals(fabricCode);
+        //最大允许裁剪数量系数
+        double maxAllowTailoringCoefficient = 1;
+        BaseDictPo dict = baseDictDao.findByKeyEquals("maxAllowTailoringCoefficient");
+        if (dict != null) {
+            try {
+                maxAllowTailoringCoefficient = Double.valueOf(dict.getValue());
+            } catch (Exception e) {
+                //系数异常用默认
             }
         }
-        return result;
+        TailoringTaskPo po = new TailoringTaskPo();
+        po.setGroup(group);
+        po.setMember(member);
+        po.setFabricCode(fabricCode);
+        po.setStatus(StatusEnum.TAILORING_TASK_STATUS_DEFAULT.getCode().toString());
+
+        //布匹号是否要求一致
+        po.setIsControlFabric(baseFabricDetailPo.getIsControlFabric());
+
+        tailoringTaskDao.save(po);
+
+
+        //计划保存数据保存
+        for (TailoringTaskPlanDto dto : tailoringPlans) {
+            TailoringTaskPlanPo tailoringTaskPlanPo = new TailoringTaskPlanPo();
+            TailoringUtils.copyProperties(tailoringTaskPlanPo, dto);
+            tailoringTaskPlanPo.setId(null);
+            tailoringTaskPlanPo.setTailoringPlanId(dto.getId());
+            tailoringTaskPlanPo.setTaskId(po.getId());
+            /**
+             *
+             当输入拉布次数并计算出理论长度时，
+             计算“实际长度”（实际长度=层高*长度）。层高=拉布次数*卷数。计算“理论长度”。上一次的理论长度-实际长度。
+             1，检查实际长度>理论长度+差异系数时，提示用户：拉布长度超出理论长度太多，请检查数据是否正确，如果点"是"，则保存对应的记录。如果点“否”则返回到扫码界面输入界面，员工修正数据后点击保存后再进行检查保存。
+             2、当员工点击该布料用完时:计算理论长度<理论长度-差异系数时 ，提示实际长度小于理论长度，请检查数据是否正确，点击“是” 则进行保存，点击“否”则返回之前的页面进行修正数据。
+             3、当员工删除该卷时：计算理论长度<理论长度-差异系数时 ，提示实际长度小于理论长度，请确认是否用完？点击“是”则删除该卷，并记录对应信息。点击“否”则返回当前扫码界面。
+             */
+            tailoringTaskPlanPo.setFabricLengthDifference(baseFabricDetailPo.getFabricLengthDifference());
+
+            /**
+             * 判断如果剩余需裁剪数量不大于0并且
+             * 当输入拉布次数并计算的出的拉布件数>最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/版型分组件数)+系数]*版型分组件数）时，
+             * 提示用户裁剪数量大于最大允许裁剪数量，请检查拉布次数是否正确，并返回到扫码输入的界面，当前数据不进行保存，
+             * 员工修正数据后点击保存再进行检查并保存
+             * 拉布件数<=最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/件数)+系数]*版型分组数），
+             */
+
+            double maxQuantity = (Math.round((tailoringTaskPlanPo.getChangePiecesQuantity() + tailoringTaskPlanPo.getQuantity()) / tailoringTaskPlanPo.getTypeQuantity()) + maxAllowTailoringCoefficient) * tailoringTaskPlanPo.getTypeQuantity();
+            tailoringTaskPlanPo.setMaxQuantity((int) maxQuantity);
+            tailoringTaskPlanDao.save(tailoringTaskPlanPo);
+        }
+        if (tailoringPlans.size() > 0) {
+            List planIds = tailoringPlans.stream().map(TailoringTaskPlanDto::getId).distinct().collect(Collectors.toList());
+            tailoringPlanDao.updateStatus(planIds, StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
+        }
+
+        return po;
     }
+
+
 
     /**
      * 拉布
+     * 点击“保存”按钮后.
+     * 1、分出不同版型分组。1，2，3
+     * 2、计算每个版型的拉布件数。拉布件数=拉布次数*卷数*件数. 1：1000
+     * 计算此次拉布件数。
+     * 拉布件数=拉布次数*卷数*件数.
+     * 拉布次数：屏幕输入的拉布次数。
+     * 卷数：选中的行项目数。
+     * 件数：裁剪界面输入的件数。比如1版型分组件数3，2版型分组件数4，3版型分组件数5。
      *
+     * 3、按顺序计算裁剪计划本次拉布件数。
+     * 版型分组1：
+     * A：本次裁剪数量300 本次拉布件数=（ 本次裁剪数量 + 本次换片数量 ） 300.
+     * B: 本次裁剪数量200本次拉布件数=（ 本次裁剪数量 + 本次换片数量 ）.
+     * C：本次裁剪数量800本次拉布件数=（ 本次裁剪数量 + 本次换片数量 ） 500
+     *
+     * 4、每个版型下，按顺序计算工单剩余需裁剪数（目前逻辑：剩下的拉布件数-（本次裁剪数量+本次换片数量））
+     * A: 0 B: 0 C:300
+     * 5、计算“实际长度”（实际长度=层高*长度）。层高=拉布次数*卷数。
+     *
+     * 6、计算“理论长度”。上一次的理论长度-实际长度。
+     *
+     * 判断剩余需裁剪数量是否大于0，如果剩余需裁剪数量大于0，弹出对话框“布料是否拉完？”。
+     * 点击“是”，布料剩余数量直接变为0.本扫码界面全部清空，继续扫码,输入拉布次数、长度。(重新上布)。
+     * 点击“否”，扫码界面的拉布次数和长度清空，理论长度需重新计算，其它字段保留，继续输入拉布次数、长度。点击“保存”，重新计算“剩余需裁剪数量。
+     * 判断如果剩余需裁剪数量不大于0并且拉布件数<=最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/件数)+系数]*版型分组数），
+     * 如果不成立：弹出错误提示框，并返回扫描界面输入本次正确的拉布次数和长度。
+     *
+     * 如果条件成立，弹出对话框：“是否继续拉布”。
+     * 点击“是”，返回扫描界面，继续输入拉布次数和长度
+     * 点击“否”，弹出对话框“布料是否用完？“。点击“是”，剩余数量直接变为0.跳转到“未完成输入界面”。
+     * 点击“否”，记录布头信息，跳转到“未完成输入界面”。
+     *
+     * 可参照“系统流程图”。
      * @param tailoringSpreadingDto
      * @return
      */
@@ -163,6 +253,21 @@ public class TailoringTaskService {
 
         //任务id
         Long taskId = tailoringSpreadingDto.getTaskId();
+
+        //更新任务状态
+        TailoringTaskPo tailoringTaskPo = tailoringTaskDao.getOne(taskId);
+
+        //任务没有提交不可以拉布
+        if (StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString().equals(tailoringTaskPo.getStatus()) || StatusEnum.TAILORING_TASK_STATUS_DEFAULT.getCode().toString().equals(tailoringTaskPo.getStatus())) {
+            tailoringTaskPo.setStatus(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
+            tailoringTaskDao.save(tailoringTaskPo);
+        } else {
+            TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
+
+            //剩余数据量>0 返回1，<0 返回2，不成立返回3,任务已经提交4
+            tailoringSpreadingResultVo.setCode(4);
+            return tailoringSpreadingResultVo;
+        }
 
         //长度
         int quantity = tailoringSpreadingDto.getQuantity();
@@ -177,10 +282,128 @@ public class TailoringTaskService {
         //层高
         int floor = tailoringSpreadingDto.getFloor();
 
+
+        //上次裁剪列表
+        List<TailoringTaskPlanDto> tailoringPlans = tailoringSpreadingDto.getTailoringPlans();
+
+        //剩余未完成完成,将已经完成的裁剪计划丢掉，只处理需要裁剪的裁剪计划
+        List<TailoringTaskPlanDto> surplusPlans = new ArrayList<>();
+        //裁剪剩余
+        Map<Long,Integer> leftMap = new HashMap<>();
+        for (TailoringTaskPlanDto dto : tailoringPlans) {
+            Integer left = tailoringDetailDao.findByTaskIdEqualsAndProductCodeEqualsMinLeft(taskId, dto.getProductCode());
+            if (left == null || left > 0) {
+                surplusPlans.add(dto);
+                leftMap.put(dto.getId(),left);
+            }
+        }
+
+        if(surplusPlans.size()==0) {
+            TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
+
+            //剩余数据量>0 返回1，<0 返回2，不成立返回3,任务已经提交4,计划完成6
+            tailoringSpreadingResultVo.setCode(6);
+            return tailoringSpreadingResultVo;
+        }
+
+
+
+
+
+        //最大允许拉布数量
+        int maxSpreadingQuantity = tailoringTaskPlanDao.findMinMaxQuantityByTaskId(taskId);
+        // 差异系数
+        Integer minFabricLengthDifference =Integer.MAX_VALUE;
+        for (TailoringTaskPlanDto dto : surplusPlans) {
+
+            /**
+             *  判断如果剩余需裁剪数量不大于0并且
+             *  当输入拉布次数并计算的出的拉布件数>最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/版型分组件数)+系数]*版型分组件数）时，
+             *  提示用户裁剪数量大于最大允许裁剪数量，请检查拉布次数是否正确，并返回到扫码输入的界面，当前数据不进行保存，
+             *  员工修正数据后点击保存再进行检查并保存
+             *  拉布件数<=最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/件数)+系数]*版型分组数），
+             */
+
+            //拉布件数=拉布次数*卷数*版型件数.
+            int spreadingQuantity = spreadingCount * reelCount * dto.getTypeQuantity();
+            if (spreadingQuantity > maxSpreadingQuantity) {
+                TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
+
+                //1 剩余数据量>0 ，2 剩余数据量<0 ，3 不成立,4任务已经提交,5检查实际长度>理论长度+差异系数
+                tailoringSpreadingResultVo.setCode(3);
+
+                return tailoringSpreadingResultVo;
+            }
+
+            Integer difference =tailoringTaskPlanDao.findFabricLengthDifferenceByPlanIdEquals(dto.getId());
+            //最小差异系数
+            minFabricLengthDifference = Math.min(difference,minFabricLengthDifference);
+        }
+        /**
+         * 处理布料拉布
+         */
+
+        Long maxSpreadingId = tailoringSpreadingDao.findMaxIdByTaskId(taskId);
+        //上一次布料列表
+        List<TailoringFabricRecordPo> lastFabrics = getLastFabrics(taskId, maxSpreadingId);
+        List<TailoringFabricInsertDto> fabrics = tailoringSpreadingDto.getFabrics();
+        //最小理论长度
+        Integer minTheoryLength = Integer.MAX_VALUE;
+        if (maxSpreadingId == null) {
+            for (TailoringFabricInsertDto w : fabrics) {
+                minTheoryLength = (int) Math.min(w.getTheoryLength(), minTheoryLength);
+            }
+        } else {
+
+            for (TailoringFabricInsertDto w : fabrics) {
+                TailoringFabricRecordPo last = null;
+                if (lastFabrics.size() != 0) {
+                    List<TailoringFabricRecordPo> a = lastFabrics.stream().filter(
+                            d -> w.getReelNumber().equals(d.getReelNumber())
+                    ).collect(Collectors.toList());
+
+                    if (a.size() > 0) {
+                        last = a.get(0);
+                    }
+                }
+                //完成的计划跳过
+                if (last != null) {
+                    minTheoryLength = Math.min(last.getLeftLength(), minTheoryLength);
+                } else {
+                    minTheoryLength = (int)Math.min(w.getTheoryLength(), minTheoryLength);
+                }
+
+            }
+        }
+        /**
+         * 当输入拉布次数并计算出理论长度时，
+         * 计算“实际长度”（实际长度=层高*长度）。层高=拉布次数*卷数。计算“理论长度”。上一次的理论长度-实际长度。
+         * 1，检查实际长度>理论长度+差异系数时，提示用户：拉布长度超出理论长度太多，请检查数据是否正确，如果点"是"，则保存对应的记录。如果点“否”则返回到扫码界面输入界面，员工修正数据后点击保存后再进行检查保存。
+         * 2、当员工点击该布料用完时:计算理论长度<理论长度-差异系数时 ，提示实际长度小于理论长度，请检查数据是否正确，点击“是” 则进行保存，点击“否”则返回之前的页面进行修正数据。
+         * 3、当员工删除该卷时：计算理论长度<理论长度-差异系数时 ，提示实际长度小于理论长度，请确认是否用完？点击“是”则删除该卷，并记录对应信息。点击“否”则返回当前扫码界面。
+         */
+
+        /**
+         * 情况1
+         */
+        // 检查实际长度
+//        int actualLength_check = quantity * spreadingCount*reelCount;
+        // 理论长度
+//        Integer theoryLength_check = minTheoryLength;
+        // 差异系数
+        if (spreadingLength > minTheoryLength + minFabricLengthDifference) {
+            TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
+
+            //1 剩余数据量>0 ，2 剩余数据量<0 ，3 不成立,4任务已经提交,5 检查实际长度>理论长度+差异系数
+            tailoringSpreadingResultVo.setCode(5);
+
+            return tailoringSpreadingResultVo;
+        }
+
+
         /**
          * 保存拉布信息
          */
-        Long maxSpreadingId = tailoringSpreadingDao.findMaxIdByTaskId(taskId);
         TailoringSpreadingPo spreadingPo = new TailoringSpreadingPo();
         spreadingPo.setFloor(floor);
         spreadingPo.setTaskId(taskId);
@@ -195,13 +418,9 @@ public class TailoringTaskService {
         /**
          * 处理布料拉布
          */
-        //上次裁剪列表
-        List<TailoringPlanDto> tailoringPlans = tailoringSpreadingDto.getTailoringPlans();
 
-        //上一次布料列表
-        List<TailoringFabricRecordPo> lastFabrics = getLastFabrics(taskId, maxSpreadingId);
+        BaseFabricDetailPo baseFabricDetailPo = baseFabricDetailDao.findFirstByFabricCodeEquals(fabrics.get(0).getFabricCode());
         List<TailoringFabricRecordPo> resultFabrics = new ArrayList<>();
-        List<TailoringFabricInsertDto> fabrics = tailoringSpreadingDto.getFabrics();
         for (TailoringFabricInsertDto w : fabrics) {
 
             TailoringFabricRecordPo last = null;
@@ -210,28 +429,23 @@ public class TailoringTaskService {
                         d -> w.getReelNumber().equals(d.getReelNumber())
                 ).collect(Collectors.toList());
 
-                if (a.size() == 0) {
-                    continue;
+                if (a.size() != 0) {
+                    last = a.get(0);
                 }
-                last = a.get(0);
+
             }
-            //完成的计划跳过
-            if (last != null&&last.getLeftLength()<0) {
-                continue;
-            }
+
             //布料使用记录
             TailoringFabricRecordPo recordPo = new TailoringFabricRecordPo();
-            try {
-                BeanUtils.copyProperties(recordPo, w);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            TailoringUtils.copyProperties(recordPo, w);
             recordPo.setId(null);
             recordPo.setSpreadingId(spreadingId);
             recordPo.setTaskId(taskId);
             recordPo.setDueDate(new Date());
+            if(baseFabricDetailPo!=null) {
+                recordPo.setActualFabricWidth(baseFabricDetailPo.getFabricWidthMeter());
+                recordPo.setTheoryFabricWidth(baseFabricDetailPo.getFabricWidthMeter());
+            }
             if (last != null) {
                 recordPo.setTheoryLength(Double.valueOf(last.getLeftLength()));
                 recordPo.setActualLength(last.getActualLength());
@@ -239,7 +453,7 @@ public class TailoringTaskService {
                 recordPo.setTheoryLength(w.getTheoryLength());
                 Double actualLength = tailoringFabricRecordDao.getActualLength(w.getReelNumber());
                 recordPo.setActualLength(w.getTheoryLength());
-                if(actualLength!=null){
+                if (actualLength != null) {
                     recordPo.setActualLength(actualLength);
                 }
             }
@@ -250,7 +464,6 @@ public class TailoringTaskService {
             recordPo.setSpreadingLength(spreadingLength);
             //剩余长度
             recordPo.setLeftLength((int) (recordPo.getTheoryLength() - spreadingLength));
-
 
             tailoringFabricRecordDao.save(recordPo);
             resultFabrics.add(recordPo);
@@ -265,52 +478,42 @@ public class TailoringTaskService {
         //返回结果列表
         List<TailoringDetailPo> tailoringDetailPos1 = new ArrayList<>();
 
-        //裁剪计划未完成
-        List<TailoringPlanDto> tailoringPlansNew = new ArrayList<>();
-        for(TailoringPlanDto dto : tailoringPlans ){
-            Integer left = tailoringDetailDao.findByTaskIdEqualsAndProductCodeEqualsMinLeft(taskId, dto.getProductCode());
-            if(left==null||left>0) {
-                tailoringPlansNew.add(dto);
-            }
-        }
 
-        Set planIds =new HashSet();
-        Map<String, List<TailoringPlanDto>> tailoringPlansMap = tailoringPlansNew.stream().collect(Collectors.groupingBy(TailoringPlanDto::getTypeGroup));
+        Map<String, List<TailoringTaskPlanDto>> tailoringPlansMap = surplusPlans.stream().collect(Collectors.groupingBy(TailoringTaskPlanDto::getTypeGroup));
         for (String typeGroup : tailoringPlansMap.keySet()) {
-            List<TailoringPlanDto> planDtos = tailoringPlansMap.get(typeGroup);
+            List<TailoringTaskPlanDto> planDtos = tailoringPlansMap.get(typeGroup);
             //最大可裁剪件数
-            int tailoringQuantity = floor * spreadingCount * planDtos.get(0).getTypeQuantity();
-            for (TailoringPlanDto dto : planDtos) {
+            //拉布件数=拉布次数*卷数*版型件数.
+            int tailoringQuantity = spreadingCount * reelCount * planDtos.get(0).getTypeQuantity();
+
+
+            for (TailoringTaskPlanDto dto : planDtos) {
+
                 TailoringDetailPo last = null;
                 if (tailoringDetailPos.size() != 0) {
                     List<TailoringDetailPo> a = tailoringDetailPos.stream().filter(
                             d -> dto.getProductCode().equals(d.getProductCode())
                     ).collect(Collectors.toList());
                     if (a.size() > 0) {
-                        last = a.get(0);
                     }
+                    last = a.get(0);
                 }
 
                 //要这个计划要裁剪件数
-                Integer spreadingQuantity = (last == null ? dto.getQuantity() + dto.getChangePiecesQuantity() : last.getLeftQuantity()) ;
+
+                Integer spreadingQuantity = (last == null ? dto.getQuantity() + dto.getChangePiecesQuantity() : last.getLeftQuantity());
 
                 Integer leftQuantity = spreadingQuantity - tailoringQuantity;
 
                 TailoringDetailPo detailPo = new TailoringDetailPo();
 
-                try {
-                    BeanUtils.copyProperties(detailPo, dto);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                TailoringUtils.copyProperties(detailPo, dto);
                 detailPo.setId(null);
                 detailPo.setTaskId(taskId);
                 detailPo.setSpreadingId(spreadingId);
                 detailPo.setTailoringPlanId(dto.getId());
 
-                planIds.add(dto.getId());
+
                 //拉布次数
                 detailPo.setSpreadingCount(spreadingCount);
                 //拉布件数
@@ -332,41 +535,33 @@ public class TailoringTaskService {
 
             }
         }
-        if(planIds.size()>0) {
-            tailoringPlanDao.updateWorkQuantity(new ArrayList<>(planIds));
-            tailoringPlanDao.updateWorkChangePiecesQuantity(new ArrayList<>(planIds));
+        //拉布计划id
+        List planIds = surplusPlans.stream().map(TailoringTaskPlanDto::getId).distinct().sorted().collect(Collectors.toList());
+        tailoringPlanDao.updateWorkQuantity(planIds);
+        tailoringPlanDao.updateWorkChangePiecesQuantity(planIds);
+        tailoringPlanDao.updateStatus(planIds,StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString());
 
-            //任务可以提交
-            try {
-                TailoringTaskPo tailoringTaskPo = tailoringTaskDao.getOne(taskId);
-                tailoringTaskPo.setStatus(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
-            }catch (Exception e ){
-                e.printStackTrace();
-            }
-        }
+        List<Long> orderIds = tailoringPlanDao.findOrderIdsByids(planIds);
+
+        tailoringOrderDao.updateWorkQuantity(orderIds);
+
         //拉布结果
         TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
         tailoringSpreadingResultVo.setFabrics(resultFabrics);
         tailoringSpreadingResultVo.setTailoringDetailPo(tailoringDetailPos1);
 
+        //剩余数据量>0 返回1，<0 返回2，不成立返回3,任务已经提交4
         tailoringSpreadingResultVo.setCode(2);
         tailoringSpreadingResultVo.setSpreadingId(spreadingId);
-        for(TailoringDetailPo po:tailoringDetailPos1) {
-            if(po.getLeftQuantity()>0) {
+        for (TailoringDetailPo po : tailoringDetailPos1) {
+            if (po.getLeftQuantity() > 0) {
                 tailoringSpreadingResultVo.setCode(1);
                 break;
-            }else{
-                // 判断如果剩余需裁剪数量不大于0并且
-                // 拉布件数<=最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/件数)+系数]*版型分组数），
-//                if(tailoringSpreadingResultVo.getCode()==2){
-//                    po.getSpreadingQuantity()+po.getChangePiecesQuantity()/
-//                }
             }
         }
 
         return tailoringSpreadingResultVo;
     }
-
 
 
     /**
@@ -390,29 +585,6 @@ public class TailoringTaskService {
         return tailoringFabricRecordDao.findByTaskIdEqualsAndSpreadingIdEquals(taskId, maxSpreadingId);
     }
 
-    @Transactional
-    public void examine() {
-        List<TailoringTaskPo> tailoringTaskPos = tailoringTaskDao.findByStatusEquals(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
-
-        for (TailoringTaskPo po : tailoringTaskPos) {
-
-            po.setCheckDate(new Date());
-            po.setErpdatum(new Date());
-            po.setCheckName("张三");
-            po.setStatus(StatusEnum.TAILORING_TASK_STATUS_SUBMIT.getCode().toString());
-            tailoringTaskDao.save(po);
-
-            List<TailoringDetailPo> list = tailoringDetailDao.findByTaskIdEquals(po.getId());
-            if(list!=null&&list.size()>0){
-                List planIds = list.stream().map(TailoringDetailPo::getTailoringPlanId).distinct().collect(Collectors.toList());
-
-                tailoringPlanDao.updateStatus(planIds,StatusEnum.TAILORING_TASK_STATUS_SUBMIT.getCode().toString());
-            }
-
-
-        }
-
-    }
     /**
      * 任务详情
      *
@@ -424,73 +596,63 @@ public class TailoringTaskService {
 
         TailoringTaskPo tailoringTaskPo = tailoringTaskDao.getOne(taskId);
 
-        try {
-            BeanUtils.copyProperties(tailoringTaskPo, tailoringTaskVo);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        TailoringUtils.copyProperties(tailoringTaskVo, tailoringTaskPo);
+
+        BaseFabricDetailPo baseFabricDetailPo = baseFabricDetailDao.findFirstByFabricCodeEquals(tailoringTaskPo.getFabricCode());
+        if (baseFabricDetailPo != null) {
+            tailoringTaskVo.setFabricColour(baseFabricDetailPo.getFabricColour());
+            tailoringTaskVo.setFabricWidth(baseFabricDetailPo.getFabricWidthMeter());
+            tailoringTaskVo.setFabricWeight(baseFabricDetailPo.getFabricWeight());
         }
-
-        List<TailoringDetailPo> tailoringDetails = tailoringDetailDao.findByTaskIdEquals(taskId);
-        tailoringTaskVo.setDetails(tailoringDetails);
-
+        //裁剪计划
         List<TailoringTaskPlanPo> tailoringTaskPlanPos = tailoringTaskPlanDao.findByTaskIdEquals(taskId);
         tailoringTaskVo.setPlans(tailoringTaskPlanPos);
 
-        List<TailoringFabricRecordPo> tailoringFabricRecords =tailoringFabricRecordDao.findByTaskIdEquals(taskId);
+        //裁剪计划详情
+        List<TailoringDetailPo> tailoringDetails = tailoringDetailDao.findByTaskIdEquals(taskId);
+        tailoringTaskVo.setDetails(tailoringDetails);
+
+        //布料使用记录
+        List<TailoringFabricRecordPo> tailoringFabricRecords = tailoringFabricRecordDao.findByTaskIdEquals(taskId);
         tailoringTaskVo.setFabricRecords(tailoringFabricRecords);
+
+        //冲销
+        TailoringRecoveryRecordPo tailoringRecoveryRecordPo = tailoringRecoveryRecordDao.findByTaskIdEquals(taskId);
+        tailoringTaskVo.setRecoveryRecord(tailoringRecoveryRecordPo);
 
         return tailoringTaskVo;
     }
 
+
     /**
-     * 审核详情
+     * 没有提交的任务
      *
-     * @param id
      * @return
      */
-    public TailoringExamineVo examineDetails(Long id) {
-        TailoringDetailPo tailoringDetailPo = tailoringDetailDao.getOne(id);
-        List<TailoringDetailPo> tailoringDetails = new ArrayList<>();
-        tailoringDetails.add(tailoringDetailPo);
-        TailoringExamineVo tailoringExamineVo = new TailoringExamineVo();
-        tailoringExamineVo.setTailoringDetails(tailoringDetails);
-        TailoringPlanPo tailoringPlanPo = tailoringPlanDao.getOne(tailoringDetailPo.getTailoringPlanId());
-        tailoringExamineVo.setTailoringPlan(tailoringPlanPo);
-        List<TailoringFabricRecordPo> tailoringFabricRecords = tailoringFabricRecordDao.findAll();
-        tailoringExamineVo.setTailoringFabricRecords(tailoringFabricRecords);
-        List<TailoringFabricConsumePo> tailoringFabricConsumes = tailoringFabricConsumeDao.findAll();
-        tailoringExamineVo.setTailoringFabricConsumes(tailoringFabricConsumes);
-        return tailoringExamineVo;
+    public List<TailoringTaskPo> notSubmit() {
+        return tailoringTaskDao.findByStatusEquals(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
     }
 
-    public Integer examinePass(TailoringTaskPassDto passDto) {
-        TailoringTaskPo tailoringTaskPo = tailoringTaskDao.getOne(passDto.getId());
-        tailoringTaskPo.setCheckName(passDto.getCheckName());
-        tailoringTaskPo.setStatus(StatusEnum.TAILORING_TASK_STATUS_PASS.getCode().toString());
-        tailoringTaskDao.save(tailoringTaskPo);
-
-        List<TailoringDetailPo> tailoringDetailPos = tailoringDetailDao.findByTaskIdEquals(tailoringTaskPo.getId());
-
-
-        tailoringDetailPos.forEach(w -> {
-            TailoringPlanPo tailoringPlanPo = tailoringPlanDao.getOne(w.getTailoringPlanId());
-            tailoringPlanPo.setStatus(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString());
-            tailoringPlanDao.save(tailoringPlanPo);
-        });
-        return 1;
-    }
-
-    public List<TailoringTaskPo> selectByDate(String startTime, String endTime) {
-
+    public Page<TailoringTaskPo> selectByDate(String startTime, String endTime, Pageable pageable) {
+        Page<TailoringTaskPo> result = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            return tailoringTaskDao.findByCreateTimeBetween(sdf.parse(startTime), sdf.parse(endTime));
+
+            QTailoringTaskPo qTailoringTaskPo = QTailoringTaskPo.tailoringTaskPo;
+
+            BooleanExpression be = null;
+            if (!StringUtils.isEmpty(startTime)) {
+                be = qTailoringTaskPo.createTime.between(sdf.parse(startTime), sdf.parse(endTime));
+            } else {
+                be = qTailoringTaskPo.id.gt(0);
+            }
+
+            //分页
+            result = tailoringTaskDao.findAll(be, pageable);
         } catch (ParseException e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
+        return result;
     }
 
 }

@@ -25,68 +25,51 @@ import javax.persistence.Table;
 public class TailoringTaskPo extends AbstractAuditModel {
 
     /**
+     * 裁剪编号: tailoring_no
+     */
+    @Column(name = "tailoring_no",length = 7)
+    private String tailoringNo;
+
+    /**
      * 组别: group
      */
-    @ApiModelProperty(value="组别",example="A3",required = true)
-    @Column(name="`group`")
+    @ApiModelProperty(value = "组别", example = "A3", required = true)
+    @Column(name = "`group`",length = 20)
     private String group;
 
     /**
      * 组员: member
      */
-    @ApiModelProperty(value="组员",example="郑德敏,陈善云,",required = true)
+    @ApiModelProperty(value = "组员", example = "郑德敏,陈善云,", required = true)
+    @Column(name = "member",length = 40)
     private String member;
 
     /**
      * 布料编码: fabric_code
      */
-    @ApiModelProperty(value="布料编码",example="FNA15RDB05",required = true)
-    @Column(name = "fabric_code")
+    @ApiModelProperty(value = "布料编码", example = "FNA15RDB05", required = true)
+    @Column(name = "fabric_code",length = 10)
     private String fabricCode;
 
     /**
      * 版型分组: type_group
      */
-    @Column(name = "type_group")
+    @Column(name = "type_group",length = 2)
     private String typeGroup;
 
     /**
-     * 裁剪编号: tailoring_no
+     * 是否控制布匹: is_control_fabric
+     * 1 ”是否控制布匹“字段（ Bit  1,0）。
+     * 2、扫码页判断，如果BIT是0，则不控制”布匹号不一致“。
      */
-    @Column(name = "tailoring_no")
-    private String tailoringNo;
+    @Column(name = "is_control_fabric",length = 1)
+    private String isControlFabric;
 
-    /**
-     * 审核人: check_name
-     */
-    @Column(name = "check_name")
-    private String checkName;
-
-    /**
-     * 审核时间: check_date
-     */
-    @Column(name = "check_date")
-    private java.util.Date checkDate;
-
-    /**
-     * 回传ERP标记: ERPFLAG
-     */
-    private String erpflag;
-
-    /**
-     * 回传ERP ID: ERPID
-     */
-    private String erpid;
-
-    /**
-     * 回传ERP时间: ERPDATUM
-     */
-    private java.util.Date erpdatum;
 
     /**
      * 任务状态: status
      */
-    @Column(name = "status")
+    @Column(name = "status",length = 6)
     private String status;
 
 }

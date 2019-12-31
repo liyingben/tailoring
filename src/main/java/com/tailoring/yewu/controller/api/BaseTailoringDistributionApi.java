@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/baseTailoringDistributions")
-@Api(value="base裁剪人员组合及超省分配比例Api",tags={"裁剪人员组合及超省分配比例操作接口"})
+@Api(value = "base裁剪人员组合及超省分配比例Api", tags = {"裁剪人员组合及超省分配比例操作接口"})
 public class BaseTailoringDistributionApi {
 
     @Autowired
@@ -27,7 +27,7 @@ public class BaseTailoringDistributionApi {
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET)
-    @ApiOperation(value="剪人员组合及超省分配比例列表",tags={"裁剪人员组合及超省分配比例操作接口"},notes="注意问题点")
+    @ApiOperation(value = "剪人员组合及超省分配比例列表", tags = {"裁剪人员组合及超省分配比例操作接口"}, notes = "注意问题点")
     public ActionResult<List<BaseTailoringDistributionPo>> findAll() {
         return new ActionResult(baseTailoringDistributionService.findAll());
     }

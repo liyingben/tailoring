@@ -14,11 +14,11 @@ import java.util.List;
  *
  * @package: com.tailoring.yewu.repository
  * @description: User Dao
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/11/7 14:07
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @Repository
 public interface TailoringFabricConsumeDao extends JpaRepository<TailoringFabricConsumePo, Long> {
@@ -27,7 +27,7 @@ public interface TailoringFabricConsumeDao extends JpaRepository<TailoringFabric
      * 根据开始时间和结束时间
      *
      * @param startTime 开始时间
-     * @param endTime    结束时间
+     * @param endTime   结束时间
      * @return
      */
     List<TailoringFabricConsumePo> findByCreateTimeBetween(Date startTime, Date endTime);

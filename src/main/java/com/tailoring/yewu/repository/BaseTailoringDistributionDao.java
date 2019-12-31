@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
  *
  * @package: com.tailoring.yewu.repository
  * @description: User Dao
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/11/7 14:07
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @Repository
 public interface BaseTailoringDistributionDao extends JpaRepository<BaseTailoringDistributionPo, Long> {

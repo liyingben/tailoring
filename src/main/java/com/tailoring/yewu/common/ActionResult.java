@@ -23,17 +23,8 @@ public class ActionResult<T> implements Serializable {
      */
     private T data;
 
-	public ActionResult() {
+    public ActionResult() {
         super();
-    }
-
-    private void packResult(ResultType resultType, String message) {
-        this.code = resultType.getCode();
-        if (!StringUtils.isEmpty(message)) {
-            this.message = message;
-        } else {
-            this.message = resultType.getDesc();
-        }
     }
 
     public ActionResult(int code, String message, T data) {
@@ -44,8 +35,8 @@ public class ActionResult<T> implements Serializable {
     }
 
     public ActionResult(T data) {
-	    this.data = data;
-	}
+        this.data = data;
+    }
 
     public ActionResult(ResultType resultType) {
         packResult(resultType, "");
@@ -63,6 +54,15 @@ public class ActionResult<T> implements Serializable {
     public ActionResult(ResultType resultType, String message, T data) {
         packResult(resultType, message);
         this.data = data;
+    }
+
+    private void packResult(ResultType resultType, String message) {
+        this.code = resultType.getCode();
+        if (!StringUtils.isEmpty(message)) {
+            this.message = message;
+        } else {
+            this.message = resultType.getDesc();
+        }
     }
 
 }

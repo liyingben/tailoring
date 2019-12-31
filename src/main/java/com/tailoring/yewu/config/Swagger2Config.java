@@ -25,6 +25,10 @@ import java.util.List;
 @EnableSwagger2
 public class Swagger2Config {
 
+    //根据配置文件来判断是否开启跨域访问
+    @Value("${custom.flag}")
+    private boolean flag;
+
     @Bean
     public Docket createRestApi() {
         List<Parameter> pars = new ArrayList<Parameter>();
@@ -37,15 +41,12 @@ public class Swagger2Config {
                 .globalOperationParameters(pars)
                 .apiInfo(apiInfo());
     }
-    //根据配置文件来判断是否开启跨域访问
-    @Value("${custom.flag}")
-    private boolean flag;
 
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        if(flag){
+        if (flag) {
             corsConfiguration.addAllowedOrigin("*");
             corsConfiguration.addAllowedHeader("*");
             corsConfiguration.addAllowedMethod("*");
@@ -62,5 +63,6 @@ public class Swagger2Config {
                 .version("1.0")
                 .build();
     }
+
 
 }

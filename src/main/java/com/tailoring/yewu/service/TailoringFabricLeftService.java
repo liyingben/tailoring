@@ -1,7 +1,6 @@
 package com.tailoring.yewu.service;
 
 import cn.hutool.core.util.IdUtil;
-import com.tailoring.yewu.entity.dto.TailoringFabricInsertDto;
 import com.tailoring.yewu.entity.dto.TailoringFabricLeftDto;
 import com.tailoring.yewu.entity.po.TailoringFabricLeftPo;
 import com.tailoring.yewu.entity.po.TailoringFabricRecordPo;
@@ -38,24 +37,24 @@ public class TailoringFabricLeftService {
 
         String uuid = IdUtil.fastSimpleUUID();
         for (TailoringFabricLeftDto dto : fabrics) {
-            if(dto.getTheoryLength()<=0){
+            if (dto.getTheoryLength() <= 0) {
                 continue;
             }
-            TailoringFabricLeftPo po =tailoringFabricLeftDao.findByReelNumberEquals(dto.getReelNumber());
-            if(po==null){
+            TailoringFabricLeftPo po = tailoringFabricLeftDao.findByReelNumberEquals(dto.getReelNumber());
+            if (po == null) {
                 po = new TailoringFabricLeftPo();
             }
 
-            TailoringFabricRecordPo recordPo = tailoringFabricRecordDao.findBySpreadingIdEqualsAndReelNumberEquals(dto.getSpreadingId(),dto.getReelNumber());
+            TailoringFabricRecordPo recordPo = tailoringFabricRecordDao.findBySpreadingIdEqualsAndReelNumberEquals(dto.getSpreadingId(), dto.getReelNumber());
             po.setFabricCode(dto.getFabricCode());
             po.setLotNumber(dto.getLotNumber());
             po.setReelNumber(dto.getReelNumber());
             po.setSpreadingId(dto.getSpreadingId());
-            if(recordPo!=null) {
+            if (recordPo != null) {
                 po.setTheoryLength(recordPo.getLeftLength().doubleValue());
                 po.setActualFabricWidth(recordPo.getActualFabricWidth());
                 po.setTheoryFabricWidth(recordPo.getTheoryFabricWidth());
-            }else{
+            } else {
                 po.setTheoryLength(dto.getTheoryLength());
                 po.setActualFabricWidth(dto.getActualFabricWidth());
                 po.setTheoryFabricWidth(dto.getTheoryFabricWidth());
@@ -70,25 +69,25 @@ public class TailoringFabricLeftService {
 
         Double theoryLength1 = tailoringFabricLeftDao.getTheoryLength(reelNumber);
         Double theoryLength2 = tailoringFabricRecordDao.getTheoryLength(reelNumber);
-        if(theoryLength1==null&&theoryLength2==null){
+        if (theoryLength1 == null && theoryLength2 == null) {
             return 0.0;
         }
-        if(theoryLength1==null){
+        if (theoryLength1 == null) {
             return theoryLength2;
         }
-        if(theoryLength2==null){
+        if (theoryLength2 == null) {
             return theoryLength1;
         }
-        return Math.min(theoryLength1,theoryLength2);
+        return Math.min(theoryLength1, theoryLength2);
     }
 
-    public List<TailoringFabricLeftPo>  getFabricLefts(String reelNumber) {
+    public List<TailoringFabricLeftPo> getFabricLefts(String reelNumber) {
 
-        TailoringFabricLeftPo po =tailoringFabricLeftDao.findByReelNumberEquals(reelNumber);
-        if(po==null){
+        TailoringFabricLeftPo po = tailoringFabricLeftDao.findByReelNumberEquals(reelNumber);
+        if (po == null) {
             return new ArrayList<>();
-        }else {
-            return tailoringFabricLeftDao.findByUuidEqualsAndTypeEquals(po.getUuid(),"1");
+        } else {
+            return tailoringFabricLeftDao.findByUuidEqualsAndTypeEquals(po.getUuid(), "1");
         }
     }
 }

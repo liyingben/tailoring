@@ -2,7 +2,7 @@ package com.tailoring.yewu.controller.api;
 
 
 import com.tailoring.yewu.common.ActionResult;
-import com.tailoring.yewu.entity.po.WorkOrderPo;
+import com.tailoring.yewu.entity.vo.WorkOrderVo;
 import com.tailoring.yewu.service.WorkOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,15 +25,21 @@ public class WorkOrderApi {
     @Autowired
     private WorkOrderService workOrderService;
 
-
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ApiOperation(value = "工单列表", notes = "注意问题点")
-    public ActionResult<Page<WorkOrderPo>> workOrders(@RequestParam String startTime, @RequestParam String endTime, @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
-            Pageable pageable) {
-        Page<WorkOrderPo> orders = workOrderService.select(startTime, endTime, pageable);
+    public ActionResult<Page<WorkOrderVo>> workOrders(@RequestParam String startTime, @RequestParam String endTime,
+                                                      @RequestParam(required = false) String fabricCode,
+                                                      @RequestParam(required = false) String dept,
+                                                      @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+
+
+
+
+
+
+        Page<WorkOrderVo> orders = workOrderService.select(startTime, endTime,fabricCode,dept, pageable);
         return new ActionResult<>(orders);
     }
-
 
 }

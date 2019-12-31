@@ -12,7 +12,7 @@ public class WorkOrderDto extends WorkOrderPo implements Serializable {
     private String typeNumber;
     private String fabricCode;
     private Double fabricWidth;
-    private String changeRate;
+    private Double changeRate;
     private String fabricColour;
 
 }

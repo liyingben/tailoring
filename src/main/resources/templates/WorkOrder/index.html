@@ -3,74 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
-    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
-        <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabsClick">
-            <el-tab-pane label="查询工单" name="WorkOrder">
-                <div class="block">
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
+        <el-tab-pane label="查询工单" name="WorkOrder">
 
+            <el-form :inline="true" :model="findForm" class="demo-form-inline">
+                <el-form-item label="出货时间">
                     <el-date-picker
-                            v-model="startEndDate"
-                            type="daterange"
-                            align="right"
-                            value-format="yyyy-MM-dd HH:mm:ss"
                             :default-time="['00:00:00', '23:59:59']"
-
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
+                            :picker-options="pickerOptions"
+                            align="right"
                             end-placeholder="结束日期"
-                            :picker-options="pickerOptions">
+                            range-separator="至"
+
+                            start-placeholder="开始日期"
+                            type="daterange"
+                            unlink-panels
+                            v-model="startEndDate"
+                            value-format="yyyy-MM-dd HH:mm:ss">
                     </el-date-picker>
-                    <el-button @click="queryWorkOrders" type="primary">查询</el-button>
+                </el-form-item>
+                <el-form-item label="布料编号">
+                    <el-input placeholder="布料编号" v-model="findForm.fabricCode"></el-input>
+                </el-form-item>
+
+                <el-form-item label="车间">
+                    <el-input placeholder="车间" v-model="findForm.dept"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="planTableQuery" type="primary">查询</el-button>
+                </el-form-item>
+                <el-form-item>
                     <el-button @click="addOrders()" type="primary">添加</el-button>
-                </div>
-                <el-container>
-                <el-table ref="workOrderTable"
-                          :data="orderData.content"
-                          :row-class-name="tableRowClassName">
+                </el-form-item>
+            </el-form>
+
+            <el-container>
+                <el-table :data="orderData.content"
+                          :row-class-name="tableRowClassName"
+                          sortable="custom"
+                          @sort-change="sortChange"
+                          ref="workOrderTable">
                     <el-table-column type="selection">
                     </el-table-column>
 
                     <el-table-column
+                            label="加工单号"
                             prop="workOrderNo"
-                            sortable
-                            label="加工单号" >
+                            sortable>
                     </el-table-column>
                     <el-table-column
-                            prop="productCode"
-                            label="产品编码">
+                            label="产品编码"
+                            prop="productCode">
                     </el-table-column>
                     <el-table-column
-                            prop="productLineNo"
-                            label="产品行号">
+                            label="产品行号"
+                            prop="productLineNo">
                     </el-table-column>
                     <el-table-column
+                            label="工单数量"
                             prop="workOrderQuantity"
-                            sortable
-                            label="工单数量" width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="boxQuantity"
-                            sortable
-                            label="装箱数量" width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="bindingQuantity"
-                            label="扎单数量" width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="description"
-                            label="描述" >
+                            sortable >
                     </el-table-column>
 
                     <el-table-column
-                            prop="dueDate"
-                            sortable
+                            label="计划数量"
+                            prop="quantity"
+                            >
+                    </el-table-column>
+                    <el-table-column
+                            label="完成数量"
+                            prop="workQuantity"
+                             >
+                    </el-table-column>
+                    <el-table-column
+                            label="装箱数量"
+                            prop="boxQuantity"
+                            >
+                    </el-table-column>
+                    <el-table-column
+                            label="扎单数量"
+                            prop="bindingQuantity" >
+                    </el-table-column>
+
+                    <el-table-column
+                            label="版号"
+                            prop="typeNumber">
+                    </el-table-column>
+                    <el-table-column
+                            label="布料编号"
+                            prop="fabricCode">
+                    </el-table-column>
+                    <el-table-column
+                            label="车间"
+                            prop="dept">
+                    </el-table-column>
+                    <el-table-column
+                            label="幅宽"
+                            prop="fabricWidth">
+                    </el-table-column>
+                    <el-table-column
+                            label="换片率"
+                            prop="changeRate">
+                    </el-table-column>
+                    <el-table-column
+                            label="颜色"
+                            prop="fabricColour">
+                    </el-table-column>
+
+                    <el-table-column
                             :formatter="formatterDate"
-                            label="出货日期" >
+                            label="出货日期"
+                            prop="dueDate"
+                            sortable>
                     </el-table-column>
 
                     <el-table-column
@@ -81,30 +129,37 @@
                         <template slot-scope="scope">
                             <el-button
                                     @click.native.prevent="addOrder(scope.row)"
-                                    type="text"
-                                    size="small">
+                                    size="small"
+                                    type="text">
                                 添加
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-                </el-container>
-                <div class="block">
-                    <el-pagination
-                            @size-change="handleSizeChange"
-                            @current-change="orderHandleCurrentChange"
-                            :current-page.sync="currentPage"
-                            :page-size="orderFindForm.size"
-                            layout="total, prev, pager, next"
-                            :total="orderData.totalElements">
-                    </el-pagination>
-                </div>
-            </el-tab-pane>
+            </el-container>
+            <div class="block">
+                <el-pagination
+                        :current-page.sync="currentPage"
+                        :page-size="findForm.size"
+                        :total="orderData.totalElements"
+                        @current-change="orderHandleCurrentChange"
+                        @size-change="handleSizeChange"
+                        layout="total, prev, pager, next">
+                </el-pagination>
+            </div>
+        </el-tab-pane>
 
-            <el-tab-pane :label="tailoringPlanLabel" name="tailoringPlans"  >
-            </el-tab-pane>
+        <el-tab-pane :label="tailoringPlanLabel" name="tailoringPlans">
+        </el-tab-pane>
 
-        </el-tabs>
+        <el-tab-pane label="审核" name="TailoringExamine">
+
+        </el-tab-pane>
+
+        <el-tab-pane label="任务" name="TailoringTask">
+        </el-tab-pane>
+
+    </el-tabs>
 
 </div>
 </body>
@@ -119,9 +174,8 @@
         el: '#app',
         data: function () {
             return {
-                activeName:"WorkOrder",
-                orderData: {content:[],totalElements:0},
-
+                activeName: "WorkOrder",
+                orderData: {content: [], totalElements: 0},
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -149,53 +203,57 @@
                         }
                     }]
                 },
-                startEndDate:  [],
+                startEndDate: [],
 
                 formLabelWidth: '120px',
                 multipleSelection: [],
                 planStatus: {"-1": "已删除", "1": "未完成", "2": "已完成",},
 
-                tailoringPlanLabel:"裁剪计划",
-                newPlanCount:0,
-                orderFindForm: {
+                tailoringPlanLabel: "裁剪计划",
+                newPlanCount: 0,
+                findForm: {
                     startTime: '',
                     endTime: '',
+                    fabricCode:"",
+                    dept:"",
                     page: 0,
-                    size:10,
-                    sort:"dueDate,desc"
+                    size: 10,
+                    sort: "dueDate,desc"
                 },
-                currentPage:1,
+                currentPage: 1,
 
             }
         },
         mounted() {
-            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
+            this.startEndDate = [moment(new Date).format("YYYY-MM-DD 00:00:00"),
                 moment(new Date).format("YYYY-MM-DD 23:59:59")];
-            this.queryWorkOrders();
+            this.planTableQuery();
         },
-        watch:{
-            'form.group':function () {
+        watch: {
+            'form.group': function () {
                 let gs = this.groups.filter((item) => {
                     return item.group == this.form.group
-                });
-                if(gs&&gs[0]){
-                    let g= gs[0];
-                    this.form.member=g.member1+","+g.member2+","+g.member3;
+                }
+            )
+                ;
+                if (gs && gs[0]) {
+                    let g = gs[0];
+                    this.form.member = g.member1 + "," + g.member2 + "," + g.member3;
                 }
             },
-            newPlanCount:function () {
-                if(this.newPlanCount>0){
-                    this.tailoringPlanLabel="裁剪计划 ("+this.newPlanCount+")";
+            newPlanCount: function () {
+                if (this.newPlanCount > 0) {
+                    this.tailoringPlanLabel = "裁剪计划 (" + this.newPlanCount + ")";
                 }
             },
 
         },
         methods: {
             formatterDate: function (row, column) {
-                if(row.dueDate){
+                if (row.dueDate) {
                     var strs = row.dueDate.split("T")
                     return strs.length > 0 ? strs[0] : "";
-                }else{
+                } else {
                     return row.dueDate;
                 }
             },
@@ -205,23 +263,32 @@
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
+            sortChange(obj){
+                if(obj.order){
+                    this.findForm.sort = obj.prop+","+({"ascending":"asc","descending":"desc"}[obj.order]);
+                }else{
+                    this.findForm.sort="";
+                }
+                this.planTableQuery();
+            },
             orderHandleCurrentChange(val) {
-                this.orderFindForm.page = val-1;
-                this.queryWorkOrders();
+                this.findForm.page = val - 1;
+                this.planTableQuery();
                 console.log(`当前页: ${val}`);
             },
             tableRowClassName: function ({row, rowIndex}) {
-                if (rowIndex%2 === 1) {
+                if (rowIndex % 2 === 1) {
                     return 'warning-row';
                 }
                 return '';
             },
-            queryWorkOrders: function () {
+            planTableQuery: function () {
 
-                this.orderFindForm.startTime=this.startEndDate[0];
-                this.orderFindForm.endTime=this.startEndDate[1];
+                this.findForm.startTime = this.startEndDate[0];
+                this.findForm.endTime = this.startEndDate[1];
+
                 axios.get('/workOrders/list', {
-                    params: this.orderFindForm
+                    params: this.findForm
                 }).then((response) => {
                     this.orderData = response.data.data;
                 }).catch(function (error) {
@@ -230,43 +297,53 @@
             },
             addOrders: function () {
                 axios.post('/tailoringPlans/insertByWorkOrder', this.$refs.workOrderTable.selection).then((response) => {
-                    if(response.data.code==200){
-                        this.$message({
-                            message: '裁剪计划添加成功！',
-                            type: 'success'
-                        });
-                        this.newPlanCount+=this.$refs.workOrderTable.selection.length;
-                    }else{
-                        this.$message({
-                            message: response.data.message,
-                            type: 'success'
-                        });
-                    }
+                    if(response.data.code == 200
+            )
+                {
+                    this.$message({
+                        message: '裁剪计划添加成功！',
+                        type: 'success'
+                    });
+                    this.newPlanCount += this.$refs.workOrderTable.selection.length;
+                }
+            else
+                {
+                    this.$message({
+                        message: response.data.message,
+                        type: 'success'
+                    });
+                }
 
-                }).catch(function (error) {
+            }).
+                catch(function (error) {
                     console.log(error);
                 });
             },
             addOrder: function (order) {
                 axios.post('/tailoringPlans/insertByWorkOrder', [order]).then((response) => {
-                    if(response.data.code==200){
+                    if(response.data.code == 200
+            )
+                {
                     this.$message({
                         message: '裁剪计划添加成功！',
                         type: 'success'
                     });
                     this.newPlanCount++;
-                }else{
+                }
+            else
+                {
                     this.$message({
                         message: response.data.message,
                         type: 'error'
                     });
                 }
-                }).catch(function (error)    {
+            }).
+                catch(function (error) {
                     console.log(error);
                 });
             },
-            handleTabsClick:function(event){
-                window.location.href = "/"+event.name
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
             },
         }
     })

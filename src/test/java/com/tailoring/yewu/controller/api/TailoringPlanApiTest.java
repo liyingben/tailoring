@@ -1,19 +1,56 @@
 package com.tailoring.yewu.controller.api;
 
-import com.tailoring.yewu.SpringBootYewuApplicationTests;
+import com.tailoring.yewu.SpringBootStartApplicationTests;
+import com.tailoring.yewu.common.TailoringUtils;
+import com.tailoring.yewu.entity.dto.WorkOrderDto;
+import com.tailoring.yewu.entity.po.WorkOrderPo;
+import com.tailoring.yewu.repository.WorkOrderDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 
-class TailoringPlanApiTest extends SpringBootYewuApplicationTests {
+class TailoringPlanApiTest extends SpringBootStartApplicationTests {
     @Autowired
     TailoringPlanApi tailoringPlanApi;
+
+    @Autowired
+    WorkOrderDao workOrderDao;
+
+
+
+    /**
+     * 创建一个计划
+     */
     @Test
-    void select() {
+    void createPlans() {
 
-        tailoringPlanApi.select("FNA20WHA02",null);
+        WorkOrderPo workOrderPo= workOrderDao.findByWorkOrderNoEqualsAndProductCodeEqualsAndProductLineNoEquals("","","");
+        WorkOrderDto dto =new WorkOrderDto();
+        TailoringUtils.copyProperties(dto,workOrderPo);
+        List<WorkOrderDto> list = new ArrayList();
+        list.add(dto);
+        tailoringPlanApi.insertByWorkOrder(list);
 
-        tailoringPlanApi.select("FNA40GRA02",null);
+    }
+
+
+
+    /**
+     * 创建一个计划
+     */
+    @Test
+    void fabricCodes() {
+        tailoringPlanApi.fabricCodes();
+    }
+
+
+    /**
+     * 创建一个计划
+     */
+    @Test
+    void listForPda() {
+        tailoringPlanApi.listForPda("FNA23YEA01");
     }
 }

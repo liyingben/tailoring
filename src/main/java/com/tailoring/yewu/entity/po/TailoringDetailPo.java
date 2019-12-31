@@ -3,7 +3,10 @@ package com.tailoring.yewu.entity.po;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tailoring.yewu.entity.base.AbstractAuditModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +15,10 @@ import javax.persistence.Table;
 /**
  * 裁剪明细表
  */
+@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tailoring_detail")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
@@ -40,29 +46,29 @@ public class TailoringDetailPo extends AbstractAuditModel {
     /**
      * 工单号: work_order_no
      */
-    @Column(name = "work_order_no")
+    @Column(name = "work_order_no" ,length = 30)
     private String workOrderNo;
 
     /**
      * 版型分组: type_group
      */
-    @Column(name = "type_group")
+    @Column(name = "type_group",length = 2)
     private String typeGroup;
 
     /**
      * 产品行号: product_line_no
      */
-    @Column(name = "product_line_no")
+    @Column(name = "product_line_no" ,length = 11)
     private Integer productLineNo;
 
     /**
      * 产品编码: product_code
      */
-    @Column(name = "product_code")
+    @Column(name = "product_code",length = 50)
     private String productCode;
 
-    @ApiModelProperty(value="主/辅/补",example="主",required = true)
-    @Column(name = "main_supplement")
+    @ApiModelProperty(value = "主/辅/补", example = "主", required = true)
+    @Column(name = "main_supplement",length = 2)
     private String mainSupplement;
     /**
      * 成品数量: product_quantity
@@ -73,7 +79,7 @@ public class TailoringDetailPo extends AbstractAuditModel {
     /**
      * 布料编码: fabric_code
      */
-    @Column(name = "fabric_code")
+    @Column(name = "fabric_code",length = 10)
     private String fabricCode;
 
 
@@ -126,7 +132,7 @@ public class TailoringDetailPo extends AbstractAuditModel {
     /**
      * 详情状态: status
      */
-    @Column(name = "status",columnDefinition = "0")
+    @Column(name = "status", columnDefinition = "0",length = 6)
     private String status;
 }
 

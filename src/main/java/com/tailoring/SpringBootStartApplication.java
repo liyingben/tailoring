@@ -1,7 +1,8 @@
-package com.tailoring.yewu;
+package com.tailoring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * <p>
@@ -10,15 +11,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @package: com.tailoring.yewu
  * @description: 启动类
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/10/28 22:58
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @SpringBootApplication
-public class SpringBootYewuApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(SpringBootYewuApplication.class, args);
-	}
+@EnableCaching
+public class SpringBootStartApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootStartApplication.class, args);
+    }
+
+
 }

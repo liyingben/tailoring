@@ -3,86 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
 
-    <el-tabs type="border-card"  v-model="activeName"  @tab-click="handleTabsClick">
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
 
-        <el-tab-pane label="裁剪" name="TailoringDetail"  >
-
-        </el-tab-pane>
-
-        <el-tab-pane label="布料使用记录"  name="TailoringFabricRecord" >
+        <el-tab-pane label="查询工单" name="WorkOrder">
 
         </el-tab-pane>
 
-        <el-tab-pane label="裁剪布头"  name="TailoringFabricLeft"  >
+        <el-tab-pane label="裁剪计划" name="tailoringPlans">
 
         </el-tab-pane>
+        <el-tab-pane label="审核" name="TailoringExamine">
+        </el-tab-pane>
 
-        <el-tab-pane label="任务"  name="TailoringTask"  >
-            <div class="block">
-                <el-date-picker
-                        v-model="startEndDate"
-                        type="daterange"
-                        align="right"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :default-time="['00:00:00', '23:59:59']"
+        <el-tab-pane label="任务" name="TailoringTask">
+            <el-form :inline="true" :model="findForm" class="demo-form-inline" ref="findForm">
+                <el-form-item label="创建时间">
+                    <el-date-picker
+                            :default-time="['00:00:00', '23:59:59']"
+                            :picker-options="pickerOptions"
+                            align="right"
+                            end-placeholder="结束日期"
+                            range-separator="至"
 
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        :picker-options="pickerOptions">
-                </el-date-picker>
-                <el-button @click="queryTask" type="primary">查询</el-button>
-            </div>
+                            start-placeholder="开始日期"
+                            type="daterange"
+                            unlink-panels
+                            v-model="startEndDate"
+                            value-format="yyyy-MM-dd HH:mm:ss">
+                    </el-date-picker>
+                </el-form-item>
 
-            <el-table ref="taskTable"
-                      :data="tailoringTaskData"
+                <el-form-item>
+                    <el-button @click="queryTask" type="primary">查询</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="dialogFormVisible = true" type="text">最大允许裁剪系数 =
+                        {{form.maxAllowTailoringCoefficient}}
+                    </el-button>
+                </el-form-item>
+
+
+            </el-form>
+            <el-table :data="tailoringTaskData.content"
+                      ref="taskTable"
+                      sortable="custom"
+                      @sort-change="sortChange"
                       stripe
                       style="width: 100%">
 
                 <el-table-column
-                        prop="group"
-                        label="组别">
+                        label="组别"
+                        prop="group">
                 </el-table-column>
                 <el-table-column
-                        prop="member"
-                        label="组员">
+                        label="组员"
+                        prop="member">
                 </el-table-column>
                 <el-table-column
-                        prop="fabricCode"
-                        label="布料编码">
-                </el-table-column>
-
-                <el-table-column
-                        prop="typeGroup"
-                        label="版型分组"
-                        width="150">
-                </el-table-column>
-                <el-table-column
-                        prop="checkName"
-                        label="审核人">
-                </el-table-column>
-                <el-table-column
-                        prop="check_date"
-                        label="审核时间"
-                        width="200">
+                        label="布料编码"
+                        prop="fabricCode">
                 </el-table-column>
 
+
                 <el-table-column
-                        prop="status"
                         :formatter="formatterStatus"
-                        label="状态">
+                        label="状态"
+                        prop="status">
                 </el-table-column>
 
                 <el-table-column
-                        sortable
+                        label="创建时间"
                         prop="createTime"
-                        label="创建时间">
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         fixed="right"
@@ -91,37 +88,75 @@
                     <template slot-scope="scope">
                         <el-button
                                 @click.native.prevent="openTailoringTask(scope.row)"
-                                type="text"
-                                size="small">详情
+                                size="small"
+                                type="text">详情
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            <div class="block">
+                <el-pagination
+                        :current-page.sync="currentPage"
+                        :page-size="findForm.size"
+                        :total="tailoringTaskData.totalElements"
+                        @current-change="handleCurrentChange"
+                        @size-change="handleSizeChange"
+                        layout="total, prev, pager, next">
+                </el-pagination>
+            </div>
+
+
+            <el-dialog :visible.sync="dialogFormVisible" title="编辑" width="30%">
+                <el-form :model="form" :rules="rules">
+                    <el-form-item label="最大允许裁剪系数" prop="maxAllowTailoringCoefficient">
+                        <el-input placeholder="请输入系数" type="number" v-model="form.maxAllowTailoringCoefficient"
+                        ></el-input>
+                    </el-form-item>
+                </el-form>
+                <div class="dialog-footer" slot="footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button @click="saveMaxAllowTailoringCoefficient" type="primary">保 存</el-button>
+                </div>
+            </el-dialog>
         </el-tab-pane>
 
-        <el-tab-pane label="布料消耗"  name="TailoringFabricConsume"  >
-
-        </el-tab-pane>
-
-        <el-tab-pane label="冲销记录"  name="TailoringRecoveryRecord"  >
 
     </el-tabs>
 
 </div>
 </body>
-<script src="http://momentjs.cn/downloads/moment.min.js"></script>
+<script src="downloads/moment.min.js"></script>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="vue/dist/vue.js"></script>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="axios/dist/axios.min.js"></script>
 <script>
     new Vue({
         el: '#app',
         data: function () {
             return {
-                activeName:"TailoringTask",
-                tailoringTaskData: [],
+                activeName: "TailoringTask",
+                dialogFormVisible: false,
+                findForm: {
+                    startTime: '',
+                    endTime: '',
+                    page: 0,
+                    size: 10,
+                    sort: "createTime,desc"
+                },
+                form: {
+                    maxAllowTailoringCoefficient: 0,
+                },
+                rules: {
+                    maxAllowTailoringCoefficient: [
+                        {required: true, message: '请输入数字', trigger: 'blur'}
+                    ],
+
+                },
+
+                tailoringTaskData: {content: [], totalElements: 0},
+                currentPage: 1,
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -149,17 +184,16 @@
                         }
                     }]
                 },
-                startEndDate:  [],
+                startEndDate: [],
                 formLabelWidth: '120px',
                 multipleSelection: [],
-                taskStatus: {"-1": "已删除", "1": "正常状态", "2": "开始任务", "3": "提交任务", "4": "通过完成","5": "没通过完成",},
-                groups:[]
+                taskStatus: {"-1": "已删除", "1": "初始状态", "2": "任务开始", "3": "提交审核", "4": "审核通过", "5": "审核没通过",},
+                groups: []
             }
         },
         mounted() {
-            this.startEndDate=[moment(new Date).format("YYYY-MM-DD 00:00:00"),
-                moment(new Date).format("YYYY-MM-DD 23:59:59")];
             this.queryTask();
+            this.queryMaxAllowTailoringCoefficient();
         },
         methods: {
             formatterDate: function (row, column) {
@@ -169,23 +203,78 @@
             formatterStatus: function (row, column) {
                 return this.taskStatus[row.status + ""];
             },
-            handleTabsClick:function(event){
-                window.location.href = "/"+event.name
+            sortChange(obj){
+                if(obj.order){
+                    this.findForm.sort = obj.prop+","+({"ascending":"asc","descending":"desc"}[obj.order]);
+                }else{
+                    this.findForm.sort="";
+                }
+                this.planTableQuery();
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.findForm.page = val - 1;
+                this.planTableQuery();
+                console.log(`当前页: ${val}`);
+            },
+            handleTabsClick: function (event) {
+                window.location.href = "/" + event.name
             },
             queryTask: function () {
+                this.findForm.startTime = this.startEndDate[0];
+                this.findForm.endTime = this.startEndDate[1];
+
                 axios.get('/api/tailoringTask/selectByDate', {
-                    params: {
-                        startTime: this.startEndDate[0],
-                        endTime: this.startEndDate[1]
-                    }
+                    params: this.findForm
                 }).then((response) => {
                     this.tailoringTaskData = response.data.data;
-                }).catch(function (error) {
+            }).
+                catch(function (error) {
                     console.log(error);
                 });
             },
+            queryMaxAllowTailoringCoefficient: function () {
+
+                axios.get('/api/baseDict/getKey', {
+                    params: {
+                        key: "maxAllowTailoringCoefficient"
+                    }
+                }).then((response) => {
+                    this.form.maxAllowTailoringCoefficient = response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+            saveMaxAllowTailoringCoefficient: function () {
+                this.dialogFormVisible = false;
+                this.$refs['findForm'].validate((valid) => {
+                    if(valid) {
+                        axios.post('/api/baseDict/addKey', {
+                            key: "maxAllowTailoringCoefficient",
+                            value: this.form.maxAllowTailoringCoefficient
+                        }).then((response) => {
+                            this.$message({
+                                message: '保存成功！',
+                                type: 'success'
+                            });
+                    }).
+                        catch(function (error) {
+                            console.log(error);
+                        });
+                    } else {
+                        console.log('error submit!!');
+                return false;
+            }
+            })
+                ;
+
+
+            },
             openTailoringTask: function (row) {
-                window.location.href = "/TailoringTask/examine?id="+row.id
+                window.location.href = "/TailoringTaskDetail?id=" + row.id
             },
         }
     })

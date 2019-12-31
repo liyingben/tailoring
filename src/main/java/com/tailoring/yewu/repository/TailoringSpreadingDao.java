@@ -12,14 +12,16 @@ import org.springframework.stereotype.Repository;
  *
  * @package: com.tailoring.yewu.repository
  * @description: User Dao
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/11/7 14:07
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @Repository
 public interface TailoringSpreadingDao extends JpaRepository<TailoringSpreadingPo, Long> {
-    @Query(value="SELECT max(id) FROM tailoring_spreading where task_id=?1", nativeQuery=true)
-    Long  findMaxIdByTaskId(Long taskId);
+
+    @Query(value = "SELECT max(id) FROM tailoring_spreading where task_id=?1", nativeQuery = true)
+    Long findMaxIdByTaskId(Long taskId);
+
 }

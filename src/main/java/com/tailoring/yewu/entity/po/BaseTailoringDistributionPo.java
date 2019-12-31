@@ -17,22 +17,25 @@ public class BaseTailoringDistributionPo extends AbstractAuditModel {
     /**
      * 组别: group
      */
-    @Column(name="`group`")
+    @Column(name = "`group`",length = 20)
     private String group;
 
     /**
      * 裁剪成员1: member1
      */
+    @Column(name = "member1",length = 40)
     private String member1;
 
     /**
      * 裁剪成员2: member2
      */
+    @Column(name = "member2",length = 40)
     private String member2;
 
     /**
      * 裁剪成员3: member3
      */
+    @Column(name = "member3",length = 40)
     private String member3;
 
     /**
@@ -53,7 +56,7 @@ public class BaseTailoringDistributionPo extends AbstractAuditModel {
     /**
      * 分配比例合计: percent
      */
-    @Column(name="`percent`")
+    @Column(name = "`percent`")
     private Integer percent;
 
 }

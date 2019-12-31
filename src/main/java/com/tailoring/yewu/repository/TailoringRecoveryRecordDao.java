@@ -14,11 +14,11 @@ import java.util.List;
  *
  * @package: com.tailoring.yewu.repository
  * @description: User Dao
- * @author: yangkai.shen
+ * @author: ben
  * @date: Created in 2018/11/7 14:07
  * @copyright: Copyright (c) 2018
  * @version: V1.0
- * @modified: yangkai.shen
+ * @modified: ben
  */
 @Repository
 public interface TailoringRecoveryRecordDao extends JpaRepository<TailoringRecoveryRecordPo, Long> {
@@ -26,8 +26,12 @@ public interface TailoringRecoveryRecordDao extends JpaRepository<TailoringRecov
      * 根据开始时间和结束时间
      *
      * @param startTime 开始时间
-     * @param endTime    结束时间
+     * @param endTime   结束时间
      * @return
      */
     List<TailoringRecoveryRecordPo> findByCreateTimeBetween(Date startTime, Date endTime);
+
+    TailoringRecoveryRecordPo findByTaskIdEquals(Long taskId);
+
+    TailoringRecoveryRecordPo findByTaskIdIn(List<Long> taskIds);
 }

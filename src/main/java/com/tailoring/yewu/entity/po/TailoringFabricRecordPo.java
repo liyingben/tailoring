@@ -32,34 +32,35 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     /**
      * NO: sort_no
      */
-    @ApiModelProperty(value="NO:",example="4A-9253",required = true)
+    @ApiModelProperty(value = "NO:", example = "4A-9253", required = true)
     @Column(name = "sort_no")
     private String sortNo;
 
     /**
      * 组别: group
      */
-    @ApiModelProperty(value="组别",example="A3",required = true)
-    @Column(name="`group`")
+    @ApiModelProperty(value = "组别", example = "A3", required = true)
+    @Column(name = "`group`",length = 20)
     private String group;
 
     /**
      * 组员: member
      */
-    @ApiModelProperty(value="组员",example="郑德敏,陈善云,",required = true)
+    @ApiModelProperty(value = "组员", example = "郑德敏,陈善云,", required = true)
+    @Column(name = "member",length = 40)
     private String member;
 
     /**
      * 布料编码: fabric_code
      */
-    @Column(name = "fabric_code")
+    @Column(name = "fabric_code",length = 10)
     private String fabricCode;
 
     /**
      * 产品编码: product_code
      */
-    @ApiModelProperty(value="产品编码",example="10000",required = true)
-    @Column(name = "product_code")
+    @ApiModelProperty(value = "产品编码", example = "10000", required = true)
+    @Column(name = "product_code",length = 50)
     private String productCode;
 
     /**
@@ -77,13 +78,13 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     /**
      * 布料卷号: reel_number
      */
-    @Column(name = "reel_number")
+    @Column(name = "reel_number",length = 25)
     private String reelNumber;
 
     /**
      * 布批号: lot_number
      */
-    @Column(name = "lot_number")
+    @Column(name = "lot_number",length = 6)
     private String lotNumber;
 
     /**
@@ -130,7 +131,7 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     /**
      * 换片数量: change_pieces_quantity
      */
-    @ApiModelProperty(value="换片数量",example="4",required = true)
+    @ApiModelProperty(value = "换片数量", example = "4", required = true)
     @Column(name = "change_pieces_quantity")
     private Integer changePiecesQuantity;
 
@@ -144,9 +145,8 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
      * 出货日期
      */
     @Column(name = "due_date")
-    @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd",timezone="GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date dueDate;
-
 
 
 }

@@ -24,25 +24,25 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class TailoringSpreadingPo extends AbstractAuditModel {
 
-    @ApiModelProperty(value="taskID",example="1",required = true)
+    @ApiModelProperty(value = "taskID", example = "1", required = true)
     @Column(name = "task_id")
     private Long taskId;
 
-    @ApiModelProperty(value="拉布次数",example="10",required = true)
+    @ApiModelProperty(value = "拉布次数", example = "10", required = true)
     @Column(name = "spreading_count")
     private Integer spreadingCount;
 
-    @ApiModelProperty(value="层数（层高）",example="50",required = true)
+    @ApiModelProperty(value = "层数（层高）", example = "50", required = true)
     private Integer floor;
 
-    @ApiModelProperty(value="拉布长度",example="15",required = true)
+    @ApiModelProperty(value = "拉布长度", example = "15", required = true)
     private Integer quantity;
 
-    @ApiModelProperty(value="卷数",example="15",required = true)
+    @ApiModelProperty(value = "卷数", example = "15", required = true)
     @Column(name = "reel_count")
     private Integer reelCount;
 
-    @ApiModelProperty(value="计划数",example="15",required = true)
+    @ApiModelProperty(value = "计划数", example = "15", required = true)
     @Column(name = "plan_count")
     private Integer planCount;
 

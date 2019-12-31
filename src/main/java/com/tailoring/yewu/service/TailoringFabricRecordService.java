@@ -55,6 +55,6 @@ public class TailoringFabricRecordService {
         } catch (ParseException e) {
             e.printStackTrace();
             return new ArrayList<>();
-    }
+        }
     }
 }

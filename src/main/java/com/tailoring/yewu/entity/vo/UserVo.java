@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 public class UserVo implements Serializable {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
     private Integer id;
 
     private String address;

@@ -16,10 +16,6 @@ public class TailoringFabricConsumeService {
     @Autowired
     private TailoringFabricConsumeDao tailoringFabricConsumeDao;
 
-    public TailoringFabricConsumePo select(TailoringFabricConsumePo query) {
-        return tailoringFabricConsumeDao.getOne(query.getId());
-    }
-
     public List<TailoringFabricConsumePo> selectByDate(String startTime, String endTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {

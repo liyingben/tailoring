@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/WorkOrder")
-@Api(value="裁剪计划controller",tags={"裁剪计划操作接口"})
+@Api(value = "裁剪计划controller", tags = {"裁剪计划操作接口"})
 public class WorkOrderView {
 
     @GetMapping

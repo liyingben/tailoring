@@ -2,27 +2,28 @@ package com.tailoring.yewu.controller.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tailoring.yewu.SpringBootYewuApplicationTests;
+import com.tailoring.yewu.SpringBootStartApplicationTests;
 import com.tailoring.yewu.common.ActionResult;
 import com.tailoring.yewu.entity.dto.TailoringFabricInsertDto;
-import com.tailoring.yewu.entity.dto.TailoringPlanDto;
+import com.tailoring.yewu.entity.dto.TailoringTaskPlanDto;
 import com.tailoring.yewu.entity.dto.TailoringSpreadingDto;
 import com.tailoring.yewu.entity.vo.TailoringSpreadingResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-
-public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
+public class TailoringTaskApiTest extends SpringBootStartApplicationTests {
     @Autowired
     TailoringTaskApi tailoringTaskApi;
+
     @Test
     void createTask() {
 
-        List<TailoringPlanDto> tailoringPlans = createTailoringPlansId();
+        List<TailoringTaskPlanDto> tailoringPlans = createTailoringPlansId();
         ObjectMapper mapper = new ObjectMapper();
 
         //对象转化为Json
@@ -49,10 +50,10 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         tailoringSpreadingDto.setSpreadingCount(5);
         tailoringSpreadingDto.setQuantity(20);
         tailoringSpreadingDto.setFloor(5);
-        List<TailoringFabricInsertDto> fabrics= creategFabrics();
+        List<TailoringFabricInsertDto> fabrics = creategFabrics();
 
         tailoringSpreadingDto.setFabrics(fabrics);
-        List<TailoringPlanDto> tailoringPlans =createTailoringPlans();
+        List<TailoringTaskPlanDto> tailoringPlans = createTailoringPlans();
         tailoringSpreadingDto.setTailoringPlans(tailoringPlans);
 
 
@@ -69,7 +70,6 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         System.out.println(json);
 
         ActionResult<TailoringSpreadingResultVo> result = tailoringTaskApi.spreading(tailoringSpreadingDto);
-
 
 
         try {
@@ -91,14 +91,15 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         tailoringSpreadingDto.setSpreadingCount(6);
         tailoringSpreadingDto.setQuantity(20);
         tailoringSpreadingDto.setFloor(5);
-        List<TailoringFabricInsertDto> fabrics= creategFabrics();
+        List<TailoringFabricInsertDto> fabrics = creategFabrics();
 
         tailoringSpreadingDto.setFabrics(fabrics);
-        List<TailoringPlanDto>  tailoringPlans =createTailoringPlansId();
+        List<TailoringTaskPlanDto> tailoringPlans = createTailoringPlansId();
         tailoringSpreadingDto.setTailoringPlans(tailoringPlans);
         ActionResult<TailoringSpreadingResultVo> result = tailoringTaskApi.spreading(tailoringSpreadingDto);
 
     }
+
     @Test
     void spreading3() {
         Long taskId = 100L;
@@ -108,14 +109,15 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         tailoringSpreadingDto.setSpreadingCount(5);
         tailoringSpreadingDto.setQuantity(10);
         tailoringSpreadingDto.setFloor(5);
-        List<TailoringFabricInsertDto> fabrics= creategFabrics();
+        List<TailoringFabricInsertDto> fabrics = creategFabrics();
 
         tailoringSpreadingDto.setFabrics(fabrics);
-        List<TailoringPlanDto>  tailoringPlans =createTailoringPlansId();
+        List<TailoringTaskPlanDto> tailoringPlans = createTailoringPlansId();
         tailoringSpreadingDto.setTailoringPlans(tailoringPlans);
         ActionResult<TailoringSpreadingResultVo> result = tailoringTaskApi.spreading(tailoringSpreadingDto);
 
     }
+
     @Test
     void spreading4() {
         Long taskId = 100L;
@@ -125,17 +127,17 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         tailoringSpreadingDto.setSpreadingCount(1);
         tailoringSpreadingDto.setQuantity(10);
         tailoringSpreadingDto.setFloor(2);
-        List<TailoringFabricInsertDto> fabrics= creategLastFabrics();
+        List<TailoringFabricInsertDto> fabrics = creategLastFabrics();
 
         tailoringSpreadingDto.setFabrics(fabrics);
-        List<TailoringPlanDto>  tailoringPlans =createTailoringPlansId();
+        List<TailoringTaskPlanDto> tailoringPlans = createTailoringPlansId();
         tailoringSpreadingDto.setTailoringPlans(tailoringPlans);
         ActionResult<TailoringSpreadingResultVo> result = tailoringTaskApi.spreading(tailoringSpreadingDto);
     }
 
 
-    private List<TailoringFabricInsertDto> creategFabrics(){
-        List<TailoringFabricInsertDto> fabrics= new ArrayList<>();
+    private List<TailoringFabricInsertDto> creategFabrics() {
+        List<TailoringFabricInsertDto> fabrics = new ArrayList<>();
         TailoringFabricInsertDto dto = new TailoringFabricInsertDto();
         dto.setTheoryLength(800.0);
         dto.setTheoryFabricWidth(1.5);
@@ -169,8 +171,8 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         return fabrics;
     }
 
-    private List<TailoringFabricInsertDto> creategLastFabrics(){
-        List<TailoringFabricInsertDto> fabrics= new ArrayList<>();
+    private List<TailoringFabricInsertDto> creategLastFabrics() {
+        List<TailoringFabricInsertDto> fabrics = new ArrayList<>();
         TailoringFabricInsertDto dto = new TailoringFabricInsertDto();
         dto.setTheoryLength(800.0);
         dto.setTheoryFabricWidth(1.5);
@@ -208,9 +210,9 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
     }
 
 
-    private List<TailoringPlanDto> createTailoringPlans(){
-        List<TailoringPlanDto> tailoringPlans =new ArrayList<>();
-        TailoringPlanDto dto = new TailoringPlanDto();
+    private List<TailoringTaskPlanDto> createTailoringPlans() {
+        List<TailoringTaskPlanDto> tailoringPlans = new ArrayList<>();
+        TailoringTaskPlanDto dto = new TailoringTaskPlanDto();
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-02");
         dto.setTypeGroup("1");
@@ -219,7 +221,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setTypeQuantity(15);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setQuantity(405);
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-03");
@@ -228,7 +230,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setTypeQuantity(15);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-04");
         dto.setQuantity(405);
@@ -237,7 +239,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setTypeQuantity(5);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setQuantity(405);
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-05");
@@ -249,9 +251,9 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         return tailoringPlans;
     }
 
-    private List<TailoringPlanDto> createTailoringPlansId(){
-        List<TailoringPlanDto> tailoringPlans =new ArrayList<>();
-        TailoringPlanDto dto = new TailoringPlanDto();
+    private List<TailoringTaskPlanDto> createTailoringPlansId() {
+        List<TailoringTaskPlanDto> tailoringPlans = new ArrayList<>();
+        TailoringTaskPlanDto dto = new TailoringTaskPlanDto();
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-02");
         dto.setTypeGroup("1");
@@ -261,7 +263,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setId(99l);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setQuantity(405);
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-03");
@@ -271,7 +273,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setId(100l);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-04");
         dto.setQuantity(405);
@@ -281,7 +283,7 @@ public class TailoringTaskApiTest extends SpringBootYewuApplicationTests {
         dto.setId(101l);
         dto.setFloor(5);
         tailoringPlans.add(dto);
-        dto = new TailoringPlanDto();
+        dto = new TailoringTaskPlanDto();
         dto.setQuantity(405);
         dto.setWorkOrderNo("2A-9496");
         dto.setProductCode("YY23-T-00-132-05");
