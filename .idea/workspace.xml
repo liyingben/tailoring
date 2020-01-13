@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0201f123-dfd4-4e9a-8f93-ed3e3dd9d8cb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_ehcache_ehcache_2_10_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_cache_2_2_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_2_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_2_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_core_5_2_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_web_5_2_0_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_2_0_RELEASE.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/tailoring_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/tailoring_war.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/tailoring_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/tailoring_war_exploded.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="0201f123-dfd4-4e9a-8f93-ed3e3dd9d8cb" name="Default Changelist" comment="idea配置变动">
+      <change afterPath="$PROJECT_DIR$/logs/spring-boot-demo-log-aop/info.created_on_2020-01-13.part_0.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
@@ -62,34 +52,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/common/StatusEnum.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="55" column="27" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="58" />
-              <folding>
-                <element signature="e#1869#1870#0" expanded="true" />
-                <element signature="e#1896#1897#0" expanded="true" />
-                <element signature="e#1927#1928#0" expanded="true" />
-                <element signature="e#1954#1955#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringTaskPlanPo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-4">
               <caret line="105" column="7" selection-start-line="105" selection-start-column="7" selection-end-line="105" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/service/TailoringDetailService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -112,29 +78,47 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/controller/api/TailoringDetailApi.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+            <state relative-caret-position="181">
+              <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/dto/TailoringSpreadingDto.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringOrderPo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-129">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="200">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/dto/TailoringFabricLeftsDto.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringPlanPo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="12" column="30" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="36" />
+            <state relative-caret-position="-2305">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringSpreadingPo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringFabricRecordPo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -371,6 +355,17 @@
             <path>
               <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
               <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="logs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="logs" type="462c0819:PsiDirectoryNode" />
+              <item name="spring-boot-demo-log-aop" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -378,6 +373,51 @@
               <item name="tailoring" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="yewu" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="yewu" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tailoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tailoring" type="462c0819:PsiDirectoryNode" />
+              <item name="yewu" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="po" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -663,7 +703,7 @@
       <workItem from="1578572426297" duration="253000" />
       <workItem from="1578739011224" duration="1957000" />
       <workItem from="1578750475952" duration="1380000" />
-      <workItem from="1578887958009" duration="14003000" />
+      <workItem from="1578887958009" duration="15133000" />
     </task>
     <task id="LOCAL-00001" summary="首次提交">
       <created>1576239284120</created>
@@ -707,7 +747,21 @@
       <option name="project" value="LOCAL" />
       <updated>1578906831033</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="idea配置变动">
+      <created>1578906867975</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1578906867975</updated>
+    </task>
+    <task id="LOCAL-00008" summary="idea配置变动">
+      <created>1578907139690</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1578907139690</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -743,14 +797,14 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="785307000" />
+    <option name="totallyTimeSpent" value="786437000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.877451" visible="true" weight="0.2553305" />
-      <window_info id="Structure" order="1" sideWeight="0.12254902" side_tool="true" visible="true" weight="0.2553305" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.902439" visible="true" weight="0.19296375" />
+      <window_info id="Structure" order="1" sideWeight="0.09756097" side_tool="true" visible="true" weight="0.19296375" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
@@ -760,7 +814,7 @@
       <window_info id="Web" order="8" side_tool="true" />
       <window_info anchor="bottom" id="File Transfer" order="0" weight="0.28633407" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" visible="true" weight="0.3362256" />
+      <window_info anchor="bottom" id="Find" order="2" visible="true" weight="0.11062907" />
       <window_info anchor="bottom" id="Run" order="3" weight="0.28958786" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.09544469" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
@@ -780,7 +834,7 @@
       <window_info anchor="bottom" id="Problems" order="19" weight="0.329718" />
       <window_info anchor="bottom" id="Database Console" order="20" weight="0.40130153" />
       <window_info anchor="bottom" id="SQL Generator" order="21" weight="0.329718" />
-      <window_info anchor="right" id="Remote Host" order="0" weight="0.23294243" />
+      <window_info anchor="right" id="Remote Host" order="0" visible="true" weight="0.23294243" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
@@ -788,7 +842,7 @@
       <window_info anchor="right" id="Palette" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="SciView" order="7" weight="0.32995737" />
-      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.1663113" />
+      <window_info anchor="right" id="Database" order="8" weight="0.1663113" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Redis Servers" order="11" />
@@ -1023,38 +1077,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/doc/delete.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/559e190b-e108-43cf-af3d-118e12956c30/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="209" selection-start-line="209" selection-end-line="209" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/controller/api/TailoringFabricRecordApi.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="44" selection-start-line="44" selection-end-line="55" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/controller/api/TailoringExamineApi.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="34" column="42" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="46" />
-          <folding>
-            <element signature="e#1105#1106#0" expanded="true" />
-            <element signature="e#1161#1162#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/common/ResultType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -1391,8 +1413,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/controller/api/TailoringDetailApi.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="52" column="5" lean-forward="true" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+        <state relative-caret-position="181">
+          <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringOrderPo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringPlanPo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2305">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringSpreadingPo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/tailoring/yewu/entity/po/TailoringFabricRecordPo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
         </state>
       </provider>
     </entry>
