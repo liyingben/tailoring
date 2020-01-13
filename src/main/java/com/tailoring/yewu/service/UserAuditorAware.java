@@ -1,5 +1,6 @@
 package com.tailoring.yewu.service;
 
+import com.tailoring.user.vo.UserPrincipal;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,7 +20,7 @@ public class UserAuditorAware implements AuditorAware<String> {
             return Optional.of("");
         }
 
-        return Optional.of(((UsernamePasswordAuthenticationToken) authentication.getPrincipal()).getName());
+        return Optional.of(((UserPrincipal) authentication.getPrincipal()).getUsername());
     }
 
 }

@@ -13,6 +13,9 @@ import java.util.List;
 
 class TailoringPlanApiTest extends SpringBootStartApplicationTests {
     @Autowired
+    TailoringPlanPdaApi tailoringPlanPdaApi;
+
+    @Autowired
     TailoringPlanApi tailoringPlanApi;
 
     @Autowired
@@ -42,7 +45,7 @@ class TailoringPlanApiTest extends SpringBootStartApplicationTests {
      */
     @Test
     void fabricCodes() {
-        tailoringPlanApi.fabricCodes();
+        tailoringPlanPdaApi.fabricCodes();
     }
 
 
@@ -51,6 +54,6 @@ class TailoringPlanApiTest extends SpringBootStartApplicationTests {
      */
     @Test
     void listForPda() {
-        tailoringPlanApi.listForPda("FNA23YEA01");
+        tailoringPlanPdaApi.listForPda("FNA23YEA01");
     }
 }

@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <!-- import CSS -->
-    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
-</head>
+<head th:replace="common/common_header::common_header">
+
 <body>
 <div id="app">
 
@@ -74,6 +71,7 @@
                             prop="quantity">
                     </el-table-column>
 
+
                     <el-table-column
                             label="换片数量"
                             prop="changePiecesQuantity">
@@ -95,7 +93,6 @@
                             prop="maxFloor"
                             width="180">
                     </el-table-column>
-
 
                 </el-table>
             </el-container>
@@ -119,7 +116,10 @@
                             label="本次裁剪（手输）"
                             prop="quantity">
                     </el-table-column>
-
+                    <el-table-column
+                            label="已裁剪数量"
+                            prop="workQuantity">
+                    </el-table-column>
                     <el-table-column
                             label="本次换片（手输）"
                             prop="changePiecesQuantity">
@@ -136,7 +136,7 @@
                     </el-table-column>
 
                     <el-table-column
-                            label="件数"
+                            label="版型件数"
                             prop="typeQuantity">
                     </el-table-column>
 
@@ -265,13 +265,7 @@
 
 </div>
 </body>
-<script src="downloads/moment.min.js"></script>
-<!-- import Vue before Element -->
-<script src="vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="element-ui/lib/index.js"></script>
-<script src="axios/dist/axios.min.js"></script>
-<script src="vue-router/dist/vue-router.js"></script>
+
 <script>
     var router = new VueRouter({
         mode: 'history',
@@ -322,7 +316,7 @@
         methods: {
 
             handleTabsClick: function (event) {
-                window.location.href = "/" + event.name
+                window.location.href = "/admin/" + event.name
             },
             getSummaries(param) {
                 const {columns, data} = param;

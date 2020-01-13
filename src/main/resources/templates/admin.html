@@ -51,7 +51,7 @@
                 logining: false,
                 form: {
                     usernameOrEmailOrPhone: 'admin',
-                    password: 'admin'
+                    password: '123456'
                 },
                 /*判断：如果用户没有输入用户名，提示“请输入账号”判断：如果用户没有输入密码，提示“请输入密码”用于表单验证*/
                 rules: {
@@ -76,7 +76,7 @@
                         }).then((response) => {
                             this.logining = false;
                         if (response.data.code == 200) {
-                            window.location.href = "/tailoringPlans"
+                            window.location.href = "/admin/tailoringPlans"
                         } else if (response.data.code == 9019997) {
                             alert("用户名或密码错误");
                         }

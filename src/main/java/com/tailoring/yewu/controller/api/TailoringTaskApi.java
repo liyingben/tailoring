@@ -33,7 +33,6 @@ public class TailoringTaskApi {
     @Autowired
     private TailoringTaskService tailoringTaskService;
 
-
     @RequestMapping(value = "/createTask", method = RequestMethod.POST)
     @ApiOperation(value = "创建裁剪任务 PDA", notes = " 检查三种情况：" +
             " 1 最大可裁剪数量 >=本次裁剪数量；" +
@@ -58,28 +57,14 @@ public class TailoringTaskApi {
     }
 
     @RequestMapping(value = "/spreading", method = RequestMethod.POST)
-    @ApiOperation(value = "拉布 PDA", notes = "通过扫码增加裁剪布料")
+    @ApiOperation(value = "拉布 PDA", notes = "扫码保存")
     public ActionResult<TailoringSpreadingResultVo> spreading(@Valid @RequestBody TailoringSpreadingDto tailoringSpreadingDto) {
         TailoringSpreadingResultVo result = tailoringTaskService.spreading(tailoringSpreadingDto);
+        result.setCode(result.getStatusEnum().getCode());
         ActionResult actionResult = new ActionResult<>(result);
-        //剩余数据量>0 返回1，<0 返回2，不成立返回3,任务已经提交4
-        if ("1".equals(result.getCode().toString())) {
-            actionResult.setMessage("成功");
-        } else if ("2".equals(result.getCode().toString())) {
-            actionResult.setMessage("部分计划完成");
-        } else if ("3".equals(result.getCode().toString())) {
-            actionResult.setMessage("裁剪数量大于最大允许裁剪数量");
-        } else if ("4".equals(result.getCode().toString())) {
-            actionResult.setMessage("任务已经提交");
-        } else if ("5".equals(result.getCode().toString())) {
-            actionResult.setMessage("拉布长度超出理论长度太多");
-        } else if ("6".equals(result.getCode().toString())) {
-            actionResult.setMessage("计划完成");
-        }
-
+        actionResult.setMessage(result.getStatusEnum().getDesc());
         return actionResult;
     }
-
 
     @RequestMapping(value = "/taskDetails", method = RequestMethod.GET)
     @ApiOperation(value = "任务详情", notes = "审核页面显示信息用到接口")
@@ -87,7 +72,6 @@ public class TailoringTaskApi {
         TailoringTaskVo result = tailoringTaskService.taskDetails(id);
         return new ActionResult<>(result);
     }
-
 
     @RequestMapping(value = "/selectByDate", method = RequestMethod.GET)
     @ApiOperation(value = "任务列表列表", notes = "审核的入口")

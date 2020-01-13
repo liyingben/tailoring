@@ -1,5 +1,6 @@
 package com.tailoring.yewu.entity.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tailoring.yewu.entity.base.AbstractAuditModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -80,6 +81,7 @@ public class TailoringExaminePo extends AbstractAuditModel {
     /**
      * 审核时间: check_date
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Column(name = "check_date")
     private java.util.Date checkDate;
 

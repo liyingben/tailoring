@@ -45,4 +45,6 @@ public interface TailoringFabricRecordDao extends JpaRepository<TailoringFabricR
 
     @Query(value = "SELECT max(actual_length) FROM tailoring_fabric_record  where reel_number=?1  ", nativeQuery = true)
     Double getActualLength(String reelNumber);
+
+    TailoringFabricRecordPo findFirstByReelNumberEqualsOrderByIdDesc(String reelNumber);
 }

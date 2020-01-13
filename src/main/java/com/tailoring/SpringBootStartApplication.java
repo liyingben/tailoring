@@ -2,7 +2,11 @@ package com.tailoring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
  * <p>
@@ -23,6 +27,4 @@ public class SpringBootStartApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringBootStartApplication.class, args);
     }
-
-
 }

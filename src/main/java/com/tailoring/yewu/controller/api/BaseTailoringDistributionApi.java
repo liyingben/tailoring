@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2019-10-31 16:43:28
  */
 @RestController
-@RequestMapping("/baseTailoringDistributions")
+@RequestMapping("/api/baseTailoringDistributions")
 @Api(value = "base裁剪人员组合及超省分配比例Api", tags = {"裁剪人员组合及超省分配比例操作接口"})
 public class BaseTailoringDistributionApi {
 

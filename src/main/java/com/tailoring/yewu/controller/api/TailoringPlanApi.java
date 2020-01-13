@@ -31,14 +31,13 @@ import java.util.List;
  * @since 2019-10-31 16:43:28
  */
 @RestController
-@RequestMapping("/tailoringPlans")
+@RequestMapping("/api/tailoringPlans")
 @Api(value = "裁剪计划", tags = {"裁剪计划接口"})
 public class TailoringPlanApi {
 
     @Autowired
     private TailoringPlanService tailoringPlanService;
-    @Autowired
-    private TailoringTaskService tailoringTaskService;
+
 
 
     @ResponseBody
@@ -68,12 +67,14 @@ public class TailoringPlanApi {
     public long updatePlanStatus(@RequestBody TailoringPlanStatusDto dto) {
         return tailoringPlanService.updatePlanStatus(dto.getId(), dto.getStatus());
     }
+
     @ResponseBody
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiOperation(value = "更新裁剪计划状态 Pc", notes = "")
     public long delete(@RequestBody TailoringPlanStatusDto dto) {
         return tailoringPlanService.delete(dto.getId());
     }
+
     @ResponseBody
     @RequestMapping(value = "/updateNotFinishedPlan", method = RequestMethod.POST)
     @ApiOperation(value = "更新未完成计划", notes = "通过比对当前未完成的裁剪计划和ERP系统视图中的加工单+产品编码信息，" +
@@ -107,54 +108,16 @@ public class TailoringPlanApi {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listForPda", method = RequestMethod.GET)
-    @ApiOperation(value = "裁剪计划列表Pda端", notes = "注意问题点")
-    public ActionResult<List<TailoringPlanVo>> listForPda(@ApiParam(name = "fabricCode", value = "布料编码", defaultValue = "FNA15WHB03") @RequestParam(required = false) String fabricCode) {
-        SimpleDateFormat sf = new SimpleDateFormat("mm-dd");
-        List<TailoringPlanPo> tailoringPlan;
-
-        List<TailoringTaskPo> taskPos = tailoringTaskService.notSubmit();
-        //如果没有传状态，先查裁剪没提交，再查询没裁剪的
-
-        if (taskPos.size() > 0) {
-            tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode, StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString());
-        } else {
-            tailoringPlan = tailoringPlanService.findByFabricCodeEqualsAndStatus(fabricCode, StatusEnum.TAILORING_PLAN_STATUS_WAIT.getCode().toString());
-        }
-
-        List<TailoringPlanVo> results = new ArrayList<>();
-        tailoringPlan.forEach(p -> {
-            TailoringPlanVo vo = new TailoringPlanVo();
-            TailoringUtils.copyProperties(vo, p);
-            vo.setDueDateStr(sf.format(p.getDueDate()));
-
-            results.add(vo);
-        });
-        return new ActionResult<>(results);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/fabricCodes", method = RequestMethod.GET)
-    @ApiOperation(value = "布料编号列表 PDA", notes = "查询裁剪计划中未完成订单和未提交订单所有布料编码列表")
-    public ActionResult<List<String>> fabricCodes() {
-        List list = tailoringPlanService.fabricCodes();
-        return new ActionResult<>(list);
-    }
-
-
-
-    @ResponseBody
     @RequestMapping(value = "/findMaxQuantity", method = RequestMethod.POST)
     @ApiOperation(value = "查询计划可以输入的最大值 PC", notes = "")
     public ActionResult findMaxQuantity(@RequestBody List<TailoringPlanPo> pos) {
-
         return new ActionResult(tailoringPlanService.findMaxQuantity(pos));
     }
+
     @ResponseBody
     @RequestMapping(value = "/findMaxChangePiecesQuantity", method = RequestMethod.POST)
     @ApiOperation(value = "查询换片可以输入的最大值 PC", notes = "")
     public ActionResult findMaxChangePiecesQuantity(@RequestBody List<TailoringPlanPo> pos) {
-
-        return new ActionResult(tailoringPlanService.findMaxChangePiecesQuantity(pos));
+        return new ActionResult(tailoringPlanService.simpleMaxChangePiecesQuantity(pos));
     }
 }

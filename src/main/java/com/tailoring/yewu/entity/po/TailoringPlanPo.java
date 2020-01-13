@@ -123,9 +123,13 @@ public class TailoringPlanPo extends AbstractAuditModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private java.util.Date dueDate;
 
-    /**
-     * 差异系数(米): fabric_width_foot
-     */
+    @ApiModelProperty(value = "需求时间", example = "2019-12-11", required = true)
+    @Column(name = "demand_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private java.util.Date demandDate;
+
+
+    @ApiModelProperty(value = "差异系数(米)", example = "1", required = true)
     @Column(name = "fabric_length_difference")
     private Integer fabricLengthDifference;
 

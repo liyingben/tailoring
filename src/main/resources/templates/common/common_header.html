@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header">
+
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link href="../element-ui/lib/theme-chalk/index.css" rel="stylesheet">
+    <script src="../downloads/moment.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="../vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="../element-ui/lib/index.js"></script>
+    <script src="../axios/dist/axios.min.js"></script>
+    <script src="../vue-router/dist/vue-router.js"></script>
+    <script>
+        Vue.prototype.$axios = axios;
+        axios.defaults.withCredentials =true;
+    </script>
+</head>

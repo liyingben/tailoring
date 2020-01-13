@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <!-- import CSS -->
-    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
-</head>
+<head th:replace="common/common_header::common_header">
+
 <body>
 <div id="app">
     <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
@@ -190,8 +187,7 @@
                         <label v-else>{{scope.row.typeNumber}}</label>
                     </template>
                 </el-table-column>
-                <el-table-column
-                        label="主/辅/补">
+                <el-table-column label="主/辅/补">
                     <template slot-scope="scope">
                         <el-select placeholder="请选择主辅补" v-if="['1','2'].indexOf(scope.row.status)>-1"
                                    v-model="scope.row.mainSupplement">
@@ -202,8 +198,7 @@
                         <label v-else>{{scope.row.mainSupplement}}</label>
                     </template>
                 </el-table-column>
-                <el-table-column
-                        label="组别" width="100px">
+                <el-table-column label="组别" width="100px">
                     <template slot-scope="scope">
                         <el-select placeholder="请选择" v-if="['1','2'].indexOf(scope.row.status)>-1"
                                    v-model="scope.row.group" @change="changeGroup(scope.row)">
@@ -216,17 +211,33 @@
                         </el-select>
                         <label v-else>{{scope.row.group}}</label>
                     </template>
-
                 </el-table-column>
+
                 <el-table-column
                         label="组员"
                         prop="member">
                 </el-table-column>
+
                 <el-table-column
-                        :formatter="formatterStatus"
-                        label="计划状态"
-                        prop="status">
+                        :formatter="formatterDate"
+                        label="需求日期"
+                        prop="dueDate"
+                        sortable
+                        width="150">
+                    <template slot-scope="scope">
+                        <el-date-picker
+                                v-if="['1','2'].indexOf(scope.row.status)>-1"
+                                v-model="scope.row.demandDate"
+                                type="date"
+                                placeholder="选择日期">
+                        </el-date-picker>
+
+                        <label v-else>{{scope.row.demandDate}}</label>
+                    </template>
                 </el-table-column>
+
+
+
                 <el-table-column
                         :formatter="formatterDate"
                         label="出货日期"
@@ -234,12 +245,20 @@
                         sortable
                         width="120">
                 </el-table-column>
-
                 <el-table-column
-                        label="创建时间"
-                        prop="createTime"
-                        sortable>
+                        :formatter="formatterStatus"
+                        label="计划状态"
+                        prop="status">
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-tag :hit="true" effect="plain" :type="planStatusType[scope.row.status + '']" disable-transitions>{{ planStatus[scope.row.status + ""] }}</el-tag>-->
+<!--                    </template>-->
                 </el-table-column>
+
+<!--                <el-table-column-->
+<!--                        label="创建时间"-->
+<!--                        prop="createTime"-->
+<!--                        sortable>-->
+<!--                </el-table-column>-->
 
                 <el-table-column
                         fixed="right"
@@ -249,11 +268,12 @@
 
                         <el-button @click.native.prevent="cloneRow(scope.row,scope.$index)"
                                    size="small"
-                                   type="text" >克隆
+                                   type="text" >复制
                         </el-button>
                         <el-button @click.native.prevent="deleteRow(scope.row, -1,scope.$index)"
                                    size="small"
-                                   type="text"
+                                   type="danger"
+
                                    v-if="['1','2'].indexOf(scope.row.status)>-1">删除
                         </el-button>
                     </template>
@@ -281,12 +301,7 @@
 
 </div>
 </body>
-<script src="downloads/moment.min.js"></script>
-<!-- import Vue before Element -->
-<script src="vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="element-ui/lib/index.js"></script>
-<script src="axios/dist/axios.min.js"></script>
+
 <script>
     var v = new Vue({
         el: '#app',
@@ -324,6 +339,7 @@
                 formLabelWidth: '120px',
                 multipleSelection: [],
                 planStatus: {"-1": "删除", "1": "初始", "2": "等待裁剪", "3": "开始裁剪", "4": "裁剪完成", "5": "提交", "6": "裁剪完成",},
+                planStatusType: {"-1": "info", "1": "", "2": "", "3": "", "4": "", "5": "success", "6": "primary"},
                 groups: [],
                 typeNumberMap: {},
                 findFormStatus: [],
@@ -419,11 +435,11 @@
             },
 
             handleTabsClick: function (event) {
-                window.location.href = "/" + event.name
+                window.location.href = "/admin/" + event.name
             },
             //加载组员分组
             loadGroups: function () {
-                axios.get('/baseTailoringDistributions', {}).then((response) => {
+                axios.get('/api/baseTailoringDistributions', {}).then((response) => {
                     this.groups = response.data.data;
                 }).catch(function (error) {
                     console.log(error);
@@ -441,8 +457,9 @@
             planTableQuery: function () {
                 this.findForm.startTime = this.startEndDate[0];
                 this.findForm.endTime = this.startEndDate[1];
-                axios.get('/tailoringPlans/list', {
-                    params: this.findForm
+                axios.get('/api/tailoringPlans/list', {
+                    params: this.findForm,
+                    headers:{"Access-Control-Allow-Credentials": "true"}
                 }).then((response) => {
                     this.planData = response.data.data;
                 }).
@@ -451,7 +468,7 @@
                 });
             },
             updatetNotFinishedPlan: function () {
-                axios.get('/tailoringPlans/updatetNotFinishedPlan', {}).then((response) => {
+                axios.get('/api/tailoringPlans/updatetNotFinishedPlan', {}).then((response) => {
                     // console.log(response);
                 }).catch(function (error) {
                     console.log(error);
@@ -475,11 +492,14 @@
                     }
                 }
 
-                axios.post('/tailoringPlans/insertOrUpdate', this.multipleSelection).then((response) => {
-                    this.$message({
-                        message: response.data.code==200 ? '保存成功！':response.data.message,
-                        type: 'success'
-                    });
+                axios.post('/api/tailoringPlans/insertOrUpdate', this.multipleSelection).then((response) => {
+                    if(response.data.code==200){
+                        this.$message.success('保存成功！');
+                    }else{
+                        this.$message.error(response.data.message);
+
+                    }
+
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -490,7 +510,7 @@
                 });
                 rows.splice(0,0,row);
 
-                axios.post('/tailoringPlans/findMaxQuantity', rows).then((response) => {
+                axios.post('/api/tailoringPlans/findMaxQuantity', rows).then((response) => {
                     row.maxQuantity=response.data.data;
                 }).catch(function (error) {
                     console.log(error);
@@ -504,7 +524,7 @@
                 });
                 rows.splice(0,0,row);
 
-                axios.post('/tailoringPlans/findMaxChangePiecesQuantity', rows).then((response) => {
+                axios.post('/api/tailoringPlans/findMaxChangePiecesQuantity', rows).then((response) => {
                     row.maxChangePiecesQuantity=response.data.data;
                 }).catch(function (error) {
                     console.log(error);
@@ -512,33 +532,26 @@
                 console.log(row)
             },
 
+            //计划数量改变
             changeQuantity: function(row){
                 //超出最大值
                 if(row.quantity>row.maxQuantity){
                     row.quantity = row.maxQuantity
-                    this.$message({
-                        message: "最大值是"+row.maxQuantity,
-                        type: 'success'
-                    });
+                    this.$message.error("最大值是"+row.maxQuantity);
                     return ;
                 }
 
                 if(row.quantity%row.boxQuantity!= 0){
-                    this.$message({
-                        message: "计划数量要是装箱数量的整数倍建议："+(row.quantity-(row.quantity%row.boxQuantity)),
-                        type: 'success'
-                    });
+                    this.$message.error("要装箱整数倍,建议："+(row.quantity-(row.quantity%row.boxQuantity)));
                     return
                 }
             },
+            //换片数量改变
             changeChangePiecesQuantity: function(row){
                 //超出最大值
                 if(row.changePiecesQuantity>row.maxChangePiecesQuantity){
                     row.changePiecesQuantity = row.maxChangePiecesQuantity
-                    this.$message({
-                        message: "最大值是"+row.maxChangePiecesQuantity,
-                        type: 'success'
-                    });
+                    this.$message.error( "最大值是"+row.maxChangePiecesQuantity);
                 }
 
             },
@@ -555,7 +568,7 @@
             updatePlanStatus: function (status) {
                 for (let i = 0; i < this.multipleSelection.length; i++) {
                     this.multipleSelection[i].status = status;
-                    axios.post('/tailoringPlans/updatePlanStatus', {
+                    axios.post('/api/tailoringPlans/updatePlanStatus', {
                         id: this.multipleSelection[i].id, status: status
                     }).then((response) => {
 
@@ -573,12 +586,12 @@
                         if(action == "confirm")
                         {
                             row.status='-1'
-                            axios.post('/tailoringPlans/delete', {
+                            axios.post('/api/tailoringPlans/delete', {
                                 id: row.id
                             }).then((response) => {
-                                if(status == -1){
-                                    this.planData.content.splice(index, 1);
-                                }
+                                // if(status == -1){
+                                //     this.planData.content.splice(index, 1);
+                                // }
                             }).catch(function (error) {
                                 console.log(error);
                             });

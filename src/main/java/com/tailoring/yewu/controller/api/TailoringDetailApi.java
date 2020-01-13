@@ -2,6 +2,7 @@ package com.tailoring.yewu.controller.api;
 
 import com.tailoring.yewu.common.ActionResult;
 import com.tailoring.yewu.entity.dto.TailoringFabricLeftDto;
+import com.tailoring.yewu.entity.dto.TailoringFabricLeftsDto;
 import com.tailoring.yewu.entity.po.TailoringDetailPo;
 import com.tailoring.yewu.entity.vo.TailoringFabricLeftTheoryLengthVo;
 import com.tailoring.yewu.service.TailoringDetailService;
@@ -43,22 +44,19 @@ public class TailoringDetailApi {
     @RequestMapping(value = "toFabricLeft", method = RequestMethod.POST)
     @ApiOperation(value = "扫码删除 PDA", notes = "交扫描布匹写入到布头表")
     public ActionResult toFabricLeft(@Valid @RequestBody List<TailoringFabricLeftDto> list) {
-        tailoringFabricLeftService.save(list);
-        return new ActionResult<>();
+       return  tailoringFabricLeftService.save(list);
     }
 
+    @RequestMapping(value = "toFabricLeft2", method = RequestMethod.POST)
+    public ActionResult toFabricLeft2(@Valid @RequestBody TailoringFabricLeftsDto dto) {
+        return  tailoringFabricLeftService.save(dto);
+    }
 
     @RequestMapping(value = "fabricLeftTheoryLength", method = RequestMethod.GET)
     @ApiOperation(value = "等到布头的理论长度 PDA", notes = "得到布头表的长度")
     public ActionResult<TailoringFabricLeftTheoryLengthVo> fabricLeftTheoryLength(String reelNumber) {
-        List fabricLefts = tailoringFabricLeftService.getFabricLefts(reelNumber);
-
-        TailoringFabricLeftTheoryLengthVo vo = new TailoringFabricLeftTheoryLengthVo();
-        vo.setFagEndList(fabricLefts);
-        vo.setTheoryLength(tailoringFabricLeftService.getTheoryLength(reelNumber));
-        return new ActionResult<>(vo);
+        return new ActionResult<>(tailoringFabricLeftService.getTheoryLengthAndLeftList(reelNumber));
     }
-
 
     @RequestMapping(value = "/selectByDate", method = RequestMethod.GET)
     @ApiOperation(value = "裁剪明细列表 PC", notes = "通过扫码增加裁剪布料")

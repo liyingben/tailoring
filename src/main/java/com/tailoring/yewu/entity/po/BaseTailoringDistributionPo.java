@@ -8,6 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * 裁剪人员组合及超省分配比例
+ */
 @Data
 @Entity
 @Table(name = "base_tailoring_distribution")

@@ -42,4 +42,10 @@ public interface TailoringDetailDao extends JpaRepository<TailoringDetailPo, Lon
     @Query(value = "SELECT min(left_quantity) FROM tailoring_detail where task_id=?1 and product_code=?2", nativeQuery = true)
     Integer findByTaskIdEqualsAndProductCodeEqualsMinLeft(Long taskId, String ProductCode);
 
+    @Query(value = "SELECT min(left_quantity) FROM tailoring_detail where task_id=?1 and tailoring_plan_id=?2", nativeQuery = true)
+    Integer findByTaskIdEqualsAndProductCodeEqualsMinLeft(Long taskId, Long planId);
+
+    @Query(value = "SELECT sum(spreading_quantity) FROM tailoring_detail where task_id=?1 and tailoring_plan_id=?2", nativeQuery = true)
+    Integer findByTaskIdEqualsAndProductCodeEqualsSumQuantity(Long taskId, Long planId);
+
 }

@@ -66,6 +66,26 @@ public class User {
      */
     private Integer sex;
 
+
+
+    /**
+     * 员工ID
+     */
+    @Column(name = "staff_id")
+    private Double staffID;
+
+    /**
+     * 员工工号
+     */
+    @Column(name = "code",length = 20)
+    private String code;
+
+    /**
+     * 员工分配比例
+     */
+    @Column(name = "yie_id_rate")
+    private Double YieIdRate;
+
     /**
      * 状态，启用-1，禁用-0
      */

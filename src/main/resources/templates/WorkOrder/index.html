@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <!-- import CSS -->
-    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
-</head>
+<head th:replace="common/common_header::common_header">
+
 <body>
 <div id="app">
+
     <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
         <el-tab-pane label="查询工单" name="WorkOrder">
 
@@ -163,13 +161,9 @@
 
 </div>
 </body>
-<script src="downloads/moment.min.js"></script>
-<!-- import Vue before Element -->
-<script src="vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="element-ui/lib/index.js"></script>
-<script src="axios/dist/axios.min.js"></script>
+
 <script>
+
     new Vue({
         el: '#app',
         data: function () {
@@ -287,7 +281,7 @@
                 this.findForm.startTime = this.startEndDate[0];
                 this.findForm.endTime = this.startEndDate[1];
 
-                axios.get('/workOrders/list', {
+                axios.get('/api/workOrders/list', {
                     params: this.findForm
                 }).then((response) => {
                     this.orderData = response.data.data;
@@ -296,7 +290,7 @@
                 });
             },
             addOrders: function () {
-                axios.post('/tailoringPlans/insertByWorkOrder', this.$refs.workOrderTable.selection).then((response) => {
+                axios.post('/api/tailoringPlans/insertByWorkOrder', this.$refs.workOrderTable.selection).then((response) => {
                     if(response.data.code == 200
             )
                 {
@@ -320,7 +314,7 @@
                 });
             },
             addOrder: function (order) {
-                axios.post('/tailoringPlans/insertByWorkOrder', [order]).then((response) => {
+                axios.post('/api/tailoringPlans/insertByWorkOrder', [order]).then((response) => {
                     if(response.data.code == 200
             )
                 {
@@ -343,7 +337,7 @@
                 });
             },
             handleTabsClick: function (event) {
-                window.location.href = "/" + event.name
+                window.location.href = "/admin/" + event.name
             },
         }
     })

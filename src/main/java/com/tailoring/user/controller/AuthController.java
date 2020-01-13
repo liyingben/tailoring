@@ -45,13 +45,11 @@ public class AuthController {
     /**
      * 登录
      */
-    @CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmailOrPhone(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtil.createJWT(authentication, loginRequest.getRememberMe());
         //写session

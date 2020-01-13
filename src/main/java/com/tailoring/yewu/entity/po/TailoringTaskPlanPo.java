@@ -69,7 +69,7 @@ public class TailoringTaskPlanPo extends AbstractAuditModel {
      */
     private Integer quantity;
 
-    @ApiModelProperty(value = "最大层高", example = "4")
+    @ApiModelProperty(value = "最大裁剪件数", example = "4")
     @Column(name = "max_quantity")
     private Integer maxQuantity;
 

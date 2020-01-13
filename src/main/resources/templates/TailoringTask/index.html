@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <!-- import CSS -->
-    <link href="element-ui/lib/theme-chalk/index.css" rel="stylesheet">
-</head>
+<head th:replace="common/common_header::common_header">
+
 <body>
 <div id="app">
 
@@ -125,12 +122,7 @@
 
 </div>
 </body>
-<script src="downloads/moment.min.js"></script>
-<!-- import Vue before Element -->
-<script src="vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="element-ui/lib/index.js"></script>
-<script src="axios/dist/axios.min.js"></script>
+
 <script>
     new Vue({
         el: '#app',
@@ -220,7 +212,7 @@
                 console.log(`当前页: ${val}`);
             },
             handleTabsClick: function (event) {
-                window.location.href = "/" + event.name
+                window.location.href = "/admin/" + event.name
             },
             queryTask: function () {
                 this.findForm.startTime = this.startEndDate[0];
@@ -274,7 +266,7 @@
 
             },
             openTailoringTask: function (row) {
-                window.location.href = "/TailoringTaskDetail?id=" + row.id
+                window.location.href = "/admin/TailoringTaskDetail?id=" + row.id
             },
         }
     })

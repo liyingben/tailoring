@@ -13,6 +13,8 @@ import com.tailoring.yewu.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -109,7 +111,6 @@ public class TailoringExamineService {
                 planAndSpreadingIdMap.get(po.getTailoringPlanId()).add(po.getSpreadingId());
             }
 
-
             //布料使用记录列表
             List<TailoringFabricRecordPo> tailoringFabricRecords = tailoringFabricRecordDao.findByTaskIdIn(taskIds);
             Map<Long, ArrayList<TailoringFabricRecordPo>> spreadingIdFabricRecordMap = new HashMap<>();
@@ -150,14 +151,13 @@ public class TailoringExamineService {
             //更新计划状态
             tailoringPlanDao.updateStatusByTaskIds(taskIds, StatusEnum.TAILORING_PLAN_STATUS_SUBMIT.getCode().toString());
 
-
             //布料汇总
             tailoringExamineFabricRecordDao.insertFabricRecord(taskIds, no);
 
             //任务状态为提交
             tailoringTaskDao.updateStatus(taskIds, StatusEnum.TAILORING_TASK_STATUS_SUBMIT.getCode().toString(), no);
 
-
+            String taskIdsStr = taskIds.stream().map( i -> i.toString()).collect(Collectors.joining(",")).toString();
             //创建审核记录
             TailoringExaminePo examinePo = new TailoringExaminePo();
             examinePo.setStatus(StatusEnum.TAILORING_EXAMINE_STATUS_DEFAULT.getCode().toString());
@@ -167,7 +167,7 @@ public class TailoringExamineService {
             examinePo.setFabricCode(fabricCode);
             examinePo.setFabricColour(fabricUsagePo.getFabricColour());
             examinePo.setFabricWidth(fabricUsagePo.getFabricWidthMeter());
-            String taskIdsStr = taskIds.stream().map( i -> i.toString()).collect(Collectors.joining(",")).toString();
+
             examinePo.setTaskIds(taskIdsStr);
             tailoringExamineDao.save(examinePo);
 
@@ -255,7 +255,10 @@ public class TailoringExamineService {
         if (!StatusEnum.TAILORING_EXAMINE_STATUS_DEFAULT.getCode().toString().equals(tailoringExaminePo.getStatus()))
             return 0;
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         tailoringExaminePo.setStatus(StatusEnum.TAILORING_EXAMINE_STATUS_PASS.getCode().toString());
+        tailoringExaminePo.setCheckName(authentication.getName());
+        tailoringExaminePo.setCheckDate(new Date());
         tailoringExamineDao.save(tailoringExaminePo);
 
         List<TailoringExaminePlanPo> tailoringExaminePlanPos = tailoringExaminePlanDao.findByTailoringNoEquals(tailoringExaminePo.getTailoringNo());

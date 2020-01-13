@@ -1,5 +1,6 @@
 package com.tailoring.user.model;
 
+import com.tailoring.yewu.entity.base.AbstractAuditModel;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "sec_group")
-public class Group {
+public class Group extends AbstractAuditModel {
     /**
      * 主键
      */
@@ -31,24 +32,22 @@ public class Group {
     private Long id;
 
     /**
-     * 角色名
+     * 组名
      */
-    private String name;
+    @Column(name = "team",length = 20)
+    private String team;
 
     /**
      * 描述
      */
-    private String description;
+    @Column(name = "team_man",length = 100)
+    private String teamMan;
+
 
     /**
-     * 创建时间
+     * 任务状态: status
      */
-    @Column(name = "create_time")
-    private Long createTime;
+    @Column(name = "status",length = 6)
+    private String status;
 
-    /**
-     * 更新时间
-     */
-    @Column(name = "update_time")
-    private Long updateTime;
 }

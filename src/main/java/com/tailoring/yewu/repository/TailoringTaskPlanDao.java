@@ -37,6 +37,9 @@ public interface TailoringTaskPlanDao extends JpaRepository<TailoringTaskPlanPo,
     @Query(value = "SELECT min(max_quantity) FROM tailoring_task_plan where task_id=?1", nativeQuery = true)
     Integer findMinMaxQuantityByTaskId(Long taskId);
 
+    @Query(value = "SELECT max_quantity FROM tailoring_task_plan where task_id=?1 and tailoring_plan_id=?2", nativeQuery = true)
+    Integer findMinMaxQuantityByTaskId(Long taskId,Long planId);
+
     @Query(value = "SELECT fabric_length_difference FROM tailoring_task_plan where tailoring_plan_id=?1", nativeQuery = true)
     Integer findFabricLengthDifferenceByPlanIdEquals(Long planId);
 }

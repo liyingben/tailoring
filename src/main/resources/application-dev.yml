@@ -1,5 +1,9 @@
 server:
   port: 8182
+  servlet:
+    session:
+      timeout: PT2H
+      tracking-modes: cookie
 
 
 spring:
@@ -46,11 +50,28 @@ custom:
     ignores:
       # 需要过滤的 post 请求
       post:
-        - "**"
-      #        - "/api/auth/login"
-      #        - "/api/auth/logout"
+        - "/api/auth/login"
+        - "/api/auth/logout"
       get:
-        - "/**"
+        - "/admin"
       # 需要过滤的请求，不限方法
       pattern:
-        - "/test/*"
+        - "/admin"
+        - "/tailoring/examine"
+        - "/tailoring/toFabricLeft"
+        - "/tailoring/fabricLeftTheoryLength"
+        - "/tailoringPlans/listForPda"
+        - "/tailoringPlans/fabricCodes"
+        - "/api/tailoringTask/spreading"
+        - "/api/tailoringTask/createTask"
+        - "/api/tailoringTask/fabricCodes"
+        - "/**/*.js"
+        - "/**/*.css"
+        - "/**/*.woff"
+        - "/**/*.ttf"
+        - "/*.ico"
+        - "/webjars/springfox-swagger-ui/css/typography.css"
+        - "/webjars/**"
+        - "/swagger-resources/**"
+        - "/swagger**"
+        - "/v2/**"

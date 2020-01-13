@@ -1,5 +1,6 @@
 package com.tailoring.user.model;
 
+import com.tailoring.user.model.unionkey.UserGroupKey;
 import com.tailoring.user.model.unionkey.UserRoleKey;
 import lombok.Data;
 
@@ -28,5 +29,5 @@ public class UserGroup {
      * 主键
      */
     @EmbeddedId
-    private UserRoleKey id;
+    private UserGroupKey id;
 }

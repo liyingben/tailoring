@@ -16,7 +16,7 @@ public class TailoringTaskVo extends TailoringTaskPo {
     /**
      * 计划信息
      */
-    public List<TailoringTaskPlanPo> plans;
+    public List<TailoringTaskPlanVo> plans;
     /**
      * 裁剪信息
      */

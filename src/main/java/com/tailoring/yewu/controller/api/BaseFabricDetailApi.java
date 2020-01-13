@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2019-10-31 16:43:27
  */
 @RestController
-@RequestMapping("/baseFabricDetails")
+@RequestMapping("/api/baseFabricDetails")
 @Api(value = "base布料明细", tags = {"布料明细操作接口"})
 public class BaseFabricDetailApi {
 

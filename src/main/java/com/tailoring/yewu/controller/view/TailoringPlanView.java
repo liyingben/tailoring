@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2019-10-31 16:43:28
  */
 @Controller
-@RequestMapping("/tailoringPlans")
+@RequestMapping("/admin/tailoringPlans")
 public class TailoringPlanView {
 
     @GetMapping

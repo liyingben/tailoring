@@ -202,9 +202,14 @@ public class TailoringPlanService {
 
     }
 
+    /**
+     * 得到编辑的裁剪计划最大可以设置的裁剪数量，
+     * 剩余计划的数量 = 工单的数量 - 作业计划数量 - 计划的数量
+     * 最大可以设置计划数量 = 当前计划数量 + 剩余计划的数量
+     * @param pos
+     * @return
+     */
     public double findMaxQuantity(List<TailoringPlanPo> pos) {
-
-
         pos = pos.stream().filter(
                 d -> d.getStatus().equals(StatusEnum.TAILORING_PLAN_STATUS_WAIT.getCode().toString())||d.getStatus().equals(StatusEnum.TAILORING_PLAN_STATUS_DEFAULT.getCode().toString())
         ).collect(Collectors.toList());
@@ -235,6 +240,11 @@ public class TailoringPlanService {
         return Math.max(maxQuantity, 0);
     }
 
+    /**
+     *  最大可设置的换片数量
+     * @param pos
+     * @return
+     */
     public double findMaxChangePiecesQuantity(List<TailoringPlanPo> pos) {
 
         pos = pos.stream().filter(
@@ -268,6 +278,24 @@ public class TailoringPlanService {
         return Math.max(maxQuantity, 0);
     }
 
+    /**
+     *  最大可设置的换片数量
+     * @param pos
+     * @return
+     */
+    public double simpleMaxChangePiecesQuantity(List<TailoringPlanPo> pos) {
+
+        TailoringPlanPo po = pos.get(0);
+        double changeRate=0.01;
+        BaseFabricUsagePo baseFabricUsage = baseFabricUsageDao.findByProductCodeEquals(po.getProductCode());
+        if (baseFabricUsage != null) {
+            changeRate = baseFabricUsage.getChangeRate();
+        }
+
+        double maxQuantity = Math.round((po.getQuantity()==null ? 0:po.getQuantity())*changeRate);
+
+        return Math.max(maxQuantity, 0);
+    }
 
 
     /**
@@ -451,7 +479,6 @@ public class TailoringPlanService {
         }
 
         List<TailoringPlanPo> result = new ArrayList<>();
-        //分页
         Iterator integer = tailoringPlanDao.findAll(be).iterator();
         while (integer.hasNext()) {
             result.add((TailoringPlanPo) integer.next());

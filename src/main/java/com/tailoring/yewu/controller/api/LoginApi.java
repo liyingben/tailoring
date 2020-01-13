@@ -11,7 +11,7 @@ import javax.naming.directory.*;
 import java.util.Hashtable;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 @Api(value = "登陆", tags = {"登陆接口"})
 public class LoginApi {
 
