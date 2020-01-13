@@ -1,0 +1,333 @@
+2020-01-14 00:01:52,527 [Thread-6] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:208 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:01:52,539 [Thread-6] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:598 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:01:52,543 [Thread-6] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:350 - HikariPool-1 - Shutdown initiated...
+2020-01-14 00:01:52,549 [Thread-6] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:352 - HikariPool-1 - Shutdown completed.
+2020-01-14 00:01:53,131 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:55 - Starting SpringBootStartApplication on DESKTOP-UT4QCD6 with PID 12900 (E:\workspace_java\tailoring\target\classes started by ben in E:\workspace_java\tailoring)
+2020-01-14 00:01:53,146 [restartedMain] DEBUG [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:56 - Running with Spring Boot v2.2.0.RELEASE, Spring v5.2.0.RELEASE
+2020-01-14 00:01:53,146 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] SpringApplication.java:655 - The following profiles are active: dev
+2020-01-14 00:01:53,693 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-01-14 00:01:53,881 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:182 - Finished Spring Data repository scanning in 186ms. Found 26 repository interfaces.
+2020-01-14 00:01:54,146 [restartedMain] INFO  [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] PostProcessorRegistrationDelegate.java:330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-01-14 00:01:54,365 [restartedMain] WARN  [org.apache.tomcat.util.modeler.Registry] DirectJDKLog.java:173 - The MBean registry cannot be disabled because it has already been initialised
+2020-01-14 00:01:54,396 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:92 - Tomcat initialized with port(s): 8182 (http)
+2020-01-14 00:01:54,396 [restartedMain] INFO  [org.apache.catalina.core.StandardService] DirectJDKLog.java:173 - Starting service [Tomcat]
+2020-01-14 00:01:54,396 [restartedMain] INFO  [org.apache.catalina.core.StandardEngine] DirectJDKLog.java:173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-01-14 00:01:54,443 [restartedMain] INFO  [o.a.c.core.ContainerBase.[Tomcat].[localhost].[/]] DirectJDKLog.java:173 - Initializing Spring embedded WebApplicationContext
+2020-01-14 00:01:54,443 [restartedMain] INFO  [org.springframework.web.context.ContextLoader] ServletWebServerApplicationContext.java:284 - Root WebApplicationContext: initialization completed in 1297 ms
+2020-01-14 00:01:54,709 [restartedMain] INFO  [org.hibernate.jpa.internal.util.LogHelper] LogHelper.java:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-01-14 00:01:54,724 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:110 - HikariPool-2 - Starting...
+2020-01-14 00:01:54,833 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:123 - HikariPool-2 - Start completed.
+2020-01-14 00:01:54,849 [restartedMain] INFO  [org.hibernate.dialect.Dialect] Dialect.java:172 - HHH000400: Using dialect: org.hibernate.dialect.SQLServer2012Dialect
+2020-01-14 00:01:55,474 [restartedMain] INFO  [o.h.e.t.jta.platform.internal.JtaPlatformInitiator] JtaPlatformInitiator.java:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-01-14 00:01:55,474 [restartedMain] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:416 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:01:55,849 [restartedMain] DEBUG [com.tailoring.user.config.JwtAuthenticationFilter] GenericFilterBean.java:242 - Filter 'jwtAuthenticationFilter' configured for use
+2020-01-14 00:01:55,865 [restartedMain] INFO  [o.s.b.d.autoconfigure.OptionalLiveReloadServer] OptionalLiveReloadServer.java:57 - LiveReload server is running on port 35729
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin', GET], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/login', POST], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/logout', POST], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/examine'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/toFabricLeft'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/fabricLeftTheoryLength'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoringPlans/listForPda'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/spreading'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/createTask'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/fabricCodes'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/group/findAll'], []
+2020-01-14 00:01:57,864 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.js'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.css'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.woff'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.ttf'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/*.ico'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/springfox-swagger-ui/css/typography.css'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/**'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger-resources/**'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger**'], []
+2020-01-14 00:01:57,880 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/v2/**'], []
+2020-01-14 00:01:57,895 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3dc6e583, org.springframework.security.web.context.SecurityContextPersistenceFilter@1542a685, org.springframework.security.web.header.HeaderWriterFilter@7bd15553, org.springframework.web.filter.CorsFilter@6dc99035, com.tailoring.user.config.JwtAuthenticationFilter@1d88f8c8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a3384ba, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2b392962, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7196739f, org.springframework.security.web.session.SessionManagementFilter@40012641, org.springframework.security.web.access.ExceptionTranslationFilter@390ed609, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4675c456]
+2020-01-14 00:01:57,911 [restartedMain] INFO  [s.d.s.w.PropertySourcedRequestMappingHandlerMapping] PropertySourcedRequestMappingHandlerMapping.java:69 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-01-14 00:01:58,051 [restartedMain] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:171 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:01:58,083 [restartedMain] INFO  [o.s.b.a.web.servlet.WelcomePageHandlerMapping] WelcomePageHandlerMapping.java:58 - Adding welcome page template: index
+2020-01-14 00:01:58,145 [restartedMain] WARN  [org.thymeleaf.templatemode.TemplateMode] TemplateMode.java:150 - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-01-14 00:01:58,348 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:147 - Context refreshed
+2020-01-14 00:01:58,348 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:150 - Found 1 custom documentation plugin(s)
+2020-01-14 00:01:58,348 [restartedMain] INFO  [s.d.spring.web.scanners.ApiListingReferenceScanner] ApiListingReferenceScanner.java:41 - Scanning for api listing references
+2020-01-14 00:01:58,380 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: getAllPersonNamesWithTraditionalWayUsingPOST_1
+2020-01-14 00:01:58,442 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_1
+2020-01-14 00:01:58,458 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_2
+2020-01-14 00:01:58,458 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_1
+2020-01-14 00:01:58,473 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_2
+2020-01-14 00:01:58,473 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_3
+2020-01-14 00:01:58,473 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: deleteUsingPOST_1
+2020-01-14 00:01:58,567 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_4
+2020-01-14 00:01:58,583 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_5
+2020-01-14 00:01:58,614 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: taskDetailsUsingGET_1
+2020-01-14 00:01:58,614 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: listUsingGET_1
+2020-01-14 00:01:58,629 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:204 - Tomcat started on port(s): 8182 (http) with context path ''
+2020-01-14 00:01:58,629 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:61 - Started SpringBootStartApplication in 5.556 seconds (JVM running for 578.465)
+2020-01-14 00:01:58,629 [restartedMain] INFO  [o.s.b.d.a.ConditionEvaluationDeltaLoggingListener] ConditionEvaluationDeltaLoggingListener.java:63 - Condition evaluation unchanged
+2020-01-14 00:02:41,833 [Thread-10] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:208 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:02:41,833 [Thread-10] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:598 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:02:41,833 [Thread-10] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:350 - HikariPool-2 - Shutdown initiated...
+2020-01-14 00:02:41,833 [Thread-10] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:352 - HikariPool-2 - Shutdown completed.
+2020-01-14 00:02:42,404 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:55 - Starting SpringBootStartApplication on DESKTOP-UT4QCD6 with PID 12900 (E:\workspace_java\tailoring\target\classes started by ben in E:\workspace_java\tailoring)
+2020-01-14 00:02:42,419 [restartedMain] DEBUG [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:56 - Running with Spring Boot v2.2.0.RELEASE, Spring v5.2.0.RELEASE
+2020-01-14 00:02:42,419 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] SpringApplication.java:655 - The following profiles are active: dev
+2020-01-14 00:02:42,919 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-01-14 00:02:43,060 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:182 - Finished Spring Data repository scanning in 140ms. Found 26 repository interfaces.
+2020-01-14 00:02:43,231 [restartedMain] INFO  [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] PostProcessorRegistrationDelegate.java:330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-01-14 00:02:43,356 [restartedMain] WARN  [org.apache.tomcat.util.modeler.Registry] DirectJDKLog.java:173 - The MBean registry cannot be disabled because it has already been initialised
+2020-01-14 00:02:43,388 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:92 - Tomcat initialized with port(s): 8182 (http)
+2020-01-14 00:02:43,388 [restartedMain] INFO  [org.apache.catalina.core.StandardService] DirectJDKLog.java:173 - Starting service [Tomcat]
+2020-01-14 00:02:43,388 [restartedMain] INFO  [org.apache.catalina.core.StandardEngine] DirectJDKLog.java:173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-01-14 00:02:43,419 [restartedMain] INFO  [o.a.c.core.ContainerBase.[Tomcat].[localhost].[/]] DirectJDKLog.java:173 - Initializing Spring embedded WebApplicationContext
+2020-01-14 00:02:43,419 [restartedMain] INFO  [org.springframework.web.context.ContextLoader] ServletWebServerApplicationContext.java:284 - Root WebApplicationContext: initialization completed in 1000 ms
+2020-01-14 00:02:43,763 [restartedMain] INFO  [org.hibernate.jpa.internal.util.LogHelper] LogHelper.java:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-01-14 00:02:43,763 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:110 - HikariPool-3 - Starting...
+2020-01-14 00:02:43,888 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:123 - HikariPool-3 - Start completed.
+2020-01-14 00:02:43,888 [restartedMain] INFO  [org.hibernate.dialect.Dialect] Dialect.java:172 - HHH000400: Using dialect: org.hibernate.dialect.SQLServer2012Dialect
+2020-01-14 00:02:44,513 [restartedMain] INFO  [o.h.e.t.jta.platform.internal.JtaPlatformInitiator] JtaPlatformInitiator.java:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-01-14 00:02:44,513 [restartedMain] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:416 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:02:44,856 [restartedMain] DEBUG [com.tailoring.user.config.JwtAuthenticationFilter] GenericFilterBean.java:242 - Filter 'jwtAuthenticationFilter' configured for use
+2020-01-14 00:02:44,856 [restartedMain] INFO  [o.s.b.d.autoconfigure.OptionalLiveReloadServer] OptionalLiveReloadServer.java:57 - LiveReload server is running on port 35729
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin', GET], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/login', POST], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/logout', POST], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/examine'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/toFabricLeft'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/fabricLeftTheoryLength'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoringPlans/listForPda'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/spreading'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/createTask'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/fabricCodes'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/group/findAll'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.js'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.css'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.woff'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.ttf'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/*.ico'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/springfox-swagger-ui/css/typography.css'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/**'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger-resources/**'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger**'], []
+2020-01-14 00:02:46,679 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/v2/**'], []
+2020-01-14 00:02:46,710 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@25e78c64, org.springframework.security.web.context.SecurityContextPersistenceFilter@37f382b6, org.springframework.security.web.header.HeaderWriterFilter@1f695469, org.springframework.web.filter.CorsFilter@1669e5bc, com.tailoring.user.config.JwtAuthenticationFilter@6cc137df, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3644097e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@63dbc9c3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3796086b, org.springframework.security.web.session.SessionManagementFilter@6f6fc238, org.springframework.security.web.access.ExceptionTranslationFilter@77aec31d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7248c316]
+2020-01-14 00:02:46,725 [restartedMain] INFO  [s.d.s.w.PropertySourcedRequestMappingHandlerMapping] PropertySourcedRequestMappingHandlerMapping.java:69 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-01-14 00:02:46,866 [restartedMain] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:171 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:02:46,897 [restartedMain] INFO  [o.s.b.a.web.servlet.WelcomePageHandlerMapping] WelcomePageHandlerMapping.java:58 - Adding welcome page template: index
+2020-01-14 00:02:46,960 [restartedMain] WARN  [org.thymeleaf.templatemode.TemplateMode] TemplateMode.java:150 - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-01-14 00:02:47,163 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:147 - Context refreshed
+2020-01-14 00:02:47,179 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:150 - Found 1 custom documentation plugin(s)
+2020-01-14 00:02:47,179 [restartedMain] INFO  [s.d.spring.web.scanners.ApiListingReferenceScanner] ApiListingReferenceScanner.java:41 - Scanning for api listing references
+2020-01-14 00:02:47,210 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: getAllPersonNamesWithTraditionalWayUsingPOST_1
+2020-01-14 00:02:47,288 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_1
+2020-01-14 00:02:47,303 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_2
+2020-01-14 00:02:47,303 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_1
+2020-01-14 00:02:47,303 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_2
+2020-01-14 00:02:47,319 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_3
+2020-01-14 00:02:47,319 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: deleteUsingPOST_1
+2020-01-14 00:02:47,382 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_4
+2020-01-14 00:02:47,397 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_5
+2020-01-14 00:02:47,444 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: taskDetailsUsingGET_1
+2020-01-14 00:02:47,444 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: listUsingGET_1
+2020-01-14 00:02:47,460 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:204 - Tomcat started on port(s): 8182 (http) with context path ''
+2020-01-14 00:02:47,460 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:61 - Started SpringBootStartApplication in 5.098 seconds (JVM running for 627.297)
+2020-01-14 00:02:47,460 [restartedMain] INFO  [o.s.b.d.a.ConditionEvaluationDeltaLoggingListener] ConditionEvaluationDeltaLoggingListener.java:63 - Condition evaluation unchanged
+2020-01-14 00:04:10,051 [Thread-17] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:208 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:04:10,066 [Thread-17] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:598 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:04:10,082 [Thread-17] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:350 - HikariPool-3 - Shutdown initiated...
+2020-01-14 00:04:10,082 [Thread-17] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:352 - HikariPool-3 - Shutdown completed.
+2020-01-14 00:04:19,817 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:55 - Starting SpringBootStartApplication on DESKTOP-UT4QCD6 with PID 12900 (E:\workspace_java\tailoring\target\classes started by ben in E:\workspace_java\tailoring)
+2020-01-14 00:04:19,817 [restartedMain] DEBUG [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:56 - Running with Spring Boot v2.2.0.RELEASE, Spring v5.2.0.RELEASE
+2020-01-14 00:04:19,817 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] SpringApplication.java:655 - The following profiles are active: dev
+2020-01-14 00:04:20,113 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-01-14 00:04:20,113 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:182 - Finished Spring Data repository scanning in 0ms. Found 0 repository interfaces.
+2020-01-14 00:04:20,192 [restartedMain] INFO  [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] PostProcessorRegistrationDelegate.java:330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-01-14 00:04:20,238 [restartedMain] WARN  [org.apache.tomcat.util.modeler.Registry] DirectJDKLog.java:173 - The MBean registry cannot be disabled because it has already been initialised
+2020-01-14 00:04:20,270 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:92 - Tomcat initialized with port(s): 8182 (http)
+2020-01-14 00:04:20,270 [restartedMain] INFO  [org.apache.catalina.core.StandardService] DirectJDKLog.java:173 - Starting service [Tomcat]
+2020-01-14 00:04:20,285 [restartedMain] INFO  [org.apache.catalina.core.StandardEngine] DirectJDKLog.java:173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-01-14 00:04:20,317 [restartedMain] INFO  [o.a.c.c.ContainerBase.[Tomcat-1].[localhost].[/]] DirectJDKLog.java:173 - Initializing Spring embedded WebApplicationContext
+2020-01-14 00:04:20,317 [restartedMain] INFO  [org.springframework.web.context.ContextLoader] ServletWebServerApplicationContext.java:284 - Root WebApplicationContext: initialization completed in 485 ms
+2020-01-14 00:04:20,441 [restartedMain] INFO  [org.hibernate.jpa.internal.util.LogHelper] LogHelper.java:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-01-14 00:04:20,441 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:110 - HikariPool-4 - Starting...
+2020-01-14 00:04:20,566 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:123 - HikariPool-4 - Start completed.
+2020-01-14 00:04:20,566 [restartedMain] INFO  [org.hibernate.dialect.Dialect] Dialect.java:172 - HHH000400: Using dialect: org.hibernate.dialect.SQLServer2012Dialect
+2020-01-14 00:04:20,816 [restartedMain] INFO  [o.h.e.t.jta.platform.internal.JtaPlatformInitiator] JtaPlatformInitiator.java:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-01-14 00:04:20,816 [restartedMain] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:416 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:04:20,832 [restartedMain] INFO  [o.s.b.d.autoconfigure.OptionalLiveReloadServer] OptionalLiveReloadServer.java:57 - LiveReload server is running on port 35729
+2020-01-14 00:04:20,895 [restartedMain] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:171 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:04:20,926 [restartedMain] INFO  [o.s.b.a.web.servlet.WelcomePageHandlerMapping] WelcomePageHandlerMapping.java:58 - Adding welcome page template: index
+2020-01-14 00:04:20,957 [restartedMain] WARN  [org.thymeleaf.templatemode.TemplateMode] TemplateMode.java:150 - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-01-14 00:04:21,035 [restartedMain] INFO  [o.s.b.a.s.s.UserDetailsServiceAutoConfiguration] UserDetailsServiceAutoConfiguration.java:86 - 
+
+Using generated security password: 4da3de21-62bd-443b-bea4-0665590b10f0
+
+2020-01-14 00:04:21,066 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1e0a809d, org.springframework.security.web.context.SecurityContextPersistenceFilter@4040a23e, org.springframework.security.web.header.HeaderWriterFilter@6523fdf7, org.springframework.security.web.csrf.CsrfFilter@32f6c5f, org.springframework.security.web.authentication.logout.LogoutFilter@fac4bfd, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@38b5e99b, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@4ceb2ebe, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@10dcc1aa, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6235cdab, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e530a77, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@344603c7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@30a11061, org.springframework.security.web.session.SessionManagementFilter@38757cfb, org.springframework.security.web.access.ExceptionTranslationFilter@67913d9c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6fca646d]
+2020-01-14 00:04:21,129 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:204 - Tomcat started on port(s): 8182 (http) with context path ''
+2020-01-14 00:04:21,129 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:61 - Started SpringBootStartApplication in 1.372 seconds (JVM running for 720.961)
+2020-01-14 00:04:21,129 [restartedMain] INFO  [o.s.b.d.a.ConditionEvaluationDeltaLoggingListener] ConditionEvaluationDeltaLoggingListener.java:58 - Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   SpringBootWebSecurityConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnBean (types: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   UserDetailsServiceAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.authentication.AuthenticationManager' (OnClassCondition)
+      - @ConditionalOnBean (types: org.springframework.security.config.annotation.ObjectPostProcessor; SearchStrategy: all) found bean 'objectPostProcessor'; @ConditionalOnBean (types: org.springframework.security.authentication.AuthenticationManager,org.springframework.security.authentication.AuthenticationProvider,org.springframework.security.core.userdetails.UserDetailsService,org.springframework.security.oauth2.jwt.JwtDecoder,org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   UserDetailsServiceAutoConfiguration#inMemoryUserDetailsManager matched:
+      - @ConditionalOnBean (types: org.springframework.security.oauth2.client.registration.ClientRegistrationRepository; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebSecurityEnablerConfiguration matched:
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnBean (types: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; SearchStrategy: all) found bean 'org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration$DefaultConfigurerAdapter'; @ConditionalOnBean (names: springSecurityFilterChain; ; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+    None
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2020-01-14 00:04:25,772 [Thread-24] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:208 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:04:25,788 [Thread-24] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:598 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:04:25,788 [Thread-24] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:350 - HikariPool-4 - Shutdown initiated...
+2020-01-14 00:04:28,643 [Thread-24] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:352 - HikariPool-4 - Shutdown completed.
+2020-01-14 00:04:29,325 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:55 - Starting SpringBootStartApplication on DESKTOP-UT4QCD6 with PID 12900 (E:\workspace_java\tailoring\target\classes started by ben in E:\workspace_java\tailoring)
+2020-01-14 00:04:29,325 [restartedMain] DEBUG [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:56 - Running with Spring Boot v2.2.0.RELEASE, Spring v5.2.0.RELEASE
+2020-01-14 00:04:29,325 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] SpringApplication.java:655 - The following profiles are active: dev
+2020-01-14 00:04:30,012 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:126 - Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-01-14 00:04:30,184 [restartedMain] INFO  [o.s.d.r.config.RepositoryConfigurationDelegate] RepositoryConfigurationDelegate.java:182 - Finished Spring Data repository scanning in 173ms. Found 26 repository interfaces.
+2020-01-14 00:04:30,403 [restartedMain] INFO  [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] PostProcessorRegistrationDelegate.java:330 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-01-14 00:04:30,543 [restartedMain] WARN  [org.apache.tomcat.util.modeler.Registry] DirectJDKLog.java:173 - The MBean registry cannot be disabled because it has already been initialised
+2020-01-14 00:04:30,668 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:92 - Tomcat initialized with port(s): 8182 (http)
+2020-01-14 00:04:30,668 [restartedMain] INFO  [org.apache.catalina.core.StandardService] DirectJDKLog.java:173 - Starting service [Tomcat]
+2020-01-14 00:04:30,668 [restartedMain] INFO  [org.apache.catalina.core.StandardEngine] DirectJDKLog.java:173 - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-01-14 00:04:30,715 [restartedMain] INFO  [o.a.c.c.ContainerBase.[Tomcat-1].[localhost].[/]] DirectJDKLog.java:173 - Initializing Spring embedded WebApplicationContext
+2020-01-14 00:04:30,715 [restartedMain] INFO  [org.springframework.web.context.ContextLoader] ServletWebServerApplicationContext.java:284 - Root WebApplicationContext: initialization completed in 1390 ms
+2020-01-14 00:04:31,231 [restartedMain] INFO  [org.hibernate.jpa.internal.util.LogHelper] LogHelper.java:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-01-14 00:04:31,246 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:110 - HikariPool-5 - Starting...
+2020-01-14 00:04:35,064 [restartedMain] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:123 - HikariPool-5 - Start completed.
+2020-01-14 00:04:35,064 [restartedMain] INFO  [org.hibernate.dialect.Dialect] Dialect.java:172 - HHH000400: Using dialect: org.hibernate.dialect.SQLServer2012Dialect
+2020-01-14 00:04:35,673 [restartedMain] INFO  [o.h.e.t.jta.platform.internal.JtaPlatformInitiator] JtaPlatformInitiator.java:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-01-14 00:04:35,673 [restartedMain] INFO  [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] AbstractEntityManagerFactoryBean.java:416 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-01-14 00:04:36,189 [restartedMain] DEBUG [com.tailoring.user.config.JwtAuthenticationFilter] GenericFilterBean.java:242 - Filter 'jwtAuthenticationFilter' configured for use
+2020-01-14 00:04:36,220 [restartedMain] INFO  [o.s.b.d.autoconfigure.OptionalLiveReloadServer] OptionalLiveReloadServer.java:57 - LiveReload server is running on port 35729
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin', GET], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/login', POST], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/auth/logout', POST], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/admin'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/examine'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/toFabricLeft'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoring/fabricLeftTheoryLength'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/tailoringPlans/listForPda'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/spreading'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/createTask'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/tailoringTask/fabricCodes'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/api/group/findAll'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.js'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.css'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.woff'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/**/*.ttf'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/*.ico'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/springfox-swagger-ui/css/typography.css'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/webjars/**'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger-resources/**'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/swagger**'], []
+2020-01-14 00:04:40,642 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: Ant [pattern='/v2/**'], []
+2020-01-14 00:04:40,674 [restartedMain] INFO  [o.s.security.web.DefaultSecurityFilterChain] DefaultSecurityFilterChain.java:43 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3fe84c0e, org.springframework.security.web.context.SecurityContextPersistenceFilter@64366117, org.springframework.security.web.header.HeaderWriterFilter@46cb2d8f, org.springframework.web.filter.CorsFilter@1ff671e8, com.tailoring.user.config.JwtAuthenticationFilter@14387926, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2320d6d4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3c98206a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@781add8b, org.springframework.security.web.session.SessionManagementFilter@61565377, org.springframework.security.web.access.ExceptionTranslationFilter@63c492af, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@60baf455]
+2020-01-14 00:04:40,689 [restartedMain] INFO  [s.d.s.w.PropertySourcedRequestMappingHandlerMapping] PropertySourcedRequestMappingHandlerMapping.java:69 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-01-14 00:04:40,845 [restartedMain] INFO  [o.s.scheduling.concurrent.ThreadPoolTaskExecutor] ExecutorConfigurationSupport.java:171 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-01-14 00:04:40,877 [restartedMain] INFO  [o.s.b.a.web.servlet.WelcomePageHandlerMapping] WelcomePageHandlerMapping.java:58 - Adding welcome page template: index
+2020-01-14 00:04:40,939 [restartedMain] WARN  [org.thymeleaf.templatemode.TemplateMode] TemplateMode.java:150 - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-01-14 00:04:41,189 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:147 - Context refreshed
+2020-01-14 00:04:41,189 [restartedMain] INFO  [s.d.s.web.plugins.DocumentationPluginsBootstrapper] DocumentationPluginsBootstrapper.java:150 - Found 1 custom documentation plugin(s)
+2020-01-14 00:04:41,189 [restartedMain] INFO  [s.d.spring.web.scanners.ApiListingReferenceScanner] ApiListingReferenceScanner.java:41 - Scanning for api listing references
+2020-01-14 00:04:41,236 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: getAllPersonNamesWithTraditionalWayUsingPOST_1
+2020-01-14 00:04:41,299 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_1
+2020-01-14 00:04:41,314 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_2
+2020-01-14 00:04:41,314 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_1
+2020-01-14 00:04:41,330 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectUsingGET_2
+2020-01-14 00:04:41,330 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_3
+2020-01-14 00:04:41,345 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: deleteUsingPOST_1
+2020-01-14 00:04:41,457 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_4
+2020-01-14 00:04:41,503 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: selectByDateUsingGET_5
+2020-01-14 00:04:41,550 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: taskDetailsUsingGET_1
+2020-01-14 00:04:41,550 [restartedMain] INFO  [s.d.s.w.r.operation.CachingOperationNameGenerator] CachingOperationNameGenerator.java:40 - Generating unique operation named: listUsingGET_1
+2020-01-14 00:04:41,613 [restartedMain] INFO  [o.s.boot.web.embedded.tomcat.TomcatWebServer] TomcatWebServer.java:204 - Tomcat started on port(s): 8182 (http) with context path ''
+2020-01-14 00:04:41,613 [restartedMain] INFO  [com.tailoring.SpringBootStartApplication] StartupInfoLogger.java:61 - Started SpringBootStartApplication in 12.366 seconds (JVM running for 741.451)
+2020-01-14 00:04:41,613 [restartedMain] INFO  [o.s.b.d.a.ConditionEvaluationDeltaLoggingListener] ConditionEvaluationDeltaLoggingListener.java:58 - Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   SpringBootWebSecurityConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; SearchStrategy: all) found beans of type 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter' securityConfig (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter' (OnClassCondition)
+         - found 'session' scope (OnWebApplicationCondition)
+
+   UserDetailsServiceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.security.authentication.AuthenticationManager,org.springframework.security.authentication.AuthenticationProvider,org.springframework.security.core.userdetails.UserDetailsService,org.springframework.security.oauth2.jwt.JwtDecoder,org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector; SearchStrategy: all) found beans of type 'org.springframework.security.authentication.AuthenticationManager' authenticationManagerBean and found beans of type 'org.springframework.security.core.userdetails.UserDetailsService' customUserDetailsService (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.security.authentication.AuthenticationManager' (OnClassCondition)
+
+   WebSecurityEnablerConfiguration:
+      Did not match:
+         - @ConditionalOnBean (names: springSecurityFilterChain; ; SearchStrategy: all) found beans named springSecurityFilterChain (OnBeanCondition)
+      Matched:
+         - found 'session' scope (OnWebApplicationCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+

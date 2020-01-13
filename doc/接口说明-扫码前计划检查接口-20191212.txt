@@ -1,0 +1,37 @@
+检查三总情况：
+1 最大可裁剪数量 >=本次裁剪数量； 
+2 最大可换片数量 >=本次换片数量； 
+3以及要判断相同版型分组的件数必须相同。
+返回： 
+800101 同版型分组的件数不同；
+800102 本次裁剪数量大于最大可裁剪数量；
+800103 本次换片数量大于换片数量 。
+
+http://39.98.239.104:8182/tailoring/checkDetail 
+
+post,格式：
+
+[
+  {
+    "bindingQuantity": 12,
+    "boxQuantity": 40,
+    "changePiecesQuantity": 4,
+    "dueDate": "2019-12-11",
+    "fabricCode": "FNA15RDB05",
+    "fabricColour": "WH",
+    "fabricWidth": 1.55,
+    "floor": 1,
+    "group": "A3",
+    "id": 23,
+    "length": 1,
+    "mainSupplement": "主",
+    "member": "郑德敏,陈善云,",
+    "productCode": "10000",
+    "productLineNo": 30000,
+    "quantity": 100,
+    "status": "1",
+    "typeGroup": "1",
+    "typeNumber": "27号（共8衣片）",
+    "workOrderNo": "4A-9253"
+  }
+]

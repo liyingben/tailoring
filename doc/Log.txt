@@ -1,0 +1,299 @@
+2019-12-24 17:28:18,917 [http-nio-8182-exec-10] WARN  [org.hibernate.engine.jdbc
+.spi.SqlExceptionHelper] SqlExceptionHelper.java:137 - SQL Error: 515, SQLState:
+ 23000
+2019-12-24 17:28:18,919 [http-nio-8182-exec-10] ERROR [org.hibernate.engine.jdbc
+.spi.SqlExceptionHelper] SqlExceptionHelper.java:142 - Cannot insert the value N
+ULL into column 'id', table 'RFID.dbo.tailoring_plan'; column does not allow nul
+ls. INSERT fails.
+2019-12-24 17:28:18,928 [http-nio-8182-exec-10] ERROR [o.a.c.c.C.[.[localhost].[
+/].[dispatcherServlet]] DirectJDKLog.java:175 - Servlet.service() for servlet [d
+ispatcherServlet] in context with path [] threw exception [Request processing fa
+iled; nested exception is org.springframework.dao.DataIntegrityViolationExceptio
+n: could not execute statement; SQL [n/a]; constraint [null]; nested exception i
+s org.hibernate.exception.ConstraintViolationException: could not execute statem
+ent] with root cause
+com.microsoft.sqlserver.jdbc.SQLServerException: Cannot insert the value NULL in
+to column 'id', table 'RFID.dbo.tailoring_plan'; column does not allow nulls. IN
+SERT fails.
+        at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError
+(SQLServerException.java:262)
+        at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServ
+erStatement.java:1624)
+        at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePrep
+aredStatement(SQLServerPreparedStatement.java:594)
+        at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecC
+md.doExecute(SQLServerPreparedStatement.java:524)
+        at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7194)
+        at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLSe
+rverConnection.java:2979)
+        at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLSer
+verStatement.java:248)
+        at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLS
+erverStatement.java:223)
+        at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.executeUpdate
+(SQLServerPreparedStatement.java:473)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPrep
+aredStatement.java:61)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(Hik
+ariProxyPreparedStatement.java)
+        at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(
+ResultSetReturnImpl.java:197)
+        at org.hibernate.dialect.identity.GetGeneratedKeysDelegate.executeAndExt
+ract(GetGeneratedKeysDelegate.java:57)
+        at org.hibernate.id.insert.AbstractReturningDelegate.performInsert(Abstr
+actReturningDelegate.java:43)
+        at org.hibernate.persister.entity.AbstractEntityPersister.insert(Abstrac
+tEntityPersister.java:3106)
+        at org.hibernate.persister.entity.AbstractEntityPersister.insert(Abstrac
+tEntityPersister.java:3699)
+        at org.hibernate.action.internal.EntityIdentityInsertAction.execute(Enti
+tyIdentityInsertAction.java:84)
+        at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:645)
+        at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(Ac
+tionQueue.java:282)
+        at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java
+:263)
+        at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:317)
+        at org.hibernate.event.internal.AbstractSaveEventListener.addInsertActio
+n(AbstractSaveEventListener.java:335)
+        at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrR
+eplicate(AbstractSaveEventListener.java:292)
+        at org.hibernate.event.internal.AbstractSaveEventListener.performSave(Ab
+stractSaveEventListener.java:198)
+        at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGenera
+tedId(AbstractSaveEventListener.java:128)
+        at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTran
+sient(DefaultPersistEventListener.java:192)
+        at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(De
+faultPersistEventListener.java:135)
+        at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(De
+faultPersistEventListener.java:62)
+        at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEvent
+OnEachListener(EventListenerGroupImpl.java:108)
+        at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:703)
+        at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:689)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at java.lang.reflect.Method.invoke(Unknown Source)
+        at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityMa
+nagerInvocationHandler.invoke(SharedEntityManagerCreator.java:314)
+        at com.sun.proxy.$Proxy135.persist(Unknown Source)
+        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.s
+ave(SimpleJpaRepository.java:554)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at java.lang.reflect.Method.invoke(Unknown Source)
+        at org.springframework.data.repository.core.support.RepositoryCompositio
+n$RepositoryFragments.invoke(RepositoryComposition.java:371)
+        at org.springframework.data.repository.core.support.RepositoryCompositio
+n.invoke(RepositoryComposition.java:204)
+        at org.springframework.data.repository.core.support.RepositoryFactorySup
+port$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.ja
+va:657)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.data.repository.core.support.RepositoryFactorySup
+port$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:621)
+        at org.springframework.data.repository.core.support.RepositoryFactorySup
+port$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:605)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.data.projection.DefaultMethodInvokingMethodInterc
+eptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.transaction.interceptor.TransactionAspectSupport.
+invokeWithinTransaction(TransactionAspectSupport.java:353)
+        at org.springframework.transaction.interceptor.TransactionInterceptor.in
+voke(TransactionInterceptor.java:99)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.dao.support.PersistenceExceptionTranslationInterc
+eptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.data.jpa.repository.support.CrudMethodMetadataPos
+tProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetada
+taPostProcessor.java:178)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invok
+e(ExposeInvocationInterceptor.java:93)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynami
+cAopProxy.java:212)
+        at com.sun.proxy.$Proxy170.save(Unknown Source)
+        at com.tailoring.yewu.service.TailoringPlanService.createPlan(TailoringP
+lanService.java:134)
+        at com.tailoring.yewu.controller.api.TailoringPlanApi.insertByWorkOrder(
+TailoringPlanApi.java:46)
+        at com.tailoring.yewu.controller.api.TailoringPlanApi$$FastClassBySpring
+CGLIB$$b40575b0.invoke(<generated>)
+        at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:2
+18)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.invokeJoinpoint(CglibAopProxy.java:769)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:163)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.proceed(CglibAopProxy.java:747)
+        at org.springframework.aop.framework.adapter.MethodBeforeAdviceIntercept
+or.invoke(MethodBeforeAdviceInterceptor.java:56)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.proceed(CglibAopProxy.java:747)
+        at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.p
+roceed(MethodInvocationProceedingJoinPoint.java:88)
+        at com.tailoring.yewu.aspectj.AopLog.aroundLog(AopLog.java:88)
+        at sun.reflect.GeneratedMethodAccessor244.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at java.lang.reflect.Method.invoke(Unknown Source)
+        at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMet
+hodWithGivenArgs(AbstractAspectJAdvice.java:644)
+        at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMet
+hod(AbstractAspectJAdvice.java:633)
+        at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAro
+undAdvice.java:70)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.proceed(CglibAopProxy.java:747)
+        at org.springframework.aop.framework.adapter.AfterReturningAdviceInterce
+ptor.invoke(AfterReturningAdviceInterceptor.java:55)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.proceed(CglibAopProxy.java:747)
+        at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invok
+e(ExposeInvocationInterceptor.java:93)
+        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(
+ReflectiveMethodInvocation.java:186)
+        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation
+.proceed(CglibAopProxy.java:747)
+        at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterce
+ptor.intercept(CglibAopProxy.java:689)
+        at com.tailoring.yewu.controller.api.TailoringPlanApi$$EnhancerBySpringC
+GLIB$$12edf87f.insertByWorkOrder(<generated>)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+        at java.lang.reflect.Method.invoke(Unknown Source)
+        at org.springframework.web.method.support.InvocableHandlerMethod.doInvok
+e(InvocableHandlerMethod.java:190)
+        at org.springframework.web.method.support.InvocableHandlerMethod.invokeF
+orRequest(InvocableHandlerMethod.java:138)
+        at org.springframework.web.servlet.mvc.method.annotation.ServletInvocabl
+eHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106)
+        at org.springframework.web.servlet.mvc.method.annotation.RequestMappingH
+andlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:888)
+        at org.springframework.web.servlet.mvc.method.annotation.RequestMappingH
+andlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+        at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapt
+er.handle(AbstractHandlerMethodAdapter.java:87)
+        at org.springframework.web.servlet.DispatcherServlet.doDispatch(Dispatch
+erServlet.java:1040)
+        at org.springframework.web.servlet.DispatcherServlet.doService(Dispatche
+rServlet.java:943)
+        at org.springframework.web.servlet.FrameworkServlet.processRequest(Frame
+workServlet.java:1006)
+        at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServ
+let.java:909)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)
+        at org.springframework.web.servlet.FrameworkServlet.service(FrameworkSer
+vlet.java:883)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:231)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53
+)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter
+.java:92)
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerR
+equestFilter.java:119)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at com.tailoring.user.config.JwtAuthenticationFilter.doFilterInternal(Jw
+tAuthenticationFilter.java:61)
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerR
+equestFilter.java:119)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.springframework.security.web.FilterChainProxy.doFilterInternal(Fi
+lterChainProxy.java:209)
+        at org.springframework.security.web.FilterChainProxy.doFilter(FilterChai
+nProxy.java:178)
+        at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(D
+elegatingFilterProxy.java:358)
+        at org.springframework.web.filter.DelegatingFilterProxy.doFilter(Delegat
+ingFilterProxy.java:271)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.springframework.web.filter.RequestContextFilter.doFilterInternal(
+RequestContextFilter.java:100)
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerR
+equestFilter.java:119)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.springframework.web.filter.FormContentFilter.doFilterInternal(For
+mContentFilter.java:93)
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerR
+equestFilter.java:119)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.springframework.web.filter.CharacterEncodingFilter.doFilterIntern
+al(CharacterEncodingFilter.java:201)
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerR
+equestFilter.java:119)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:193)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:166)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperV
+alve.java:202)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextV
+alve.java:96)
+        at org.apache.catalina.authenticator.AuthenticatorBase.invoke(Authentica
+torBase.java:526)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.j
+ava:139)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.j
+ava:92)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineVal
+ve.java:74)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.jav
+a:343)
+        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java
+:408)
+        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLig
+ht.java:66)
+        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(Abstract
+Protocol.java:861)
+        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpo
+int.java:1579)
+        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBas
+e.java:49)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskTh
+read.java:61)
+        at java.lang.Thread.run(Unknown Source)

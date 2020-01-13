@@ -1,0 +1,13 @@
+审核接口。
+
+http://39.98.239.104:8182/api/tailoringExamine/examine
+
+
+
+code ：200 成功，800200 没有裁剪数据
+
+{
+  "code": 800200,
+  "message": "没有裁剪数据",
+  "data": null
+}

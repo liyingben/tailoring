@@ -1,0 +1,149 @@
+检查三总情况：
+1 最大可裁剪数量 >=本次裁剪数量； 
+2 最大可换片数量 >=本次换片数量； 
+3以及要判断相同版型分组的件数必须相同。
+
+以前的检查接口：http://39.98.239.104:8182/tailoring/checkDetail 替换成下边的接口
+http://39.98.239.104:8182/api/tailoringTask/createTask
+
+post,格式：
+
+[
+  {
+    "id": 99,
+    "createTime": null,
+    "updateTime": null,
+    "workOrderNo": "2A-9496",
+    "typeNumber": null,
+    "group": null,
+    "member": null,
+    "mainSupplement": null,
+    "quantity": 405,
+    "dueDate": null,
+    "productLineNo": null,
+    "productCode": "YY23-T-00-132-02",
+    "fabricCode": null,
+    "fabricWidth": null,
+    "fabricColour": null,
+    "boxQuantity": null,
+    "bindingQuantity": null,
+    "changePiecesQuantity": 5,
+    "status": null,
+    "maxQuantity": null,
+    "maxChangePiecesQuantity": null,
+    "typeQuantity": 15,
+    "typeGroup": "1",
+    "floor": 5
+  },
+  {
+    "id": 100,
+    "createTime": null,
+    "updateTime": null,
+    "workOrderNo": "2A-9496",
+    "typeNumber": null,
+    "group": null,
+    "member": null,
+    "mainSupplement": null,
+    "quantity": 405,
+    "dueDate": null,
+    "productLineNo": null,
+    "productCode": "YY23-T-00-132-03",
+    "fabricCode": null,
+    "fabricWidth": null,
+    "fabricColour": null,
+    "boxQuantity": null,
+    "bindingQuantity": null,
+    "changePiecesQuantity": 5,
+    "status": null,
+    "maxQuantity": null,
+    "maxChangePiecesQuantity": null,
+    "typeQuantity": 15,
+    "typeGroup": "1",
+    "floor": 5
+  },
+  {
+    "id": 101,
+    "createTime": null,
+    "updateTime": null,
+    "workOrderNo": "2A-9496",
+    "typeNumber": null,
+    "group": null,
+    "member": null,
+    "mainSupplement": null,
+    "quantity": 405,
+    "dueDate": null,
+    "productLineNo": null,
+    "productCode": "YY23-T-00-132-04",
+    "fabricCode": null,
+    "fabricWidth": null,
+    "fabricColour": null,
+    "boxQuantity": null,
+    "bindingQuantity": null,
+    "changePiecesQuantity": 5,
+    "status": null,
+    "maxQuantity": null,
+    "maxChangePiecesQuantity": null,
+    "typeQuantity": 5,
+    "typeGroup": "2",
+    "floor": 5
+  },
+  {
+    "id": 102,
+    "createTime": null,
+    "updateTime": null,
+    "workOrderNo": "2A-9496",
+    "typeNumber": null,
+    "group": null,
+    "member": null,
+    "mainSupplement": null,
+    "quantity": 405,
+    "dueDate": null,
+    "productLineNo": null,
+    "productCode": "YY23-T-00-132-05",
+    "fabricCode": null,
+    "fabricWidth": null,
+    "fabricColour": null,
+    "boxQuantity": null,
+    "bindingQuantity": null,
+    "changePiecesQuantity": 5,
+    "status": null,
+    "maxQuantity": null,
+    "maxChangePiecesQuantity": null,
+    "typeQuantity": 5,
+    "typeGroup": "3",
+    "floor": 5
+  }
+]
+
+
+
+返回结果：
+
+id： 是taskId ，扫码保存的时候要待会去，这样就知道我们保存拉布是那个任务，
+code： 
+200    表示成功
+800101 同版型分组的件数不同；
+800102 本次裁剪数量大于最大可裁剪数量；
+800103 本次换片数量大于换片数量 。
+{
+  "code": 200,
+  "message": "成功",
+  "data": {
+    "resultType": null,
+    "id": 91
+  }
+}
+
+
+resultType 也是这个结构
+{
+  "code": 800101,
+  "message": "同版型分组的件数不同；",
+}
+
+不为空的情况
+code：
+800101 同版型分组的件数不同；
+800102 本次裁剪数量大于最大可裁剪数量；
+800103 本次换片数量大于换片数量 。
+

@@ -1,0 +1,70 @@
+1 通过扫码保存 ，增加裁剪布料
+
+http://39.98.239.104:8182/tailoring/detail   
+
+post,格式：
+
+{
+  "fabrics": [
+    {
+      "actualFabricWidth": 1.5,
+      "fabricCode": "FNA15RDB05",
+      "lotNumber": 123,
+      "reelNumber": 1212,
+      "theoryFabricWidth": 1.4,
+      "theoryLength": 150
+    }
+  ],
+  "floor": 50,
+  "quantity": 15,
+  "spreadingCount": 10,
+  "tailoringId": 1,
+  "tailoringPlans": [
+    {
+      "bindingQuantity": 12,
+      "boxQuantity": 40,
+      "changePiecesQuantity": 4,
+      "dueDate": "2019-12-11",
+      "fabricCode": "FNA15RDB05",
+      "fabricColour": "WH",
+      "fabricWidth": 1.55,
+      "floor": 1,
+      "group": "A3",
+      "id": 15,
+      "length": 1,
+      "mainSupplement": "主",
+      "member": "郑德敏,陈善云,",
+      "productCode": "10000",
+      "productLineNo": 30000,
+      "quantity": 1,
+      "status": "1",
+      "typeGroup": "1",
+      "typeNumber": "27号（共8衣片）",
+      "workOrderNo": "4A-9253"
+    }
+  ]
+}
+
+2 删除保存到布头表
+http://39.98.239.104:8182/tailoring/toFabricLeft
+
+post,格式：
+
+[
+  {
+    "actualFabricWidth": 1.5,
+    "fabricCode": "FNA15RDB05",
+    "lotNumber": 123,
+    "reelNumber": 1212,
+    "theoryFabricWidth": 1.4,
+    "theoryLength": 150
+  }
+]
+
+3 提交计划给主任审核
+http://39.98.239.104:8182/tailoring/examine
+
+post ，无参数
+
+4 得到理论长度
+http://39.98.239.104:8182/tailoring/fabricLeftTheoryLength?reelNumber=4000RA9B04E1R1T19056L2B04
