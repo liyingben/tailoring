@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="yewu.war">
+    <root id="archive" name="tailoring-1.0-SNAPSHOT-dev.war">
       <element id="artifact" artifact-name="tailoring:war exploded" />
     </root>
   </artifact>

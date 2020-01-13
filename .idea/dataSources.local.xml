@@ -29,7 +29,7 @@
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
       <secret-storage>master_key</secret-storage>
       <user-name>sa</user-name>
-      <introspection-schemas>XIANAV2:@</introspection-schemas>
+      <introspection-schemas>XIANAV2:@|XIANAV3:@</introspection-schemas>
     </data-source>
   </component>
 </project>
