@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/common_header::common_header">
+
+<body>
+<div id="app">
+
+    <el-tabs @tab-click="handleTabsClick" type="border-card" v-model="activeName">
+
+        <el-tab-pane label="查询工单" name="WorkOrder">
+
+        </el-tab-pane>
+
+        <el-tab-pane label="裁剪计划" name="tailoringPlans">
+
+        </el-tab-pane>
+
+
+        <el-tab-pane label="审核" name="TailoringExamine">
+            <div class="block">
+                <el-date-picker
+                        :default-time="['00:00:00', '23:59:59']"
+                        :picker-options="pickerOptions"
+                        align="right"
+                        end-placeholder="结束日期"
+                        range-separator="至"
+
+                        start-placeholder="开始日期"
+                        type="daterange"
+                        unlink-panels
+                        v-model="startEndDate"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+                <el-button @click="queryExamine" type="primary">查询</el-button>
+            </div>
+
+            <el-table :data="tailoringExamineData.content"
+                      ref="taskTable"
+                      sortable="custom"
+                      @sort-change="sortChange"
+                      stripe
+                      style="width: 100%">
+
+                <el-table-column
+                        label="组别"
+                        prop="group">
+                </el-table-column>
+                <el-table-column
+                        label="组员"
+                        prop="member">
+                </el-table-column>
+                <el-table-column
+                        label="布料编码"
+                        prop="fabricCode">
+                </el-table-column>
+
+                <el-table-column
+                        label="审核人"
+                        prop="checkName">
+                </el-table-column>
+                <el-table-column
+                        label="审核时间"
+                        prop="checkDate"
+                        width="200">
+                </el-table-column>
+
+                <el-table-column
+                        :formatter="formatterStatus"
+                        label="状态"
+                        prop="status">
+                </el-table-column>
+
+                <el-table-column
+                        label="创建时间"
+                        prop="createTime"
+                        sortable>
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="120">
+                    <template slot-scope="scope">
+                        <el-button
+                                @click.native.prevent="openTailoringExamine(scope.row)"
+                                size="small"
+                                type="text">详情
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="block">
+                <el-pagination
+                        :current-page.sync="currentPage"
+                        :page-size="findForm.size"
+                        :total="tailoringExamineData.totalElements"
+                        @current-change="handleCurrentChange"
+                        @size-change="handleSizeChange"
+                        layout="total, prev, pager, next">
+                </el-pagination>
+            </div>
+
+        </el-tab-pane>
+
+        <el-tab-pane label="任务" name="TailoringTask">
+        </el-tab-pane>
+
+    </el-tabs>
+
+</div>
+</body>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeName: "TailoringExamine",
+                findForm: {
+                    startTime: '',
+                    endTime: '',
+                    page: 0,
+                    size: 10,
+                    sort: "createTime,desc"
+                },
+                tailoringExamineData: {content: [], totalElements: 0},
+                currentPage: 1,
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                startEndDate: [],
+                formLabelWidth: '120px',
+                multipleSelection: [],
+
+                groups: []
+            }
+        },
+        mounted() {
+            this.queryExamine();
+        },
+        methods: {
+            formatterDate: function (row, column) {
+                var strs = row.dueDate.split("T")
+                return strs.length > 0 ? strs[0] : "";
+            },
+            formatterStatus: function (row, column) {
+                let examineStatus = {"-1": "已删除", "1": "提交审核", "2": "审核通过", "3": "审核没通过"};
+                return examineStatus[row.status + ""] || row.status;
+            },
+            sortChange(obj){
+                if(obj.order){
+                    this.findForm.sort = obj.prop+","+({"ascending":"asc","descending":"desc"}[obj.order]);
+                }else{
+                    this.findForm.sort="";
+                }
+                this.planTableQuery();
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.findForm.page = val - 1;
+                this.planTableQuery();
+                console.log(`当前页: ${val}`);
+            },
+            handleTabsClick: function (event) {
+                window.location.href = "/admin/" + event.name
+            },
+            queryExamine: function () {
+                this.findForm.startTime = this.startEndDate[0];
+                this.findForm.endTime = this.startEndDate[1];
+
+                axios.get('/api/tailoringExamine/selectByDate', {
+                    params: this.findForm
+                }).then((response) => {
+                    this.tailoringExamineData = response.data.data;
+            }).
+                catch(function (error) {
+                    console.log(error);
+                });
+            },
+            openTailoringExamine: function (row) {
+                window.location.href = "/admin/TailoringExamineDetail?id=" + row.id
+            },
+        }
+    })
+</script>
+</html>
