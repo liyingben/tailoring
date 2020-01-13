@@ -1,8 +1,10 @@
 package com.tailoring.user.service;
 
+import com.tailoring.user.model.Group;
 import com.tailoring.user.model.Permission;
 import com.tailoring.user.model.Role;
 import com.tailoring.user.model.User;
+import com.tailoring.user.repository.GroupDao;
 import com.tailoring.user.repository.PermissionDao;
 import com.tailoring.user.repository.RoleDao;
 import com.tailoring.user.repository.UserDao;
@@ -36,6 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private GroupDao groupDao;
 
     @Autowired
     private PermissionDao permissionDao;
@@ -49,6 +53,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map(Role::getId)
                 .collect(Collectors.toList());
         List<Permission> permissions = permissionDao.selectByRoleIdList(roleIds);
-        return UserPrincipal.create(user, roles, permissions);
+
+        List<Group> groups = groupDao.selectByUserId(user.getId());
+
+        return UserPrincipal.create(user, roles, permissions,groups);
     }
 }

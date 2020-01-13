@@ -23,7 +23,7 @@ import java.util.List;
  * @modified: ben
  */
 @Repository
-public interface GropDao extends JpaRepository<Group, Long>, JpaSpecificationExecutor<Group> {
+public interface GroupDao extends JpaRepository<Group, Long>, JpaSpecificationExecutor<Group> {
     /**
      * 根据用户id 查询角色列表
      *

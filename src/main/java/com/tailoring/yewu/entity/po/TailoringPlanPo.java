@@ -47,6 +47,10 @@ public class TailoringPlanPo extends AbstractAuditModel {
     @Column(name = "type_number",length = 40)
     private String typeNumber;
 
+    @ApiModelProperty(value = "组id", example = "1", required = true)
+    @Column(name = "group_id")
+    private Long groupId;
+
     @ApiModelProperty(value = "组别", example = "A3", required = true)
     @Column(name = "`group`",length = 20)
     private String group;
@@ -128,11 +132,9 @@ public class TailoringPlanPo extends AbstractAuditModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private java.util.Date demandDate;
 
-
     @ApiModelProperty(value = "差异系数(米)", example = "1", required = true)
     @Column(name = "fabric_length_difference")
     private Integer fabricLengthDifference;
-
 
     @ApiModelProperty(value = "计划状态", example = "1", required = true)
     @Column(name = "status",length = 6)

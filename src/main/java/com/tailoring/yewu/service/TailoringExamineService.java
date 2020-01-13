@@ -1,6 +1,9 @@
 package com.tailoring.yewu.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.tailoring.user.model.Group;
+import com.tailoring.user.util.SecurityUtil;
+import com.tailoring.user.vo.UserPrincipal;
 import com.tailoring.yewu.common.ActionResult;
 import com.tailoring.yewu.common.ResultType;
 import com.tailoring.yewu.common.StatusEnum;
@@ -67,9 +70,11 @@ public class TailoringExamineService {
     @Transactional
     public ActionResult examine() {
 
+        //用户组
+        UserPrincipal userPrincipal = SecurityUtil.getCurrentUser();
+        List<Long> groupids =userPrincipal.getGroups().stream().map(Group::getId).collect(Collectors.toList());
         //未提交的任务
-        List<TailoringTaskPo> tailoringTaskPos = tailoringTaskDao.findByStatusEquals(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString());
-
+        List<TailoringTaskPo> tailoringTaskPos = tailoringTaskDao.findByStatusEqualsAndGroupIdIn(StatusEnum.TAILORING_TASK_STATUS_START.getCode().toString(),groupids);
 
         if(tailoringTaskPos.size()==0){
             List<Long> list = tailoringPlanDao.findByStatusEquals(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString()).stream().map(TailoringPlanPo::getId).distinct().sorted().collect(Collectors.toList());
@@ -163,12 +168,14 @@ public class TailoringExamineService {
             examinePo.setStatus(StatusEnum.TAILORING_EXAMINE_STATUS_DEFAULT.getCode().toString());
             examinePo.setTailoringNo(no);
             examinePo.setGroup(taskPos.get(0).getGroup());
+            examinePo.setGroupId(taskPos.get(0).getGroupId());
             examinePo.setMember(taskPos.get(0).getMember());
             examinePo.setFabricCode(fabricCode);
             examinePo.setFabricColour(fabricUsagePo.getFabricColour());
             examinePo.setFabricWidth(fabricUsagePo.getFabricWidthMeter());
 
             examinePo.setTaskIds(taskIdsStr);
+            examinePo.setUserId(userPrincipal.getId());
             tailoringExamineDao.save(examinePo);
 
         }

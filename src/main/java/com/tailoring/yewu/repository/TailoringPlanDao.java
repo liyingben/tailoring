@@ -42,6 +42,8 @@ public interface TailoringPlanDao extends JpaRepository<TailoringPlanPo, Long>, 
 
     List<TailoringPlanPo> findByStatusEquals(String status);
 
+    List<TailoringPlanPo> findByStatusEqualsAndGroupIdIn(String status,List<Long> groupids);
+
 
     @Query(value = "SELECT sum(quantity) FROM tailoring_plan where work_order_no=?1 and product_code=?2 and product_line_no=?3 and main_supplement=?4 and status in ('1','2','3','4','5','6')", nativeQuery = true)
     Integer findQuantitySumByorder(String workOrderNo, String productCode,Integer productLineNo,String mainSupplement);

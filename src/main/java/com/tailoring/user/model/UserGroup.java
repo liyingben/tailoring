@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * <p>
@@ -23,7 +24,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "sec_user_group")
+@Table(name = "sec_user_group",uniqueConstraints = {@UniqueConstraint(columnNames={"user_id","group_id"})})
 public class UserGroup {
     /**
      * 主键

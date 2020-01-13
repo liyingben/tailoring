@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "sec_user_role")
+@Table(name = "sec_user_role",uniqueConstraints = {@UniqueConstraint(columnNames={"user_id","role_id"})})
 public class UserRole {
     /**
      * 主键

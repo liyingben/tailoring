@@ -3,6 +3,7 @@ package com.tailoring.user.vo;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tailoring.user.common.Consts;
+import com.tailoring.user.model.Group;
 import com.tailoring.user.model.Permission;
 import com.tailoring.user.model.Role;
 import com.tailoring.user.model.User;
@@ -96,12 +97,31 @@ public class UserPrincipal implements UserDetails {
      */
     private List<String> roles;
 
+
     /**
      * 用户权限列表
      */
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions) {
+
+    /**
+     * 组列表
+     */
+    private List<Group> groups;
+//    public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions) {
+//        List<String> roleNames = roles.stream()
+//                .map(Role::getName)
+//                .collect(Collectors.toList());
+//
+//        List<GrantedAuthority> authorities = permissions.stream()
+//                .filter(permission -> StrUtil.isNotBlank(permission.getPermission()))
+//                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+//                .collect(Collectors.toList());
+//
+//        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getPhone(), user.getEmail(), user.getBirthday(), user.getSex(), user.getStatus(), user.getCreateTime(), user.getUpdateTime(), roleNames, authorities);
+//    }
+
+    public static UserPrincipal create(User user, List<Role> roles, List<Permission> permissions,List<Group> groups) {
         List<String> roleNames = roles.stream()
                 .map(Role::getName)
                 .collect(Collectors.toList());
@@ -111,7 +131,7 @@ public class UserPrincipal implements UserDetails {
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toList());
 
-        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getPhone(), user.getEmail(), user.getBirthday(), user.getSex(), user.getStatus(), user.getCreateTime(), user.getUpdateTime(), roleNames, authorities);
+        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getNickname(), user.getPhone(), user.getEmail(), user.getBirthday(), user.getSex(), user.getStatus(), user.getCreateTime(), user.getUpdateTime(), roleNames, authorities,groups);
     }
 
     @Override

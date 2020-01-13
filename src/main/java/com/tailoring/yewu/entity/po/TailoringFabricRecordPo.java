@@ -30,50 +30,16 @@ public class TailoringFabricRecordPo extends AbstractAuditModel {
     private Long spreadingId;
 
     /**
-     * NO: sort_no
-     */
-    @ApiModelProperty(value = "NO:", example = "4A-9253", required = true)
-    @Column(name = "sort_no")
-    private String sortNo;
-
-    /**
-     * 组别: group
-     */
-    @ApiModelProperty(value = "组别", example = "A3", required = true)
-    @Column(name = "`group`",length = 20)
-    private String group;
-
-    /**
-     * 组员: member
-     */
-    @ApiModelProperty(value = "组员", example = "郑德敏,陈善云,", required = true)
-    @Column(name = "member",length = 40)
-    private String member;
-
-    /**
      * 布料编码: fabric_code
      */
     @Column(name = "fabric_code",length = 10)
     private String fabricCode;
 
     /**
-     * 产品编码: product_code
-     */
-    @ApiModelProperty(value = "产品编码", example = "10000", required = true)
-    @Column(name = "product_code",length = 50)
-    private String productCode;
-
-    /**
      * 单次拉布长度: quantity
      */
     @Column(name = "quantity")
     private Integer quantity;
-
-    /**
-     * 总长度（米）: sum_length
-     */
-    @Column(name = "sum_length")
-    private Double sumLength;
 
     /**
      * 布料卷号: reel_number

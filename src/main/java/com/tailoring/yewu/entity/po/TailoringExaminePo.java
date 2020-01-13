@@ -33,6 +33,18 @@ public class TailoringExaminePo extends AbstractAuditModel {
     private String tailoringNo;
 
     /**
+     * 提交人用户id
+     */
+    @Column(name = "user_id")
+    private Long userId;
+
+    /**
+     * 组id
+     */
+    @Column(name = "group_id")
+    private Long groupId;
+
+    /**
      * 组别: group
      */
     @ApiModelProperty(value = "组别", example = "A3", required = true)
@@ -111,6 +123,8 @@ public class TailoringExaminePo extends AbstractAuditModel {
 
     @Column(name = "task_ids")
     private String taskIds;
+
+
 
 
 }

@@ -1,6 +1,9 @@
 package com.tailoring.yewu.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.tailoring.user.model.Group;
+import com.tailoring.user.util.SecurityUtil;
+import com.tailoring.user.vo.UserPrincipal;
 import com.tailoring.yewu.common.ActionResult;
 import com.tailoring.yewu.common.ConstantType;
 import com.tailoring.yewu.common.ResultType;
@@ -453,13 +456,23 @@ public class TailoringPlanService {
 
     public List<String> fabricCodes() {
 
-        List list = tailoringPlanDao.findByStatusEquals(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString()).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
+        UserPrincipal userPrincipal = SecurityUtil.getCurrentUser();
+        if (userPrincipal!=null && userPrincipal.getGroups()!=null) {
+            List<Long> groupids =userPrincipal.getGroups().stream().map(Group::getId).collect(Collectors.toList());
+            List list = tailoringPlanDao.findByStatusEqualsAndGroupIdIn(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString(),groupids).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
 
-        if (list.size() == 0) {
-            list = tailoringPlanDao.findByStatusEquals(StatusEnum.TAILORING_PLAN_STATUS_WAIT.getCode().toString()).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
+            if (list.size() == 0) {
+                list = tailoringPlanDao.findByStatusEqualsAndGroupIdIn(StatusEnum.TAILORING_PLAN_STATUS_WAIT.getCode().toString(),groupids).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
+            }
+            return list;
+        }else {
+            List list = tailoringPlanDao.findByStatusEquals(StatusEnum.TAILORING_PLAN_STATUS_START.getCode().toString()).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
+
+            if (list.size() == 0) {
+                list = tailoringPlanDao.findByStatusEquals(StatusEnum.TAILORING_PLAN_STATUS_WAIT.getCode().toString()).stream().map(TailoringPlanPo::getFabricCode).distinct().sorted().collect(Collectors.toList());
+            }
+            return list;
         }
-//        list.add(0, ConstantType.FABRIC_CODE_ALL.getDesc());
-        return list;
     }
 
     /**
@@ -476,6 +489,12 @@ public class TailoringPlanService {
         BooleanExpression be = qTailoringPlanPo.status.eq(status);
         if (!StringUtils.isEmpty(fabricCode) && !ConstantType.FABRIC_CODE_ALL.getDesc().equals(fabricCode)) {
             be = be.and(qTailoringPlanPo.fabricCode.eq(fabricCode));
+        }
+
+        UserPrincipal userPrincipal = SecurityUtil.getCurrentUser();
+        if (userPrincipal!=null && userPrincipal.getGroups()!=null) {
+            be = be.and(qTailoringPlanPo.groupId.in(userPrincipal.getGroups().stream().map(Group::getId)
+                    .collect(Collectors.toList())));
         }
 
         List<TailoringPlanPo> result = new ArrayList<>();

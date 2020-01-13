@@ -180,12 +180,17 @@ public class JwtUtil {
         if (StrUtil.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+        bearerToken = request.getParameter("token");
+        if (StrUtil.isNotBlank(bearerToken) ) {
+            return bearerToken;
+        }
         if (request.getSession().getAttribute(Consts.SESSION_KEY) != null) {
             return request.getSession().getAttribute(Consts.SESSION_KEY).toString();
         } else {
             return null;
         }
     }
+
 
 
 }

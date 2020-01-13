@@ -31,6 +31,18 @@ public class TailoringTaskPo extends AbstractAuditModel {
     private String tailoringNo;
 
     /**
+     * 用户id
+     */
+    @Column(name = "user_id")
+    private Long userId;
+
+    /**
+     * 组id
+     */
+    @Column(name = "group_id")
+    private Long groupId;
+
+    /**
      * 组别: group
      */
     @ApiModelProperty(value = "组别", example = "A3", required = true)

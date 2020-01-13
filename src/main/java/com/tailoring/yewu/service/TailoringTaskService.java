@@ -1,6 +1,8 @@
 package com.tailoring.yewu.service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.tailoring.user.util.SecurityUtil;
+import com.tailoring.user.vo.UserPrincipal;
 import com.tailoring.yewu.common.ResultType;
 import com.tailoring.yewu.common.StatusEnum;
 import com.tailoring.yewu.common.TailoringUtils;
@@ -154,6 +156,7 @@ public class TailoringTaskService {
     public TailoringTaskPo createTask(List<TailoringTaskPlanDto> tailoringPlans) {
         String fabricCode = tailoringPlans.get(0).getFabricCode();
         String group = tailoringPlans.get(0).getGroup();
+        Long groupid = tailoringPlans.get(0).getGroupId();
         String member = tailoringPlans.get(0).getMember();
         BaseFabricDetailPo baseFabricDetailPo = baseFabricDetailDao.findFirstByFabricCodeEquals(fabricCode);
         //最大允许裁剪数量系数
@@ -168,10 +171,16 @@ public class TailoringTaskService {
         }
         TailoringTaskPo po = new TailoringTaskPo();
         po.setGroup(group);
+        po.setGroupId(groupid);
         po.setMember(member);
         po.setFabricCode(fabricCode);
         po.setStatus(StatusEnum.TAILORING_TASK_STATUS_DEFAULT.getCode().toString());
         po.setIsControlFabric(baseFabricDetailPo.getIsControlFabric());
+        UserPrincipal userPrincipal = SecurityUtil.getCurrentUser();
+        if(userPrincipal!=null) {
+            po.setUserId(userPrincipal.getId());
+        }
+
 
         //布匹号是否要求一致
         po.setIsControlFabric(baseFabricDetailPo.getIsControlFabric());

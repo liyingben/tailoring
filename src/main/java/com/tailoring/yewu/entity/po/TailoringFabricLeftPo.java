@@ -31,18 +31,16 @@ public class TailoringFabricLeftPo extends AbstractAuditModel {
     private String uuid;
 
     /**
-     * 组别: group
+     * 用户id
      */
-    @ApiModelProperty(value = "组别", example = "A3", required = true)
-    @Column(name = "`group`",length = 20)
-    private String group;
+    @Column(name = "user_id")
+    private Long userId;
 
     /**
-     * 组员: member
+     * 组id
      */
-    @ApiModelProperty(value = "组员", example = "郑德敏,陈善云,", required = true)
-    @Column(name = "member",length = 40)
-    private String member;
+    @Column(name = "group_id")
+    private Long groupId;
 
     /**
      * 布料编码: fabric_code

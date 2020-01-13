@@ -35,9 +35,9 @@
                     <el-select placeholder="请选择"
                                v-model="findForm.group">
                         <el-option
-                                :key="item.group"
-                                :label="item.group"
-                                :value="item.group"
+                                :key="item.team"
+                                :label="item.team"
+                                :value="item.team"
                                 v-for="item in groups">
                         </el-option>
                     </el-select>
@@ -203,9 +203,9 @@
                         <el-select placeholder="请选择" v-if="['1','2'].indexOf(scope.row.status)>-1"
                                    v-model="scope.row.group" @change="changeGroup(scope.row)">
                             <el-option
-                                    :key="item.group"
-                                    :label="item.group"
-                                    :value="item.group"
+                                    :key="item.team"
+                                    :label="item.team"
+                                    :value="item.team"
                                     v-for="item in groups">
                             </el-option>
                         </el-select>
@@ -439,7 +439,7 @@
             },
             //加载组员分组
             loadGroups: function () {
-                axios.get('/api/baseTailoringDistributions', {}).then((response) => {
+                axios.get('http://localhost:8182/api/group/findAll', {}).then((response) => {
                     this.groups = response.data.data;
                 }).catch(function (error) {
                     console.log(error);
@@ -557,11 +557,12 @@
             },
             changeGroup: function(row){
                 let gs = this.groups.filter((item) => {
-                    return item.group == row.group
+                    return item.team == row.group
                 });
                 if (gs && gs[0]) {
                     let g = gs[0];
-                    row.member = g.member1 + "," + g.member2 + "," + g.member3;
+                    row.member = g.teamMan;
+                    row.groupId = g.id;
                 }
                 // console.log(row)
             },
