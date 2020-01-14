@@ -304,14 +304,14 @@ public class TailoringTaskService {
         }
 
 
-        //检查计划完成
-        resultVo = checkPlanCompletion(surplusPlans);
-        if (resultVo != null) {
-            return resultVo;
-        }
+//        //检查计划完成
+//        resultVo = checkPlanCompletion(surplusPlans);
+//        if (resultVo != null) {
+//            return resultVo;
+//        }
 
         //裁剪数量大于最大允许裁剪数量
-        resultVo = checkIsTooBig(taskId, spreadingCount, reelCount, surplusPlans);
+        resultVo = checkIsTooBig(taskId, spreadingCount, reelCount, tailoringPlans);
         if (resultVo != null) {
             return resultVo;
         }
@@ -319,18 +319,15 @@ public class TailoringTaskService {
         //上次拉布id
         Long maxSpreadingId = tailoringSpreadingDao.findMaxIdByTaskId(taskId);
 
-        //上次布料列表
-        List<TailoringFabricRecordPo> lastFabrics = getLastFabrics(taskId, maxSpreadingId);
-
         //拉布布料长度超出理论长度太多
-        resultVo = checkLengthExceeded(maxSpreadingId, spreadingLength, surplusPlans, lastFabrics, fabrics);
+        resultVo = checkLengthExceeded( spreadingLength, surplusPlans, fabrics);
         if (resultVo != null) {
             return resultVo;
         }
 
         //保存拉布信息
         return spreadingSave(taskId, floor, quantity, spreadingCount, reelCount, planCount, spreadingLength,
-                maxSpreadingId, lastFabrics, fabrics, surplusPlans);
+                maxSpreadingId, fabrics, surplusPlans);
     }
     /**
      * 布匹号不一致
@@ -431,6 +428,7 @@ public class TailoringTaskService {
                 sumSpreadingQuantity = sumSpreadingQuantity==null ? 0:sumSpreadingQuantity;
                 spreadingQuantityTotal += sumSpreadingQuantity;
             }
+
             /**
              *  判断如果剩余需裁剪数量不大于0并且
              *  当输入拉布次数并计算的出的拉布件数>最大允许裁剪数量（最大允许裁剪数量=[Roundup((本次裁剪数量+本次换片数量）/版型分组件数)+系数]*版型分组件数）时，
@@ -452,43 +450,18 @@ public class TailoringTaskService {
 
     /**
      * 拉布长度超出理论长度太多
-     * @param maxSpreadingId
      * @param spreadingLength
      * @param surplusPlans
-     * @param lastFabrics
      * @param fabrics
      * @return
      */
-    private TailoringSpreadingResultVo checkLengthExceeded(Long maxSpreadingId,int spreadingLength ,List<TailoringTaskPlanDto> surplusPlans,List<TailoringFabricRecordPo> lastFabrics,List<TailoringFabricInsertDto> fabrics) {
-        // 差异系数
-        Integer minFabricLengthDifference =Integer.MAX_VALUE;
+    private TailoringSpreadingResultVo checkLengthExceeded(int spreadingLength ,List<TailoringTaskPlanDto> surplusPlans,List<TailoringFabricInsertDto> fabrics) {
+
         //最小理论长度
         Integer minTheoryLength = Integer.MAX_VALUE;
-        if (maxSpreadingId == null) {
-            for (TailoringFabricInsertDto w : fabrics) {
-                minTheoryLength = (int) Math.min(w.getTheoryLength(), minTheoryLength);
-            }
-        } else {
+        for (TailoringFabricInsertDto w : fabrics) {
+            minTheoryLength = (int)Math.min(w.getTheoryLength(), minTheoryLength);
 
-            for (TailoringFabricInsertDto w : fabrics) {
-                TailoringFabricRecordPo last = null;
-                if (lastFabrics.size() != 0) {
-                    List<TailoringFabricRecordPo> a = lastFabrics.stream().filter(
-                            d -> w.getReelNumber().equals(d.getReelNumber())
-                    ).collect(Collectors.toList());
-
-                    if (a.size() > 0) {
-                        last = a.get(0);
-                    }
-                }
-                //完成的计划跳过
-                if (last != null) {
-                    minTheoryLength = Math.min(last.getLeftLength(), minTheoryLength);
-                } else {
-                    minTheoryLength = (int)Math.min(w.getTheoryLength(), minTheoryLength);
-                }
-
-            }
         }
         /**
          * 当输入拉布次数并计算出理论长度时，
@@ -503,23 +476,19 @@ public class TailoringTaskService {
          */
         for (TailoringTaskPlanDto dto : surplusPlans) {
             Long planId = dto.getId();
-            Integer difference =tailoringTaskPlanDao.findFabricLengthDifferenceByPlanIdEquals(planId);
             //最小差异系数
-            minFabricLengthDifference = Math.min(difference,minFabricLengthDifference);
-        }
-        // 检查实际长度
-//        int actualLength_check = quantity * spreadingCount*reelCount;
-        // 理论长度
-//        Integer theoryLength_check = minTheoryLength;
-        // 差异系数
-        if (spreadingLength > minTheoryLength + minFabricLengthDifference) {
-            TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
+            Integer difference =tailoringTaskPlanDao.findFabricLengthDifferenceByPlanIdEquals(planId);
 
-            //1 剩余数据量>0 ，2 剩余数据量<0 ，3 不成立,4任务已经提交,5 检查实际长度>理论长度+差异系数
-            tailoringSpreadingResultVo.setStatusEnum(StatusEnum.SPREADING_STATUS_LENGTH_EXCEEDED);
+            if (spreadingLength > minTheoryLength + difference) {
+                TailoringSpreadingResultVo tailoringSpreadingResultVo = new TailoringSpreadingResultVo();
 
-            return tailoringSpreadingResultVo;
+                //1 剩余数据量>0 ，2 剩余数据量<0 ，3 不成立,4任务已经提交,5 检查实际长度>理论长度+差异系数
+                tailoringSpreadingResultVo.setStatusEnum(StatusEnum.SPREADING_STATUS_LENGTH_EXCEEDED);
+
+                return tailoringSpreadingResultVo;
+            }
         }
+
         return null;
     }
 
@@ -533,14 +502,13 @@ public class TailoringTaskService {
      * @param planCount
      * @param spreadingLength
      * @param maxSpreadingId
-     * @param lastFabrics
      * @param fabrics
      * @param surplusPlans
      * @return
      */
     @Transactional
     public TailoringSpreadingResultVo spreadingSave(Long taskId,Integer floor,Integer quantity,Integer spreadingCount,Integer reelCount,Integer planCount,Integer spreadingLength,
-                                                     Long maxSpreadingId,List<TailoringFabricRecordPo> lastFabrics , List<TailoringFabricInsertDto> fabrics,List<TailoringTaskPlanDto> surplusPlans){
+                                                     Long maxSpreadingId,List<TailoringFabricInsertDto> fabrics,List<TailoringTaskPlanDto> surplusPlans){
 
         //更新任务状态
         TailoringTaskPo tailoringTaskPo = tailoringTaskDao.getOne(taskId);
@@ -569,18 +537,6 @@ public class TailoringTaskService {
         List<TailoringFabricRecordPo> resultFabrics = new ArrayList<>();
         for (TailoringFabricInsertDto w : fabrics) {
 
-            TailoringFabricRecordPo last = null;
-            if (lastFabrics.size() != 0) {
-                List<TailoringFabricRecordPo> a = lastFabrics.stream().filter(
-                        d -> w.getReelNumber().equals(d.getReelNumber())
-                ).collect(Collectors.toList());
-
-                if (a.size() != 0) {
-                    last = a.get(0);
-                }
-
-            }
-
             //布料使用记录
             TailoringFabricRecordPo recordPo = new TailoringFabricRecordPo();
             TailoringUtils.copyProperties(recordPo, w);
@@ -592,17 +548,14 @@ public class TailoringTaskService {
                 recordPo.setActualFabricWidth(baseFabricDetailPo.getFabricWidthMeter());
                 recordPo.setTheoryFabricWidth(baseFabricDetailPo.getFabricWidthMeter());
             }
-            if (last != null) {
-                recordPo.setTheoryLength(Double.valueOf(last.getLeftLength()));
-                recordPo.setActualLength(last.getActualLength());
-            } else {
-                recordPo.setTheoryLength(w.getTheoryLength());
-                Double actualLength = tailoringFabricRecordDao.getActualLength(w.getReelNumber());
-                recordPo.setActualLength(w.getTheoryLength());
-                if (actualLength != null) {
-                    recordPo.setActualLength(actualLength);
-                }
+
+            recordPo.setTheoryLength(w.getTheoryLength());
+            Double actualLength = tailoringFabricRecordDao.getActualLength(w.getReelNumber());
+            recordPo.setActualLength(w.getTheoryLength());
+            if (actualLength != null) {
+                recordPo.setActualLength(actualLength);
             }
+
 
             recordPo.setFloor(floor);
             recordPo.setSpreadingCount(spreadingCount);
