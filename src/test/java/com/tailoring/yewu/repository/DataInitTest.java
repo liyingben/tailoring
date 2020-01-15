@@ -63,24 +63,29 @@ public class DataInitTest extends SpringBootStartApplicationTests {
         createUserRoleRelation(admin.getId(), roleAdmin.getId());
         createUserRoleRelation(user.getId(), roleUser.getId());
 
-        // 页面权限
-        Permission testPagePerm = createPermission("/test", "测试页面", 1, "page:test", null, 1, 0L);
+        // 管理员权限
+        Permission adminApiPostPerm = createPermission("/api/**", "管理员api", 2, "btn:api", "POST", 1, 0L);
+        Permission adminApiGetPerm = createPermission("/api/**", "管理员api", 2, "btn:api", "Get", 1, 0L);
+        Permission adminPagePerm = createPermission("/admin/**", "管理员api", 2, "page:admin", "Get", 1, 0L);
         // 按钮权限
-        Permission testBtnQueryPerm = createPermission("/**/test", "测试页面-查询", 2, "btn:test:query", "GET", 1, testPagePerm.getId());
-        Permission testBtnPermInsert = createPermission("/**/test", "测试页面-添加", 2, "btn:test:insert", "POST", 2, testPagePerm.getId());
 
-        Permission monitorOnlinePagePerm = createPermission("/monitor", "监控在线用户页面", 1, "page:monitor:online", null, 2, 0L);
-        Permission monitorOnlineBtnQueryPerm = createPermission("/**/api/monitor/online/user", "在线用户页面-查询", 2, "btn:monitor:online:query", "GET", 1, monitorOnlinePagePerm.getId());
-        Permission monitorOnlineBtnKickoutPerm = createPermission("/**/api/monitor/online/user/kickout", "在线用户页面-踢出", 2, "btn:monitor:online:kickout", "DELETE", 2, monitorOnlinePagePerm.getId());
+         Permission userBtnQueryPerm = createPermission("/api/tailoringTask/**", "PDA接口", 2, "btn:api:tailoringPlans", "POST", 1, 0L);
+         Permission userBtnQueryPerm0 = createPermission("/tailoringPlans/**", "PDA接口", 2, "btn:tailoringPlans", "GET", 1, 0L);
+         Permission userBtnQueryPerm1 = createPermission("/tailoring/**", "PDA接口", 2, "btn:tailoring", "POST", 1, 0L);
+         Permission userBtnQueryPerm2 = createPermission("/api/auth/logout", "PDA接口", 2, "btn:auth:logout", "POST", 1, 0L);
+         Permission userBtnQueryPerm3 = createPermission("/tailoring/**", "PDA接口", 2, "btn:tailoring", "GET", 1, 0L);
 
-        createRolePermissionRelation(roleAdmin.getId(), testPagePerm.getId());
-        createRolePermissionRelation(roleUser.getId(), testPagePerm.getId());
-        createRolePermissionRelation(roleAdmin.getId(), testBtnQueryPerm.getId());
-        createRolePermissionRelation(roleUser.getId(), testBtnQueryPerm.getId());
-        createRolePermissionRelation(roleAdmin.getId(), testBtnPermInsert.getId());
-        createRolePermissionRelation(roleAdmin.getId(), monitorOnlinePagePerm.getId());
-        createRolePermissionRelation(roleAdmin.getId(), monitorOnlineBtnQueryPerm.getId());
-        createRolePermissionRelation(roleAdmin.getId(), monitorOnlineBtnKickoutPerm.getId());
+
+        createRolePermissionRelation(roleAdmin.getId(), adminApiPostPerm.getId());
+        createRolePermissionRelation(roleAdmin.getId(), adminApiGetPerm.getId());
+        createRolePermissionRelation(roleAdmin.getId(), adminPagePerm.getId());
+
+
+        createRolePermissionRelation(roleUser.getId(), userBtnQueryPerm.getId());
+        createRolePermissionRelation(roleUser.getId(), userBtnQueryPerm0.getId());
+        createRolePermissionRelation(roleUser.getId(), userBtnQueryPerm1.getId());
+        createRolePermissionRelation(roleUser.getId(), userBtnQueryPerm2.getId());
+        createRolePermissionRelation(roleUser.getId(), userBtnQueryPerm3.getId());
     }
 
     private void createRolePermissionRelation(Long roleId, Long permissionId) {

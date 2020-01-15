@@ -16,14 +16,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/baseFabricDetails")
-@Api(value = "base布料明细", tags = {"布料明细操作接口"})
+@Api(value = "base布料明细", tags = {"base表操作"})
 public class BaseFabricDetailApi {
 
     @Autowired
     private BaseFabricDetailService baseFabricDetailService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    @ApiOperation(value = "布料明细列表", tags = {"布料明细操作接口"}, notes = "注意问题点")
+    @ApiOperation(value = "布料明细列表",notes = "注意问题点")
     public List<String> select() {
         return baseFabricDetailService.selectFabricCode();
     }

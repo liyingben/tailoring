@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/baseFabricUsage")
-@Api(value = "base布料用量", tags = {"产品布料用量操作接口"})
+@Api(value = "base布料用量", tags = {"base表操作"})
 public class BaseFabricUsageApi {
 
     @Autowired

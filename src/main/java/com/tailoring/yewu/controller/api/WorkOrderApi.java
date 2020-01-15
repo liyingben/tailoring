@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/workOrders")
-@Api(value = "裁剪计划", tags = {"裁剪计划接口"})
+@Api(value = "工单", tags = {"计划"})
 public class WorkOrderApi {
 
     @Autowired

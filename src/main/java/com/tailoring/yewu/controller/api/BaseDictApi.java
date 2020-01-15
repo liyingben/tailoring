@@ -16,7 +16,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/baseDict")
-@Api(value = "base字典", tags = {"字典"})
+@Api(value = "base字典", tags = {"base表操作"})
 public class BaseDictApi {
 
     @Autowired

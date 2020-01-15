@@ -76,6 +76,12 @@
                         }).then((response) => {
                             this.logining = false;
                         if (response.data.code == 200) {
+                            // 登录成功
+                            if(response.data.data.token) {
+                                // 储存 token
+                                localStorage.token = response.data.data.token
+                            }
+
                             window.location.href = "/tailoringPlans"
                         } else if (response.data.code == 9019997) {
                             alert("用户名或密码错误");

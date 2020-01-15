@@ -46,7 +46,7 @@ public class TailoringTaskService {
     TailoringOrderDao tailoringOrderDao;
 
     @Autowired
-    TailoringDetailDao tailoringDetailDao;
+    TailoringTaskPlanRecordDao tailoringTaskPlanRecordDao;
 
     @Autowired
     TailoringFabricConsumeDao tailoringFabricConsumeDao;
@@ -154,10 +154,12 @@ public class TailoringTaskService {
      */
     @Transactional
     public TailoringTaskPo createTask(List<TailoringTaskPlanDto> tailoringPlans) {
-        String fabricCode = tailoringPlans.get(0).getFabricCode();
-        String group = tailoringPlans.get(0).getGroup();
-        Long groupid = tailoringPlans.get(0).getGroupId();
-        String member = tailoringPlans.get(0).getMember();
+
+        TailoringPlanPo tailoringPlanPo = tailoringPlanDao.getOne(tailoringPlans.get(0).getId());
+        String fabricCode = tailoringPlanPo.getFabricCode();
+        String group = tailoringPlanPo.getGroup();
+        Long groupid = tailoringPlanPo.getGroupId();
+        String member = tailoringPlanPo.getMember();
         BaseFabricDetailPo baseFabricDetailPo = baseFabricDetailDao.findFirstByFabricCodeEquals(fabricCode);
         //最大允许裁剪数量系数
         double maxAllowTailoringCoefficient = 1;
@@ -305,7 +307,7 @@ public class TailoringTaskService {
         //布头剩余
         Map<Long, Integer> leftMap = new HashMap<>();
         for (TailoringTaskPlanDto dto : tailoringPlans) {
-            Integer left = tailoringDetailDao.findByTaskIdEqualsAndProductCodeEqualsMinLeft(taskId, dto.getProductCode());
+            Integer left = tailoringTaskPlanRecordDao.findByTaskIdEqualsAndProductCodeEqualsMinLeft(taskId, dto.getProductCode());
             if (left == null || left > 0) {
                 surplusPlans.add(dto);
                 leftMap.put(dto.getId(), left);
@@ -436,7 +438,7 @@ public class TailoringTaskService {
                 Long planId = dto.getId();
                 Integer maxSpreadingQuantity = tailoringTaskPlanDao.findMinMaxQuantityByTaskId(taskId, planId);
                 sumMaxSpreadingQuantity += maxSpreadingQuantity;
-                Integer sumSpreadingQuantity = tailoringDetailDao.findByTaskIdEqualsAndProductCodeEqualsSumQuantity(taskId, planId);
+                Integer sumSpreadingQuantity = tailoringTaskPlanRecordDao.findByTaskIdEqualsAndProductCodeEqualsSumQuantity(taskId, planId);
                 sumSpreadingQuantity = sumSpreadingQuantity==null ? 0:sumSpreadingQuantity;
                 spreadingQuantityTotal += sumSpreadingQuantity;
             }
@@ -628,10 +630,10 @@ public class TailoringTaskService {
          * 处理裁剪
          */
         //上次裁剪列表
-        List<TailoringDetailPo> tailoringDetailPos = getLastDetai(taskId, maxSpreadingId);
+        List<TailoringTaskPlanRecordPo> tailoringDetailPos = getLastDetai(taskId, maxSpreadingId);
 
         //返回结果列表
-        List<TailoringDetailPo> tailoringDetailPos1 = new ArrayList<>();
+        List<TailoringTaskPlanRecordPo> tailoringDetailPos1 = new ArrayList<>();
 
 
         Map<String, List<TailoringTaskPlanDto>> tailoringPlansMap = surplusPlans.stream().collect(Collectors.groupingBy(TailoringTaskPlanDto::getTypeGroup));
@@ -644,9 +646,9 @@ public class TailoringTaskService {
 
             for (TailoringTaskPlanDto dto : planDtos) {
 
-                TailoringDetailPo last = null;
+                TailoringTaskPlanRecordPo last = null;
                 if (tailoringDetailPos.size() != 0) {
-                    List<TailoringDetailPo> a = tailoringDetailPos.stream().filter(
+                    List<TailoringTaskPlanRecordPo> a = tailoringDetailPos.stream().filter(
                             d -> dto.getProductCode().equals(d.getProductCode())
                     ).collect(Collectors.toList());
                     if (a.size() > 0) {
@@ -660,7 +662,7 @@ public class TailoringTaskService {
 
                 Integer leftQuantity = spreadingQuantity - tailoringQuantity;
 
-                TailoringDetailPo detailPo = new TailoringDetailPo();
+                TailoringTaskPlanRecordPo detailPo = new TailoringTaskPlanRecordPo();
 
                 TailoringUtils.copyProperties(detailPo, dto);
                 detailPo.setId(null);
@@ -679,7 +681,7 @@ public class TailoringTaskService {
                 //剩余件数
                 detailPo.setLeftQuantity(leftQuantity);
                 detailPo.setStatus(StatusEnum.TAILORING_DETAIL_STATUS_DEFAULT.getCode().toString());
-                tailoringDetailDao.save(detailPo);
+                tailoringTaskPlanRecordDao.save(detailPo);
 
 
                 //剩余最大可裁剪件数
@@ -709,7 +711,7 @@ public class TailoringTaskService {
         tailoringSpreadingResultVo.setStatusEnum(StatusEnum.SPREADING_STATUS_PARTIAL_PLAN_COMPLETED);
 
         tailoringSpreadingResultVo.setSpreadingId(spreadingId);
-        for (TailoringDetailPo po : tailoringDetailPos1) {
+        for (TailoringTaskPlanRecordPo po : tailoringDetailPos1) {
             if (po.getLeftQuantity() > 0) {
                 tailoringSpreadingResultVo.setStatusEnum(StatusEnum.SPREADING_STATUS_SUCCESS);
                 break;
@@ -726,8 +728,8 @@ public class TailoringTaskService {
      * @param taskId
      * @return
      */
-    private List<TailoringDetailPo> getLastDetai(Long taskId, Long maxSpreadingId) {
-        return tailoringDetailDao.findByTaskIdEqualsAndSpreadingIdEquals(taskId, maxSpreadingId);
+    private List<TailoringTaskPlanRecordPo> getLastDetai(Long taskId, Long maxSpreadingId) {
+        return tailoringTaskPlanRecordDao.findByTaskIdEqualsAndSpreadingIdEquals(taskId, maxSpreadingId);
     }
 
     /**
@@ -773,7 +775,7 @@ public class TailoringTaskService {
         tailoringTaskVo.setPlans(tailoringTaskPlanVos);
 
         //裁剪计划详情
-        List<TailoringDetailPo> tailoringDetails = tailoringDetailDao.findByTaskIdEquals(taskId);
+        List<TailoringTaskPlanRecordPo> tailoringDetails = tailoringTaskPlanRecordDao.findByTaskIdEquals(taskId);
         tailoringTaskVo.setDetails(tailoringDetails);
 
         //布料使用记录

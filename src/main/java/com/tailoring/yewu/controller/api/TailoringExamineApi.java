@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/tailoringExamine")
-@Api(value = "审核", tags = {"审核接口"})
+@Api(value = "审核", tags = {"审核"})
 public class TailoringExamineApi {
 
     @Autowired

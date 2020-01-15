@@ -50,7 +50,6 @@ public interface TailoringExamineFabricRecordDao extends JpaRepository<Tailoring
             ",reel_number" +
             ",spreading_count" +
             ",spreading_length" +
-            ",sum_length" +
             ",theory_fabric_width" +
             ",theory_length" +
             ",tailoring_no) " +
@@ -68,7 +67,6 @@ public interface TailoringExamineFabricRecordDao extends JpaRepository<Tailoring
             "     ,reel_number" +
             "     ,sum(spreading_count) as spreading_count" +
             "     ,sum(spreading_length) as spreading_length" +
-            "     ,sum(sum_length) as sum_length" +
             "     ,min(theory_fabric_width) as theory_fabric_width" +
             "     ,min(theory_length) as theory_length" +
             "     ,:tailoringNo as tailoring_no" +

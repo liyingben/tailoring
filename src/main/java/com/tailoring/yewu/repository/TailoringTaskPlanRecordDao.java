@@ -1,6 +1,6 @@
 package com.tailoring.yewu.repository;
 
-import com.tailoring.yewu.entity.po.TailoringDetailPo;
+import com.tailoring.yewu.entity.po.TailoringTaskPlanRecordPo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @modified: ben
  */
 @Repository
-public interface TailoringDetailDao extends JpaRepository<TailoringDetailPo, Long> {
+public interface TailoringTaskPlanRecordDao extends JpaRepository<TailoringTaskPlanRecordPo, Long> {
     /**
      * 根据开始时间和结束时间
      *
@@ -31,13 +31,13 @@ public interface TailoringDetailDao extends JpaRepository<TailoringDetailPo, Lon
      * @param endTime   结束时间
      * @return
      */
-    List<TailoringDetailPo> findByCreateTimeBetween(Date startTime, Date endTime);
+    List<TailoringTaskPlanRecordPo> findByCreateTimeBetween(Date startTime, Date endTime);
 
-    List<TailoringDetailPo> findByTaskIdEquals(Long taskId);
+    List<TailoringTaskPlanRecordPo> findByTaskIdEquals(Long taskId);
 
-    List<TailoringDetailPo> findByTaskIdIn(List<Long> taskIds);
+    List<TailoringTaskPlanRecordPo> findByTaskIdIn(List<Long> taskIds);
 
-    List<TailoringDetailPo> findByTaskIdEqualsAndSpreadingIdEquals(Long taskId, Long spreadingId);
+    List<TailoringTaskPlanRecordPo> findByTaskIdEqualsAndSpreadingIdEquals(Long taskId, Long spreadingId);
 
     @Query(value = "SELECT min(left_quantity) FROM tailoring_detail where task_id=?1 and product_code=?2", nativeQuery = true)
     Integer findByTaskIdEqualsAndProductCodeEqualsMinLeft(Long taskId, String ProductCode);

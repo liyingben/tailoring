@@ -1,7 +1,7 @@
 package com.tailoring.yewu.service;
 
-import com.tailoring.yewu.entity.po.TailoringDetailPo;
-import com.tailoring.yewu.repository.TailoringDetailDao;
+import com.tailoring.yewu.entity.po.TailoringTaskPlanRecordPo;
+import com.tailoring.yewu.repository.TailoringTaskPlanRecordDao;
 import com.tailoring.yewu.repository.TailoringPlanDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TailoringDetailService {
+public class TailoringTaskPlanRecordService {
 
     @Autowired
     TailoringPlanDao tailoringPlanDao;
 
     @Autowired
-    private TailoringDetailDao tailoringDetailDao;
+    private TailoringTaskPlanRecordDao tailoringTaskPlanRecordDao;
 
-    public long update(TailoringDetailPo po) {
-        return tailoringDetailDao.save(po).getId();
+    public long update(TailoringTaskPlanRecordPo po) {
+        return tailoringTaskPlanRecordDao.save(po).getId();
     }
 
-    public List<TailoringDetailPo> selectByDate(String startTime, String endTime) {
+    public List<TailoringTaskPlanRecordPo> selectByDate(String startTime, String endTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            return tailoringDetailDao.findByCreateTimeBetween(sdf.parse(startTime), sdf.parse(endTime));
+            return tailoringTaskPlanRecordDao.findByCreateTimeBetween(sdf.parse(startTime), sdf.parse(endTime));
         } catch (ParseException e) {
             e.printStackTrace();
             return new ArrayList<>();

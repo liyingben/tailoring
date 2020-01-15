@@ -12,6 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
 
@@ -56,6 +57,12 @@ public class AopLog {
         log.info("【请求 URL】：{}", request.getRequestURL());
         log.info("【请求 IP】：{} 【请求方法】：{}", request.getRemoteAddr(), request.getMethod());
         log.info("【请求类名】：{}，【请求方法名】：{}", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
+        Enumeration<String> headNames = request.getHeaderNames();
+
+        while(headNames.hasMoreElements()){
+            String headName = headNames.nextElement();
+            log.info("【请求头】：{}:{}",headName,request.getHeader(headName));
+        }
 
         Map<String, String[]> parameterMap = request.getParameterMap();
 

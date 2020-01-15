@@ -1,4 +1,4 @@
-package com.tailoring.yewu.controller.api;
+package com.tailoring.user.controller;
 
 import com.tailoring.yewu.common.ActionResult;
 import com.tailoring.yewu.entity.dto.LoginDto;
@@ -12,12 +12,12 @@ import java.util.Hashtable;
 
 @RestController
 @RequestMapping("/api/login")
-@Api(value = "登陆", tags = {"登陆接口"})
+@Api(value = "登陆", tags = {"用户"})
 public class LoginApi {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "登陆", tags = {"登陆接口"}, notes = "登陆")
+    @ApiOperation(value = "登陆ldap",  notes = "登陆")
     public ActionResult<String> getAllPersonNamesWithTraditionalWay(@RequestBody LoginDto dto) {
 
         String msg = getAllPersonNamesWithTraditionalWay(dto.getUsername(), dto.getPassword());
@@ -26,7 +26,7 @@ public class LoginApi {
 
     @RequestMapping(value = "/getMsg", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "登陆", tags = {"登陆接口"}, notes = "登陆")
+    @ApiOperation(value = "登陆ldap", notes = "登陆")
     public String getAllPersonNamesWithTraditionalWay(@RequestParam String username, @RequestParam String password) {
         Hashtable env = new Hashtable();
 

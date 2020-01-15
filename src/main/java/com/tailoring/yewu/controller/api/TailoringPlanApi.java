@@ -32,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tailoringPlans")
-@Api(value = "裁剪计划", tags = {"裁剪计划接口"})
+@Api(value = "计划", tags = {"计划"})
 public class TailoringPlanApi {
 
     @Autowired

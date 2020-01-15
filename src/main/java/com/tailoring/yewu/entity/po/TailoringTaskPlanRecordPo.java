@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tailoring_detail")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-public class TailoringDetailPo extends AbstractAuditModel {
+public class TailoringTaskPlanRecordPo extends AbstractAuditModel {
 
 
     /**

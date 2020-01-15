@@ -180,7 +180,7 @@ public class JwtUtil {
         if (StrUtil.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        bearerToken = request.getParameter("token");
+        bearerToken = request.getHeader("token");
         if (StrUtil.isNotBlank(bearerToken) ) {
             return bearerToken;
         }

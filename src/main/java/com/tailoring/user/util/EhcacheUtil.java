@@ -13,10 +13,6 @@ public class EhcacheUtil {
     private URL url;
     private CacheManager manager;
 
-    private EhcacheUtil(String path) {
-        url = getClass().getResource(path);
-        manager = CacheManager.create(url);
-    }
 
     public static EhcacheUtil getInstance() {
         if (ehCache == null) {
@@ -24,8 +20,13 @@ public class EhcacheUtil {
         }
         return ehCache;
     }
+    private EhcacheUtil(String path) {
+        url = getClass().getResource(path);
+        manager = CacheManager.create(url);
+    }
 
     public void put(String cacheName, String key, Object value) {
+
         Cache cache = manager.getCache(cacheName);
         Element element = new Element(key, value);
         cache.put(element);

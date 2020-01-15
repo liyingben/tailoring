@@ -19,14 +19,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tailoringFabricLeft")
-@Api(value = "裁剪布头controller", tags = {"裁剪布头操作接口"})
+@Api(value = "布头", tags = {"布料"})
 public class TailoringFabricLeftApi {
 
     @Autowired
     private TailoringFabricLeftService tailoringFabricLeftService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    @ApiOperation(value = "裁剪布头列表", tags = {"裁剪布头操作接口"}, notes = "注意问题点")
+    @ApiOperation(value = "布头列表",  notes = "注意问题点")
     public ActionResult<List<TailoringFabricLeftPo>> select(@RequestParam String startTime, @RequestParam String endTime) {
         List<TailoringFabricLeftPo> fabricLeft = tailoringFabricLeftService.selectByDate(startTime, endTime);
         return new ActionResult<>(fabricLeft);

@@ -61,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         String jwt = jwtUtil.getJwtFromRequest(request);
 
         if (StrUtil.isNotBlank(jwt)) {
@@ -83,6 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } else {
+
             if(request.getRequestURL().toString().contains("admin")){
                 response.sendRedirect(request.getContextPath()+"/admin");
             }else{

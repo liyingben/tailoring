@@ -3,6 +3,7 @@ package com.tailoring.user.controller;
 import com.tailoring.user.model.Group;
 import com.tailoring.user.service.GroupService;
 import com.tailoring.yewu.common.ActionResult;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/group")
+@Api(value = "用户组", tags = {"用户"})
 public class GroupController {
     @Autowired
     private GroupService groupService;
@@ -36,7 +38,7 @@ public class GroupController {
 
     @ResponseBody
     @RequestMapping(value = "findAll", method = RequestMethod.GET)
-    @ApiOperation(value = "剪人员组", tags = {"裁剪人员组"}, notes = "注意问题点")
+    @ApiOperation(value = "剪人员组",  notes = "得到所有裁剪组的列表")
     public ActionResult<List<Group>> findAll() {
         return new ActionResult(groupService.findAll());
     }

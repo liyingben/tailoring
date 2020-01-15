@@ -27,14 +27,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/tailoringTask")
-@Api(value = "裁剪任务", tags = {"裁剪任务接口"})
+@Api(value = "任务", tags = {"任务"})
 public class TailoringTaskApi {
 
     @Autowired
     private TailoringTaskService tailoringTaskService;
 
     @RequestMapping(value = "/createTask", method = RequestMethod.POST)
-    @ApiOperation(value = "创建裁剪任务 PDA", notes = " 检查三种情况：" +
+    @ApiOperation(value = "创建裁剪任务 PDA",tags = "PDA" , notes = " 检查三种情况：" +
             " 1 最大可裁剪数量 >=本次裁剪数量；" +
             " 2 最大可换片数量 >=本次换片数量；" +
             " 3 以及要判断相同版型分组的件数必须相同。" +
@@ -57,7 +57,7 @@ public class TailoringTaskApi {
     }
 
     @RequestMapping(value = "/spreading", method = RequestMethod.POST)
-    @ApiOperation(value = "拉布 PDA", notes = "扫码保存")
+    @ApiOperation(value = "拉布 PDA",tags = "PDA" ,notes = "扫码保存")
     public ActionResult<TailoringSpreadingResultVo> spreading(@Valid @RequestBody TailoringSpreadingDto tailoringSpreadingDto) {
         TailoringSpreadingResultVo result = tailoringTaskService.spreading(tailoringSpreadingDto);
         result.setCode(result.getStatusEnum().getCode());

@@ -439,7 +439,7 @@
             },
             //加载组员分组
             loadGroups: function () {
-                axios.get('http://localhost:8182/api/group/findAll', {}).then((response) => {
+                axios.get('/api/group/findAll', {}).then((response) => {
                     this.groups = response.data.data;
                 }).catch(function (error) {
                     console.log(error);

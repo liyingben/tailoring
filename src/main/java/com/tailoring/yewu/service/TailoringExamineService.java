@@ -47,7 +47,7 @@ public class TailoringExamineService {
     TailoringPlanDao tailoringPlanDao;
 
     @Autowired
-    TailoringDetailDao tailoringDetailDao;
+    TailoringTaskPlanRecordDao tailoringTaskPlanRecordDao;
 
     @Autowired
     TailoringFabricConsumeDao tailoringFabricConsumeDao;
@@ -106,10 +106,10 @@ public class TailoringExamineService {
             tailoringExaminePlanDao.insertPlan(taskIds, no);
 
             //裁剪计划详情列表
-            List<TailoringDetailPo> tailoringDetails = tailoringDetailDao.findByTaskIdIn(taskIds);
+            List<TailoringTaskPlanRecordPo> tailoringDetails = tailoringTaskPlanRecordDao.findByTaskIdIn(taskIds);
             //裁剪计划id和拉布id
             Map<Long, ArrayList<Long>> planAndSpreadingIdMap = new HashMap<>();
-            for (TailoringDetailPo po : tailoringDetails) {
+            for (TailoringTaskPlanRecordPo po : tailoringDetails) {
                 if (!planAndSpreadingIdMap.containsKey(po.getTailoringPlanId())) {
                     planAndSpreadingIdMap.put(po.getTailoringPlanId(), new ArrayList<>());
                 }

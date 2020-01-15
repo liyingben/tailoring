@@ -32,7 +32,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tailoringPlans")
-@Api(value = "裁剪计划", tags = {"裁剪计划接口"})
 public class TailoringPlanPdaApi {
 
     @Autowired
@@ -44,7 +43,7 @@ public class TailoringPlanPdaApi {
 
     @ResponseBody
     @RequestMapping(value = "/listForPda", method = RequestMethod.GET)
-    @ApiOperation(value = "裁剪计划列表  PDA", notes = "注意问题点")
+    @ApiOperation(value = "裁剪计划列表  PDA", tags = "PDA", notes = "注意问题点")
     public ActionResult<List<TailoringPlanVo>> listForPda(@ApiParam(name = "fabricCode", value = "布料编码", defaultValue = "FNA15WHB03") @RequestParam(required = false) String fabricCode) {
         SimpleDateFormat sf = new SimpleDateFormat("MM-dd");
         List<TailoringPlanPo> tailoringPlan;
@@ -73,8 +72,8 @@ public class TailoringPlanPdaApi {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/fabricCodes", method = RequestMethod.GET)
-    @ApiOperation(value = "布料编号列表 PDA", notes = "查询裁剪计划中未完成订单和未提交订单所有布料编码列表")
+    @RequestMapping(value = "/fabricCodes",  method = RequestMethod.GET)
+    @ApiOperation(value = "布料编号列表 PDA", tags = "PDA",notes = "查询裁剪计划中未完成订单和未提交订单所有布料编码列表")
     public ActionResult<List<String>> fabricCodes() {
         List list = tailoringPlanService.fabricCodes();
         return new ActionResult<>(list);

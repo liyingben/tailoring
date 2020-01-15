@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tailoringFabricRecord")
-@Api(value = "布料使用记录controller", tags = {"布料使用记录操作接口"})
+@Api(value = "布料使用记录", tags = {"布料"})
 public class TailoringFabricRecordApi {
 
     @Autowired
@@ -42,18 +42,7 @@ public class TailoringFabricRecordApi {
         query.setLotNumber(lotNumber);
         query.setReelNumber(reelNumber);
         List<TailoringFabricRecordPo> fabricLeft = tailoringFabricRecordService.select(query);
-//        List<TailoringFabricRecordDto>  results = new ArrayList();
-//        fabricLeft.forEach(p -> {
-//            TailoringFabricRecordDto dto = new TailoringFabricRecordDto();
-//            try {
-//                BeanUtils.copyProperties(dto, p);
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            } catch (InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//            results.add(dto);
-//        });
+
         return new ActionResult<>(fabricLeft);
     }
 

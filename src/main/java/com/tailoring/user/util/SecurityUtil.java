@@ -3,6 +3,7 @@ package com.tailoring.user.util;
 import cn.hutool.core.util.ObjectUtil;
 import com.tailoring.user.common.Consts;
 import com.tailoring.user.vo.UserPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -36,11 +37,13 @@ public class SecurityUtil {
      * @return 当前登录用户信息，匿名登录时，为null
      */
     public static UserPrincipal getCurrentUser() {
-        Object userInfo = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        if (userInfo instanceof UserDetails) {
-            return (UserPrincipal) userInfo;
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if(authentication!=null) {
+            Object userInfo = authentication.getPrincipal();
+            if (userInfo instanceof UserDetails) {
+                return (UserPrincipal) userInfo;
+            }
         }
         return null;
     }

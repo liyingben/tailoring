@@ -2,7 +2,7 @@ package com.tailoring.yewu.entity.vo;
 
 
 import com.tailoring.yewu.common.StatusEnum;
-import com.tailoring.yewu.entity.po.TailoringDetailPo;
+import com.tailoring.yewu.entity.po.TailoringTaskPlanRecordPo;
 import com.tailoring.yewu.entity.po.TailoringFabricRecordPo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +29,7 @@ public class TailoringSpreadingResultVo {
     private Long spreadingId;
 
     @ApiModelProperty(value = "裁剪计划", required = true)
-    private List<TailoringDetailPo> tailoringDetailPo;
+    private List<TailoringTaskPlanRecordPo> tailoringDetailPo;
 
     @ApiModelProperty(value = "裁剪布料", required = true)
     private List<TailoringFabricRecordPo> fabrics;

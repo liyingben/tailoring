@@ -20,7 +20,7 @@ public class TailoringExamineVo extends TailoringExaminePo {
     /**
      * 裁剪信息
      */
-    public List<TailoringDetailPo> details;
+    public List<TailoringTaskPlanRecordPo> details;
     /**
      * 扫码信息
      */

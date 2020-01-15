@@ -7,6 +7,8 @@ import com.tailoring.user.exception.SecurityException;
 import com.tailoring.user.payload.LoginRequest;
 import com.tailoring.user.util.JwtUtil;
 import com.tailoring.user.vo.JwtResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
+@Api(value = "用户", tags = {"用户"})
 public class AuthController {
 
     @Autowired
@@ -46,6 +49,7 @@ public class AuthController {
      * 登录
      */
     @PostMapping("/login")
+    @ApiOperation(value = "登陆",tags = "PDA" , notes = "用户登陆")
     public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmailOrPhone(), loginRequest.getPassword()));
 
@@ -59,6 +63,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
+    @ApiOperation(value = "登出",tags = "PDA" , notes = "用户退出")
     public ApiResponse logout(HttpServletRequest request) {
         try {
             // 设置JWT过期

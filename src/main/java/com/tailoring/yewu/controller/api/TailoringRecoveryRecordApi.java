@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/tailoringRecoveryRecord")
-@Api(value = "布料消耗记录controller", tags = {"布料消耗记录操作接口"})
+@Api(value = "布料消耗记录", tags = {"布料"})
 public class TailoringRecoveryRecordApi {
 
     @Autowired
